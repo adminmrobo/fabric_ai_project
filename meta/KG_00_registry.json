@@ -1,0 +1,723 @@
+{
+  "version": "1.0",
+  "series": "한양대 섬유 AI 과제 브리핑",
+  "updated": "2026-11-14",
+  "nodes": [
+    {
+      "id": "lab:concept/fabric-hand",
+      "label": {
+        "ko": "태 (Hand)",
+        "en": "fabric hand"
+      },
+      "type": "Concept",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:concept/triboelectricity",
+      "label": {
+        "ko": "마찰전기",
+        "en": "triboelectricity"
+      },
+      "type": "Concept",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:concept/teng",
+      "label": {
+        "ko": "TENG (마찰전기 나노발전기)",
+        "en": "triboelectric nanogenerator"
+      },
+      "type": "Concept",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:concept/structure-variables",
+      "label": {
+        "ko": "구조 변수 (B·C)",
+        "en": "structure variables"
+      },
+      "type": "Concept",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:concept/fabric-properties",
+      "label": {
+        "ko": "직물 물성 (A)",
+        "en": "fabric properties"
+      },
+      "type": "Concept",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:concept/performance-target",
+      "label": {
+        "ko": "성능 정답 (Y)",
+        "en": "performance target"
+      },
+      "type": "Concept",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:term/mediator",
+      "label": {
+        "ko": "매개변수",
+        "en": "mediator"
+      },
+      "type": "Term",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:method/kes-fb",
+      "label": {
+        "ko": "KES-FB (가와바타 평가 시스템)",
+        "en": "Kawabata Evaluation System for Fabrics"
+      },
+      "type": "Method",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:method/ftt",
+      "label": {
+        "ko": "FTT (촉감 측정기)",
+        "en": "Fabric Touch Tester"
+      },
+      "type": "Method",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:method/data-audit",
+      "label": {
+        "ko": "데이터 진단",
+        "en": "data audit"
+      },
+      "type": "Method",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:method/pca",
+      "label": {
+        "ko": "주성분 분석 (PCA)",
+        "en": "principal component analysis"
+      },
+      "type": "Method",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:method/doe",
+      "label": {
+        "ko": "실험계획법 (DOE)",
+        "en": "design of experiments"
+      },
+      "type": "Method",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:method/baseline",
+      "label": {
+        "ko": "기준선 모델",
+        "en": "baseline model"
+      },
+      "type": "Method",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:method/tree-ensemble",
+      "label": {
+        "ko": "랜덤포레스트·XGBoost",
+        "en": "tree ensembles"
+      },
+      "type": "Method",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:method/mlp",
+      "label": {
+        "ko": "신경망 (MLP)",
+        "en": "multilayer perceptron"
+      },
+      "type": "Method",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:method/pls-sem",
+      "label": {
+        "ko": "PLS-SEM (경로 분석)",
+        "en": "partial least squares structural equation modeling"
+      },
+      "type": "Method",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:method/sim-to-real",
+      "label": {
+        "ko": "Sim-to-Real",
+        "en": "sim-to-real"
+      },
+      "type": "Method",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:method/shap",
+      "label": {
+        "ko": "SHAP",
+        "en": "SHAP"
+      },
+      "type": "Method",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:method/group-cv",
+      "label": {
+        "ko": "원단 단위 교차검증",
+        "en": "grouped cross-validation"
+      },
+      "type": "Method",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:limitation/no-target",
+      "label": {
+        "ko": "정답 데이터가 없음",
+        "en": "no target values"
+      },
+      "type": "Limitation",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:limitation/source-confound",
+      "label": {
+        "ko": "출처와 직물 종류가 겹침",
+        "en": "source-type confounding"
+      },
+      "type": "Limitation",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:limitation/small-sample",
+      "label": {
+        "ko": "원단 수가 적음",
+        "en": "small sample"
+      },
+      "type": "Limitation",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:problem/overfitting",
+      "label": {
+        "ko": "과적합",
+        "en": "overfitting"
+      },
+      "type": "Problem",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:problem/data-leakage",
+      "label": {
+        "ko": "데이터 누수",
+        "en": "data leakage"
+      },
+      "type": "Problem",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:metric/r2",
+      "label": {
+        "ko": "결정계수 (R²)",
+        "en": "coefficient of determination"
+      },
+      "type": "Metric",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:metric/rmse",
+      "label": {
+        "ko": "RMSE",
+        "en": "root mean squared error"
+      },
+      "type": "Metric",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:metric/cv-repeat",
+      "label": {
+        "ko": "변동계수 (CV)",
+        "en": "coefficient of variation"
+      },
+      "type": "Metric",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:metric/icc",
+      "label": {
+        "ko": "급내상관계수 (ICC)",
+        "en": "intraclass correlation"
+      },
+      "type": "Metric",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:claim/27-fabrics",
+      "label": {
+        "ko": "원단 27개 × 측정 항목 73개",
+        "en": "27 fabrics × 73 measured items"
+      },
+      "type": "Claim",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:claim/19-common",
+      "label": {
+        "ko": "공통 항목 19개",
+        "en": "19 items common to all fabrics"
+      },
+      "type": "Claim",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:claim/pca-68",
+      "label": {
+        "ko": "두 축이 정보의 68%",
+        "en": "two PCs explain 68%"
+      },
+      "type": "Claim",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:claim/ftt-kes-cw",
+      "label": {
+        "ko": "두 장비는 압축 일만 뚜렷이 일치",
+        "en": "FTT and KES agree only on compression work"
+      },
+      "type": "Claim",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:claim/iso139",
+      "label": {
+        "ko": "표준 상태 20 ± 2 °C, 65 ± 4 %",
+        "en": "ISO 139 standard atmosphere"
+      },
+      "type": "Claim",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:claim/kickoff-sample",
+      "label": {
+        "ko": "목표 원단 50~100개",
+        "en": "target 50–100 fabrics"
+      },
+      "type": "Claim",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:claim/grant-plan",
+      "label": {
+        "ko": "5년 과제 연차 목표",
+        "en": "five-year plan"
+      },
+      "type": "Claim",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:claim/kes-hand",
+      "label": {
+        "ko": "KES-FB는 태를 기계로 잰다",
+        "en": "KES-FB measures hand objectively"
+      },
+      "type": "Claim",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:question/core",
+      "label": {
+        "ko": "구조만으로 성능을 맞힐 수 있을까",
+        "en": "can structure predict performance"
+      },
+      "type": "Question",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:question/target-plan",
+      "label": {
+        "ko": "정답 측정 계획",
+        "en": "target measurement plan"
+      },
+      "type": "Question",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:question/column-suffix",
+      "label": {
+        "ko": "열 이름 _1·_2·_3의 뜻",
+        "en": "column suffix meaning"
+      },
+      "type": "Question",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:question/instrument",
+      "label": {
+        "ko": "어느 장비로 통일할까",
+        "en": "which instrument"
+      },
+      "type": "Question",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:work/kickoff2025",
+      "label": {
+        "ko": "Kick off 문서 (2025-12-11)",
+        "en": "Kick-off document"
+      },
+      "type": "Work",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:work/grant2026",
+      "label": {
+        "ko": "연구계획서 (2026 핵심연구 유형B)",
+        "en": "2026 research proposal"
+      },
+      "type": "Work",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:work/aidataset2026",
+      "label": {
+        "ko": "AI 데이터셋 엑셀",
+        "en": "AI dataset workbook"
+      },
+      "type": "Work",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:work/iso1392005",
+      "label": {
+        "ko": "ISO 139:2005/Amd 1:2011",
+        "en": "ISO 139"
+      },
+      "type": "Work",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:work/kawabata1980standardization",
+      "label": {
+        "ko": "Kawabata (1980)",
+        "en": "Kawabata 1980"
+      },
+      "type": "Work",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    },
+    {
+      "id": "lab:work/handcourse2026",
+      "label": {
+        "ko": "강의 「직물 태 판정 AI 만들기」",
+        "en": "fabric hand AI course"
+      },
+      "type": "Work",
+      "domain": [
+        "ai",
+        "stats"
+      ],
+      "pages": [
+        "hanyang_textile_ai_brief_01"
+      ]
+    }
+  ],
+  "works": [
+    {
+      "id": "kickoff2025",
+      "title": "Kick off : 2025.12.11 — 섬유-직물-마찰전기 통합 예측 모델 연구 목적과 방법"
+    },
+    {
+      "id": "grant2026",
+      "title": "직물 구조–물성의 Sim-to-Real AI 학습을 통한 의복형 웨어러블 직물센서 온디바이스 플랫폼 (2026년도 핵심연구(유형B) 신규과제 연구계획서)"
+    },
+    {
+      "id": "aidataset2026",
+      "title": "AI 데이터셋 (Yarn_Descriptors · Physical_Structural · Surface_Friction · Mechanical · Thermal_Transport)"
+    },
+    {
+      "id": "iso1392005",
+      "title": "Textiles — Standard atmospheres for conditioning and testing (ISO 139:2005, Amendment 1:2011)"
+    },
+    {
+      "id": "kawabata1980standardization",
+      "title": "The Standardization and Analysis of Hand Evaluation"
+    },
+    {
+      "id": "handcourse2026",
+      "title": "직물 태(Hand) 판정 AI 만들기 — Teachable Machine으로 배우는 이미지 → 숫자 → 학습 → 판단"
+    }
+  ]
+}

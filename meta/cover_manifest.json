@@ -1,0 +1,53 @@
+{
+  "series_ko": "한양대 섬유 AI 과제 브리핑",
+  "title_ko": "직물 구조로 성능을 미리 맞히는 AI — 배 교수님 연구 계획 브리핑",
+  "site_title": "섬유 AI 브리핑 01",
+  "site_url": "",
+  "ontology": {
+    "pages": [
+      {
+        "path": "hanyang_textile_ai_brief_01.html",
+        "kg": true,
+        "export": true
+      }
+    ],
+    "files": [
+      "KG_00_registry.json"
+    ]
+  },
+  "i18n": {
+    "langs": [
+      "ko"
+    ],
+    "pages": {
+      "ko": 1
+    },
+    "readme_langs": [
+      "ko"
+    ]
+  },
+  "languages": [
+    "ko"
+  ],
+  "items": [
+    {
+      "id": "cover_01_brief",
+      "role": "cover",
+      "path": "img/cover_01_brief.webp",
+      "size": [
+        1600,
+        900
+      ],
+      "characters": [
+        "sia",
+        "moa",
+        "asst"
+      ],
+      "robot": null,
+      "prompt_en": "Website top cover illustration, wide 16:9 ... three characters (Sia, Moa, Haru) ... glowing threads rising from fabric swatches into a floating bar chart ... no text",
+      "source_of": null,
+      "status": "requested"
+    }
+  ],
+  "updated": "2026-11-14"
+}
