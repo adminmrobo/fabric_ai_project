@@ -176,7 +176,7 @@ REFS = [
           "verified": {"title": True, "authors": False, "year": True, "venue": False, "doi": False, "pages": False}, "checkedBy": "제공 자료 2026-11-14", "note": "강의 슬라이드 60쪽"}},
 ]
 META = {"title": "직물 구조로 성능을 미리 맞히는 AI — 배 교수님 연구 계획 브리핑", "series": "한양대 섬유 AI 과제 브리핑", "number": "01",
-        "creator": [{"name": "안상선", "role": "author", "affiliation": "(주)M-Robo 대표"}], "contributor": [{"name": "AI 보조 제작", "role": "assistant"}],
+        "creator": [{"name": "안상선", "role": "author"}], "contributor": [{"name": "AI 보조 제작", "role": "assistant"}],
         "date": "2026-11-14", "version": "1.0", "language": ["ko"], "license": "", "url": "",
         "about": ["lab:method/data-audit", "lab:method/pca", "lab:method/doe", "lab:method/baseline", "lab:method/group-cv", "lab:concept/triboelectricity"],
         "educationalLevel": "입문~중급", "learningResourceType": "interactive explainer", "basedOn": ["kickoff2025", "grant2026", "aidataset2026"],
