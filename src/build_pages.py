@@ -25,6 +25,11 @@ COVER = T[T.index('<div class="cover" id="top">'):T.index('<header class="hero">
 INTRO = sec('intro')
 
 EXTRA_CSS = r"""
+.labcard{display:grid;grid-template-columns:1fr auto;gap:4px 16px;align-items:center;border:1.5px solid #1e55c8;border-radius:14px;padding:14px 18px;margin:12px 0 16px;background:#f4f7fd}
+.labcard .lk{grid-column:1/-1;font-size:12px;font-weight:700;color:#1e55c8;letter-spacing:.04em}
+.labcard .ln{font-size:17px}.labcard .lp{font-size:15px}.labcard .lf{font-size:13.5px;color:var(--muted);grid-column:1}
+.labcard a.bt{grid-column:2;grid-row:2/5;white-space:nowrap;text-decoration:none}
+@media (max-width:600px){.labcard{grid-template-columns:1fr}.labcard a.bt{grid-column:1;grid-row:auto;justify-self:start}}
 .crumb{font-size:13px;color:var(--muted);margin:0 0 6px}.crumb a{color:var(--muted)}
 .st{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:999px;border:1.5px solid;vertical-align:middle;white-space:nowrap;line-height:1.5}
 .st.run{color:#13733a;border-color:#13733a;background:#e8f5ec}.st.part{color:#1e55c8;border-color:#1e55c8;background:#e6eefb}
@@ -112,6 +117,7 @@ def nav(cur):
     h += '<span class="sep">|</span>'
     for f, t in [('image_data.html', '이미지 분석'), ('data_guide.html', '작성 가이드'), ('references.html', '참고문헌')]:
         h += f'<a class="l" href="{f}"' + (' aria-current="page"' if f == cur else '') + f'>{t}</a>'
+    h += '<span class="sep">|</span><a class="l" href="https://fashion.hanyang.ac.kr/-19" target="_blank" rel="noopener" title="한양대 스마트텍스타일연구실 (배지현 교수)">연구실 소개 ↗</a>'
     return h + '</div></nav>'
 
 def crumb(*parts):
@@ -326,7 +332,7 @@ sizes['plan_years.html'] = page('plan_years.html', '연차별 연구계획', yrs
 
 # ---------------- INDEX ----------------
 hero = T[T.index('<header class="hero">'):T.index('<section class="level" id="intro">')]
-hero = hero.replace('2026-11-14 기준', '2026-11-16 기준').replace('보고마다 결론을 먼저 말씀드리고, 끝에 교수님 검토가 필요한 사항을 정리했습니다. 그림은 직접 눌러 확인하실 수 있습니다.',
+hero = hero.replace('2026-11-14 기준', '2026-11-16 기준').replace('한양대 섬유 AI 과제 · 연구 계획 브리핑 01', '한양대 스마트텍스타일연구실 · 연구 계획 브리핑 01').replace('</h1>', '</h1>'+'<div class="labcard" role="note" aria-label="주관 연구실"><span class="lk">주관 연구실</span><b class="ln">한양대학교 생활과학대학 의류학과 · 스마트텍스타일연구실</b><span class="lp">담당 교수 <b>배지현 교수</b></span><span class="lf">연구 분야: 스마트섬유소재 · 섬유기반소자 · 섬유구조설계 · 지속가능성 소재 및 공정</span><a class="bt primary" href="https://fashion.hanyang.ac.kr/-19" target="_blank" rel="noopener">연구실 소개 페이지 열기 ↗</a></div>', 1).replace('보고마다 결론을 먼저 말씀드리고, 끝에 교수님 검토가 필요한 사항을 정리했습니다. 그림은 직접 눌러 확인하실 수 있습니다.',
     '이 쪽은 전체 계획의 요약입니다. 연차별 계획, 스테이지 흐름, 스테이지별 상세 쪽으로 이어집니다. 아직 정해지지 않은 것은 <span class="st plan">예정</span>으로 표시했습니다.')
 hero = hero.replace('보고마다 검토 사항을 정리해 두었습니다. 표시해 주시면 마지막에 모아 드리겠습니다.', '스테이지마다 검토 사항이 있습니다. 표시해 주시면 이 쪽 아래에 모아 드리겠습니다.')
 intro = re.sub(r'<h3 style="margin-top:22px">오늘 보고 순서</h3>\s*<ol class="agenda">.*?</ol>', '', INTRO, flags=re.S)
