@@ -39,7 +39,8 @@ fixes = [
 fixt = '<div class="tw"><table class="tb"><tr><th>보완 방법</th><th>해결하는 문제</th><th>어떻게</th><th>확인 기준</th></tr>' + ''.join(f'<tr><td><b>{a}</b></td><td>{b}</td><td>{c}</td><td>{d}</td></tr>' for a, b, c, d in fixes) + '</table></div>'
 
 img_body = wrap(crumb(('index.html', 'INDEX'), (None, '섬유 이미지 데이터 리뷰·분석')) +
- '<h1 style="margin:4px 0 8px">섬유 이미지 데이터 리뷰·분석</h1>'
+ '<h1 style="margin:4px 0 8px">섬유 이미지 데이터 리뷰·분석 <span class="st plan">2차년도 이후</span></h1>'
+ '<div class="planbox"><h4>이 데이터는 2차년도 이후에 활용합니다 <span class="st plan">예정</span></h4><p class="small" style="margin:0">2026-11-17에 정한 1차년도 방향은 "수치로 잰 직물 특성 → 실측 전기 특성 → 생성 → 예측"입니다. 이미지 진단 결과는 2차년도에 이미지를 더할 때 쓰도록 보관합니다. <a href="method_review.html">1차년도 연구 방법 검토</a> 참고.</p></div>'
  '<p class="lead">받은 실습용 이미지 데이터셋(fabric_dataset, 2026-09-22 생성) 140장을 전부 열어 보고 숫자로 진단했습니다. 강의 「직물 태(Hand) 판정 AI 만들기」의 Teachable Machine 실습용 최소판입니다.</p>'
  '<div class="brief"><div class="bh">핵심 보고</div><dl><dt>결론</dt><dd>정리와 균형은 잘 되어 있습니다. 다만 사진의 <b>명암 대비 하나만으로 시험 20장 중 18장</b>을 맞힐 수 있어, 모델이 태가 아니라 "흐림·대비"를 배울 위험이 큽니다.</dd>'
  '<dt>근거</dt><dd>140장 전체에서 명암 대비·선명도·밝기·채도·주파수 특징을 직접 계산하고, 특징 하나씩으로 분류해 봤습니다.</dd>'
@@ -274,6 +275,7 @@ REFG = [
   ('Lundberg, S. M., & Lee, S.-I. (2017). A unified approach to interpreting model predictions. <i>NeurIPS 2017</i>.', 'https://arxiv.org/abs/1705.07874', '변수 영향도(SHAP). 장치 개선 대상 변수 고르기.', ['s3', 's6']),
   ('Hair, J. F., Hult, G. T. M., Ringle, C. M., & Sarstedt, M. (2022). <i>A Primer on Partial Least Squares Structural Equation Modeling (PLS-SEM)</i> (3rd ed.). Sage.', None, '구조 → 물성 → 성능 경로 분석(S3-3).', ['s3']),
   ('Montgomery, D. C. <i>Design and Analysis of Experiments</i>. Wiley.', None, '실험계획법(요인·수준 배치).', ['s2'])]),
+ ('1차년도 방법 검토 — 전기 특성·데이터 생성·전향 검증 (2026-11-17 추가)', [(c + f' <a href="method_review.html#{k}">[{k}]</a>', u, w, ['s3', 's4', 's5']) for k, c, u, w in MREFS if k not in ('M1', 'M11')]),
  ('데이터 품질과 검증', [
   ('Kapoor, S., & Narayanan, A. (2023). Leakage and the reproducibility crisis in machine-learning-based science. <i>Patterns</i>, 4(9), 100804.', 'https://doi.org/10.1016/j.patter.2023.100804', '데이터 누수 유형과 점검법. 원단 단위 교차검증 원칙의 근거.', ['s3']),
   ('Geirhos, R., Jacobsen, J.-H., Michaelis, C., et al. (2020). Shortcut learning in deep neural networks. <i>Nature Machine Intelligence</i>, 2, 665–673.', 'https://doi.org/10.1038/s42256-020-00257-z', '지름길 학습. 이미지 데이터 분석의 핵심 개념.', ['s1']),
@@ -292,12 +294,12 @@ for g, L in REFG:
     rh += '</ol>'; mdl.append('')
 mdl += ['## 내부 자료'] + [f'- {x}' for x in INTERNAL]
 ref_body = wrap(crumb(('index.html', 'INDEX'), (None, '참고 레퍼런스')) +
- '<h1 style="margin:4px 0 8px">참고 레퍼런스</h1><p class="lead">장비, 마찰전기, 시뮬레이션, 모델, 데이터 품질 다섯 갈래로 정리했습니다. 문헌마다 "이 연구에서 어디에 쓰는지"와 관련 스테이지를 달았습니다. 서지 정보는 2026-11-16에 검색으로 확인했습니다.</p>'
- + say('moa', 'report', '문헌 목록은 아래 단추로 .md 파일로 받으실 수 있습니다. 더 넣을 문헌은 주판봇에게 요청해 주세요.') +
+ '<h1 style="margin:4px 0 8px">참고 레퍼런스</h1><p class="lead">장비, 마찰전기, 시뮬레이션, 모델, 1차년도 방법 검토, 데이터 품질 여섯 갈래로 정리했습니다. 문헌마다 "이 연구에서 어디에 쓰는지"와 관련 스테이지를 달았습니다. 서지 정보는 2026-11-16에 검색으로 확인했습니다.</p>'
+ + say('moa', 'report', '문헌 목록은 아래 단추로 .md 파일로 받으실 수 있습니다. 더 넣을 문헌은 부직이에게 요청해 주세요.') +
  '<div class="ctrl"><button class="bt primary" data-tpl="refs">참고문헌 목록 .md 내려받기</button><span class="small muted dlnote" aria-live="polite"></span></div>' + rh +
  '<h2 style="margin-top:26px">내부 자료</h2><ul>' + ''.join(f'<li>{x}</li>' for x in INTERNAL) + '</ul>'
  '<h2 style="margin-top:26px">더 찾아볼 문헌 <span class="st plan">예정</span></h2><ul>'
- '<li>직물 구조(조직·밀도)와 TENG 출력의 관계를 체계적으로 잰 실험 논문 — S5 측정 조건 확정 때</li>'
+ '<li>직물 특성 수치(KES-FB·FTT 항목)를 입력으로 마찰전기 출력을 예측한 머신러닝 논문 — 이번 검토에서 찾지 못함, 계속 찾음</li>'
  '<li>KES-FB 값으로 태 점수를 예측한 머신러닝 논문 — S3 기준선 비교용</li>'
  '<li>직물 표면 이미지로 촉감을 예측한 연구 — 이미지 묶음을 더할지 정할 때</li></ul>')
 sizes['references.html'] = page('references.html', '참고 레퍼런스', ref_body + tail((('data_guide.html', '가상 섬유 데이터 작성 가이드'), ('index.html', 'INDEX — 전체 연구 계획 정리'))), extra={'guide': {'refs': {'kind': 'md', 'file': 'references.md', 'text': '\n'.join(mdl)}}})

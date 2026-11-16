@@ -2,7 +2,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>직물 구조로 성능을 미리 맞히는 AI — 배 교수님 연구 계획 브리핑</title>
-<meta name="description" content="한양대 섬유 AI 과제의 자료 정리, 데이터 진단, 데이터 준비, 모델링, 평가 기준, 일정을 인턴 시아·모아와 조수 하루가 쉽게 풀어 드리는 연구실 브리핑 대시보드">
+<meta name="description" content="한양대 섬유 AI 과제의 자료 정리, 데이터 진단, 데이터 준비, 모델링, 평가 기준, 일정을 섬유 조직 캐릭터 평직이·능직이·편직이가 쉽게 풀어 드리는 연구실 브리핑 대시보드">
 <meta name="citation_title" content="직물 구조로 성능을 미리 맞히는 AI — 배 교수님 연구 계획 브리핑">
 <meta name="citation_author" content="안상선">
 <meta name="citation_publication_date" content="2026/11/14">
@@ -16,7 +16,7 @@
   --text:#16212b; --muted:#5b6874;
   --stain:#9b3fb5; --gfp:#13733a; --eye:#c9302c; --amber:#a35c00; --info:#1e55c8;
   --stain-soft:#f6ecfa; --gfp-soft:#e7f5ec; --eye-soft:#fcebea; --amber-soft:#fdf3e1; --info-soft:#e6eefb;
-  --c-doc:#7a3fd6; --c-asst:#c42a6e; --c-fly:#c93030; --c-robo:#0b7a86; --c-sia:#5a5a6e; --c-moa:#93651a;
+  --c-doc:#7a3fd6; --c-asst:#2f5d9e; --c-fly:#c93030; --c-robo:#6f5aa8; --c-sia:#17675c; --c-moa:#b24c40;
   --accent:#8f5a2e;
   color-scheme:light;
 }
@@ -51,7 +51,7 @@ nav.top a.l:hover{background:var(--panel);color:var(--text)}
 .cover .ct .ttl{font-size:clamp(20px,3.6vw,42px);font-weight:700;line-height:1.25;margin-top:.5em;background:rgba(255,255,255,.88);display:inline;box-decoration-break:clone;-webkit-box-decoration-break:clone;padding:0 .2em}
 .cover .ct .sub{margin-top:.8em;font-size:clamp(12px,1.6vw,17px);color:var(--muted);background:rgba(255,255,255,.88);display:inline-block;padding:2px 8px;border-radius:4px}
 .cover .trio{position:absolute;right:3%;bottom:0;display:flex;align-items:flex-end;gap:0;z-index:2;width:44%}
-.cover .trio img{width:33.3%;height:auto;image-rendering:pixelated;filter:drop-shadow(0 2px 0 rgba(22,33,43,.08))}
+.cover .trio img{width:33.3%;height:auto;filter:drop-shadow(0 2px 0 rgba(22,33,43,.08))}
 .cover .stampc{position:absolute;left:5%;bottom:6%;z-index:2;font-size:12px;color:var(--amber);background:var(--amber-soft);border:1px solid #ecd3a6;border-radius:4px;padding:1px 8px}
 /* hero */
 header.hero{position:relative;padding:44px 0 30px;overflow:hidden}
@@ -69,7 +69,7 @@ header.hero::after{content:"";position:absolute;right:-120px;top:-120px;width:52
 .fn{font-size:12.5px;color:var(--muted)}
 /* say */
 .say{display:flex;gap:12px;align-items:flex-start;margin:12px 0}
-.say img.who{width:64px;height:64px;border-radius:12px;border:2px solid var(--rule);background:#fff;flex:none;image-rendering:auto;object-fit:cover}
+.say img.who{width:64px;height:64px;border-radius:50%;border:2px solid var(--rule);background:#fff;flex:none;image-rendering:auto;object-fit:cover}
 .say .bub{background:#fff;border:1px solid var(--rule);border-radius:12px;padding:8px 14px;min-width:0;position:relative}
 .say b.name{display:block;font-size:13px;line-height:1.5}
 .say p{margin:0}
@@ -91,9 +91,9 @@ section.level.lv{padding-top:88px}
 .box3 ol{margin:0 0 8px;padding-left:22px}
 details.abbr{margin-top:6px;font-size:14px}
 details summary{cursor:pointer;color:var(--info);font-weight:500}
-.cast{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:12px}
+.cast{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:12px}
 .cast>div{display:flex;gap:12px;align-items:center;background:#fff;border:1px solid var(--rule);border-radius:12px;padding:12px}
-.cast img{width:72px;height:72px;border-radius:12px;border:2px solid var(--rule);flex:none}
+.cast img{width:72px;height:72px;border-radius:50%;border:2px solid var(--rule);flex:none}
 .cast b{display:block}
 .cast span{font-size:14px;color:var(--muted);line-height:1.6;display:block}
 .hexno{display:inline-flex;align-items:center;justify-content:center;width:46px;height:52px;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);background:var(--accent);color:#fff;font-weight:700;font-size:20px;margin-right:12px;flex:none}
@@ -275,7 +275,7 @@ footer table.tb{font-size:13.5px}
 </div></nav>
 
 <div class="cover" id="top">
-  <div class="frame" data-img="cover_01_brief" aria-label="표지: 인턴 시아, 인턴 모아, 조수 하루가 직물 격자 앞에 서 있는 그림">
+  <div class="frame" data-img="cover_01_brief" aria-label="표지: 섬유 조직 캐릭터 평직이·능직이·편직이가 직물 격자 앞에 서 있는 그림">
     <canvas id="coverCv" aria-hidden="true"></canvas>
     <div class="ct">
       <span class="kicker">LAB BRIEFING · 01</span><br>
@@ -283,15 +283,15 @@ footer table.tb{font-size:13.5px}
       <span class="sub">배 교수님께 드리는 연구 진행 계획 브리핑</span>
     </div>
     <div class="trio" aria-hidden="true">
-      <img data-who="sia" data-mood="guide" alt="">
+      <img data-who="sia" data-mood="spark" alt="">
       <img data-who="asst" data-mood="smile" alt="">
-      <img data-who="moa" data-mood="tea" alt="">
+      <img data-who="moa" data-mood="proud" alt="">
     </div>
   </div>
 </div>
 
 <header class="hero"><div class="wrap"><div class="hero-text">
-  <div class="eyebrow">한양대 섬유 AI 과제 · 연구 계획 브리핑 01 · 보고: 조수 하루 · 2026-11-14 기준</div>
+  <div class="eyebrow">한양대 섬유 AI 과제 · 연구 계획 브리핑 01 · 보고: 평직이 · 2026-11-14 기준</div>
   <h1>직물 구조로 성능을 미리 맞히는 AI<br><span style="font-size:.6em;font-weight:500">— 연구 진행 계획 보고</span></h1>
   <p class="coreq">실을 고르고 조직을 정하는 순간, 이 원단이 낼 <span class="jt" data-k="마찰전기">마찰전기</span>와 <span class="jt" data-k="태">촉감</span>을 미리 알 수 있을까?</p>
   <p class="lead">받은 자료 8가지를 바탕으로 데이터 현황, 데이터 준비, 모델링, 평가 기준, 일정을 차례로 보고드립니다. 보고마다 결론을 먼저 말씀드리고, 끝에 교수님 검토가 필요한 사항을 정리했습니다. 그림은 직접 눌러 확인하실 수 있습니다.</p>
@@ -304,8 +304,8 @@ footer table.tb{font-size:13.5px}
     <div class="kpi g" role="listitem"><b>7단계</b><span>2026-11 ~ 2027-12 제안 일정</span></div>
   </div>
   <p class="fn">[1] AI 데이터셋 엑셀 직접 집계 · [2] 킥오프 문서(2025-12-11) 샘플 목표</p>
-  <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="report" alt="" aria-hidden="true"><div class="bub"><b class="name">조수 하루</b><p>교수님, 지금부터 연구 진행 계획을 보고드리겠습니다. 결론부터 말씀드리고 근거를 이어서 보여 드리겠습니다.</p></div></div>
-  <div class="say" data-who="sia"><img class="who" data-who="sia" data-mood="explain" alt="" aria-hidden="true"><div class="bub"><b class="name">인턴 시아</b><p>보고마다 검토 사항을 정리해 두었습니다. 표시해 주시면 마지막에 모아 드리겠습니다.</p></div></div>
+  <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="report" alt="" aria-hidden="true"><div class="bub"><b class="name">평직이</b><p>교수님, 지금부터 연구 진행 계획을 보고드리겠습니다. 결론부터 말씀드리고 근거를 이어서 보여 드리겠습니다.</p></div></div>
+  <div class="say" data-who="sia"><img class="who" data-who="sia" data-mood="explain" alt="" aria-hidden="true"><div class="bub"><b class="name">능직이</b><p>보고마다 검토 사항을 정리해 두었습니다. 표시해 주시면 마지막에 모아 드리겠습니다.</p></div></div>
 </div></div></header>
 
 <section class="level" id="intro"><div class="wrap">
@@ -333,10 +333,12 @@ footer table.tb{font-size:13.5px}
   </ol>
   <h2 id="cast" style="margin-top:30px">보고 진행</h2>
   <div class="cast">
-    <div><img data-who="sia" data-mood="smile" alt="" aria-hidden="true"><div><b style="color:var(--c-sia)">인턴 시아 (인턴1)</b><span>순서 정리와 질의를 맡습니다. 처음 듣는 분이 궁금해할 점을 대신 여쭙니다.</span></div></div>
-    <div><img data-who="moa" data-mood="smile" alt="" aria-hidden="true"><div><b style="color:var(--c-moa)">인턴 모아 (인턴2)</b><span>자료·기록 담당입니다. 표와 숫자를 준비하고 검토 결과를 정리합니다.</span></div></div>
-    <div><img data-who="asst" data-mood="smile" alt="" aria-hidden="true"><div><b style="color:var(--c-asst)">조수 하루</b><span>보고자입니다. 결론과 근거를 보고드리고 질의에 답합니다.</span></div></div>
+    <div><img data-who="asst" data-mood="smile" alt="" aria-hidden="true"><div><b style="color:var(--c-asst)">평직이 · 보고</b><span>평직(Plain) — 날실과 씨실이 한 올씩 번갈아 오르내리는 가장 기본 조직. 결론과 근거를 보고드리고 질의에 답합니다.</span></div></div>
+    <div><img data-who="sia" data-mood="smile" alt="" aria-hidden="true"><div><b style="color:var(--c-sia)">능직이 · 질문</b><span>능직(Twill) — 교차점이 한 칸씩 밀려 사선 무늬가 생기는 조직. 처음 듣는 분이 궁금해할 점을 대신 여쭙니다.</span></div></div>
+    <div><img data-who="moa" data-mood="smile" alt="" aria-hidden="true"><div><b style="color:var(--c-moa)">편직이 · 기록</b><span>편직(Knit) — 실로 고리를 만들어 엮은 조직. 표와 숫자를 준비하고 검토 결과를 정리합니다.</span></div></div>
+    <div><img data-who="robo" data-mood="smile" alt="" aria-hidden="true"><div><b style="color:var(--c-robo)">부직이 · 수정 요청</b><span>부직포(Nonwoven) — 실 없이 섬유를 바로 얽어 붙인 천. 쪽마다 수정·보완 요청을 받아 모읍니다.</span></div></div>
   </div>
+  <p class="small muted" style="margin-top:6px">캐릭터 몸통의 무늬는 각 조직의 실 배치를 그린 것입니다. 사람이 아닌 직물 조직 자체가 보고합니다.</p>
   <p class="small muted" style="margin-top:10px">이 페이지의 섬유·직물 설명은 저희가 이해한 내용입니다. 틀린 곳을 짚어 주시면 고치겠습니다. 초록 꼬리표 <span class="realnote">실측</span>는 엑셀 데이터로 계산한 값, 노란 꼬리표 <span class="stampnote">설명용 모형</span>은 원리를 보여 주는 가상 데이터입니다.</p>
 
   <h2 id="why" style="margin-top:36px">보고 배경 — 왜 이 과제인가</h2>
@@ -357,8 +359,8 @@ footer table.tb{font-size:13.5px}
     <div class="fdetail" id="flowDetail" aria-live="polite"></div>
   </div>
   <div class="talk"><p class="th">질의응답</p>
-    <div class="say" data-who="moa"><img class="who" data-who="moa" data-mood="think" alt="" aria-hidden="true"><div class="bub"><b class="name">인턴 모아</b><p>되돌아가는 화살표가 두 개 있습니다. 어떤 경우인지 여쭙겠습니다.</p></div></div>
-    <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="report" alt="" aria-hidden="true"><div class="bub"><b class="name">조수 하루</b><p>측정이 흔들리면 다시 측정하고, 모델이 기준에 못 미치면 원단을 추가하는 경우입니다. 한 번에 끝나지 않는 것을 전제로 일정을 잡았습니다.</p></div></div>
+    <div class="say" data-who="moa"><img class="who" data-who="moa" data-mood="think" alt="" aria-hidden="true"><div class="bub"><b class="name">편직이</b><p>되돌아가는 화살표가 두 개 있습니다. 어떤 경우인지 여쭙겠습니다.</p></div></div>
+    <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="report" alt="" aria-hidden="true"><div class="bub"><b class="name">평직이</b><p>측정이 흔들리면 다시 측정하고, 모델이 기준에 못 미치면 원단을 추가하는 경우입니다. 한 번에 끝나지 않는 것을 전제로 일정을 잡았습니다.</p></div></div>
   </div>
 </div></section>
 
@@ -375,12 +377,12 @@ footer table.tb{font-size:13.5px}
       <div class="easy"><b>쉽게 말하면:</b> 요리를 시작하기 전에 냉장고에 어떤 재료가 있는지부터 확인하는 일입니다.</div>
     </div>
     <div class="mathq"><h4>계산 근거 — 질의응답</h4>
-      <div class="say" data-who="sia"><img class="who" data-who="sia" data-mood="think" alt="" aria-hidden="true"><div class="bub"><b class="name">인턴 시아</b><p>"공통 항목 19개"는 어떻게 센 것인지 질문드립니다.</p></div></div>
+      <div class="say" data-who="sia"><img class="who" data-who="sia" data-mood="think" alt="" aria-hidden="true"><div class="bub"><b class="name">능직이</b><p>"공통 항목 19개"는 어떻게 센 것인지 질문드립니다.</p></div></div>
       <p class="school">학교 수학으로 보면: 집합의 <b>교집합</b>입니다.</p>
       <div class="eqline">공통 항목 = 출처 A의 항목 ∩ 출처 B의 항목 ∩ 출처 C의 항목</div>
       <table><tr><th>조각</th><th>뜻</th></tr><tr><td>∩ (교집합)</td><td>세 출처 모두에 값이 있는 항목만 남기기</td></tr><tr><td>73</td><td>엑셀 전체 측정 항목</td></tr><tr><td>19</td><td>원단 27개 모두에 값이 있는 항목</td></tr></table>
       <div class="try"><b>숫자로 한 번 해 보기:</b> 표면 마찰 시트는 산업 원단 18개 항목, Huvis 12개, 연구실 6개가 채워져 있고, 셋 모두에 있는 것은 6개입니다.</div>
-      <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="spark" alt="" aria-hidden="true"><div class="bub"><b class="name">조수 하루</b><p>네. 시트 넷을 같은 방식으로 세면 1 + 6 + 10 + 2 = 19개입니다.</p></div></div>
+      <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="spark" alt="" aria-hidden="true"><div class="bub"><b class="name">평직이</b><p>네. 시트 넷을 같은 방식으로 세면 1 + 6 + 10 + 2 = 19개입니다.</p></div></div>
     </div>
   </div>
   <div class="pair">
@@ -388,9 +390,9 @@ footer table.tb{font-size:13.5px}
     <div><span class="tag nn">이 연구에서는</span><p>산업·Huvis·연구실 원단은 측정 장비와 항목이 달라, 27개를 함께 분석할 때는 공통 19개 항목만 쓸 수 있습니다.</p></div>
   </div>
   <div class="talk"><p class="th">질의응답</p>
-    <div class="say" data-who="sia"><img class="who" data-who="sia" data-mood="explain" alt="" aria-hidden="true"><div class="bub"><b class="name">인턴 시아</b><p>표가 커 보이는데, 빈칸이 어느 정도인지 질문드립니다.</p></div></div>
-    <div class="say" data-who="moa"><img class="who" data-who="moa" data-mood="report" alt="" aria-hidden="true"><div class="bub"><b class="name">인턴 모아</b><p>출처별로 나눈 자료를 준비했습니다. 아래 버튼으로 보실 수 있습니다.</p></div></div>
-    <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="report" alt="" aria-hidden="true"><div class="bub"><b class="name">조수 하루</b><p>칸이 진할수록 채워진 항목이 많습니다. 오른쪽 끝 "정답 Y" 열은 모두 비어 있습니다.</p></div></div>
+    <div class="say" data-who="sia"><img class="who" data-who="sia" data-mood="explain" alt="" aria-hidden="true"><div class="bub"><b class="name">능직이</b><p>표가 커 보이는데, 빈칸이 어느 정도인지 질문드립니다.</p></div></div>
+    <div class="say" data-who="moa"><img class="who" data-who="moa" data-mood="report" alt="" aria-hidden="true"><div class="bub"><b class="name">편직이</b><p>출처별로 나눈 자료를 준비했습니다. 아래 버튼으로 보실 수 있습니다.</p></div></div>
+    <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="report" alt="" aria-hidden="true"><div class="bub"><b class="name">평직이</b><p>칸이 진할수록 채워진 항목이 많습니다. 오른쪽 끝 "정답 Y" 열은 모두 비어 있습니다.</p></div></div>
   </div>
   <div class="panel">
     <h4>원단 × 측정 묶음 채움 지도 <span class="realnote">실측 · 엑셀 직접 집계</span></h4>
@@ -424,12 +426,12 @@ footer table.tb{font-size:13.5px}
       <div class="easy"><b>쉽게 말하면:</b> 키·몸무게·발 크기를 '체격' 하나로 요약하는 것과 닮았습니다.</div>
     </div>
     <div class="mathq"><h4>계산 근거 — 질의응답</h4>
-      <div class="say" data-who="moa"><img class="who" data-who="moa" data-mood="think" alt="" aria-hidden="true"><div class="bub"><b class="name">인턴 모아</b><p>평량은 수백, 마찰계수는 0.몇인데 어떻게 한 그림에 넣는지 질문드립니다.</p></div></div>
+      <div class="say" data-who="moa"><img class="who" data-who="moa" data-mood="think" alt="" aria-hidden="true"><div class="bub"><b class="name">편직이</b><p>평량은 수백, 마찰계수는 0.몇인데 어떻게 한 그림에 넣는지 질문드립니다.</p></div></div>
       <p class="school">학교 수학으로 보면: 확률과 통계의 <b>표준화</b>입니다.</p>
       <div class="eqline">z = (값 − 평균) ÷ 표준편차</div>
       <table><tr><th>조각</th><th>뜻</th></tr><tr><td>평균</td><td>27개 원단의 가운데 값</td></tr><tr><td>표준편차</td><td>값들이 평균에서 흩어진 정도</td></tr><tr><td>z</td><td>평균에서 표준편차 몇 개만큼 떨어졌나</td></tr></table>
       <div class="try"><b>숫자로 한 번 해 보기:</b> 평량 평균 166.0, 표준편차 92.6 g/m²일 때, I_K6 원단(279.8)은 (279.8 − 166.0) ÷ 92.6 ≈ 1.23입니다.</div>
-      <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="spark" alt="" aria-hidden="true"><div class="bub"><b class="name">조수 하루</b><p>단위가 사라져 비교가 가능해집니다. 실제 분석은 치우친 값을 줄이려고 로그를 먼저 취한 뒤 표준화했습니다.</p></div></div>
+      <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="spark" alt="" aria-hidden="true"><div class="bub"><b class="name">평직이</b><p>단위가 사라져 비교가 가능해집니다. 실제 분석은 치우친 값을 줄이려고 로그를 먼저 취한 뒤 표준화했습니다.</p></div></div>
     </div>
   </div>
   <div class="pair">
@@ -437,8 +439,8 @@ footer table.tb{font-size:13.5px}
     <div><span class="tag nn">이 연구에서는</span><p>19개 물성을 축 두 개(PC1, PC2)로 압축해 원단의 닮음을 봅니다. 두 축이 원래 정보의 68%를 담습니다.</p></div>
   </div>
   <div class="talk"><p class="th">질의응답</p>
-    <div class="say" data-who="sia"><img class="who" data-who="sia" data-mood="think" alt="" aria-hidden="true"><div class="bub"><b class="name">인턴 시아</b><p>점들이 출처로 나뉘는지, 직물 종류로 나뉘는지 질문드립니다.</p></div></div>
-    <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="report" alt="" aria-hidden="true"><div class="bub"><b class="name">조수 하루</b><p>색 기준을 바꿔 보시면 두 경우가 거의 같은 무리로 나옵니다. 점을 누르시면 원단 이름이 나옵니다.</p></div></div>
+    <div class="say" data-who="sia"><img class="who" data-who="sia" data-mood="think" alt="" aria-hidden="true"><div class="bub"><b class="name">능직이</b><p>점들이 출처로 나뉘는지, 직물 종류로 나뉘는지 질문드립니다.</p></div></div>
+    <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="report" alt="" aria-hidden="true"><div class="bub"><b class="name">평직이</b><p>색 기준을 바꿔 보시면 두 경우가 거의 같은 무리로 나옵니다. 점을 누르시면 원단 이름이 나옵니다.</p></div></div>
   </div>
   <div class="panel">
     <h4>원단 27개 닮음 지도 (PCA) <span class="realnote">실측 · 공통 19항목으로 계산</span></h4>
@@ -475,12 +477,12 @@ footer table.tb{font-size:13.5px}
       <div class="easy"><b>쉽게 말하면:</b> 라면 맛의 비결을 찾을 때 물 양, 불 세기, 끓이는 시간을 하나씩만 바꿔 보는 것입니다.</div>
     </div>
     <div class="mathq"><h4>계산 근거 — 질의응답</h4>
-      <div class="say" data-who="sia"><img class="who" data-who="sia" data-mood="think" alt="" aria-hidden="true"><div class="bub"><b class="name">인턴 시아</b><p>원단을 몇 개 만들어야 충분한지 질문드립니다.</p></div></div>
+      <div class="say" data-who="sia"><img class="who" data-who="sia" data-mood="think" alt="" aria-hidden="true"><div class="bub"><b class="name">능직이</b><p>원단을 몇 개 만들어야 충분한지 질문드립니다.</p></div></div>
       <p class="school">학교 수학으로 보면: 경우의 수의 <b>곱의 법칙</b>입니다.</p>
       <div class="eqline">조합 수 = 실 종류 × 조직 × 밀도 × 계열(제직·편직)</div>
       <table><tr><th>조각</th><th>뜻</th></tr><tr><td>곱의 법칙</td><td>각 선택지를 모두 짝지은 수</td></tr><tr><td>변수당 5~10개</td><td>킥오프 문서의 샘플 규칙</td></tr></table>
       <div class="try"><b>숫자로 한 번 해 보기:</b> 4 × 3 × 3 × 2 = 72개. 기존 27개를 더하면 99개로, 핵심 변수 10개 × 5~10 = 50~100개 기준을 채웁니다.</div>
-      <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="spark" alt="" aria-hidden="true"><div class="bub"><b class="name">조수 하루</b><p>요인을 하나만 늘려도 수가 곱으로 늘어납니다. 그래서 핵심 변수를 먼저 줄이는 것이 중요합니다.</p></div></div>
+      <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="spark" alt="" aria-hidden="true"><div class="bub"><b class="name">평직이</b><p>요인을 하나만 늘려도 수가 곱으로 늘어납니다. 그래서 핵심 변수를 먼저 줄이는 것이 중요합니다.</p></div></div>
     </div>
   </div>
   <div class="pair">
@@ -488,8 +490,8 @@ footer table.tb{font-size:13.5px}
     <div><span class="tag nn">이 연구에서는</span><p>실·조직·밀도를 수준별로 짝지어 만들면, 모델이 각 요인의 몫을 따로 배울 수 있습니다.</p></div>
   </div>
   <div class="talk"><p class="th">질의응답</p>
-    <div class="say" data-who="moa"><img class="who" data-who="moa" data-mood="report" alt="" aria-hidden="true"><div class="bub"><b class="name">인턴 모아</b><p>원단 하나마다 기록할 항목을 8묶음으로 정리했습니다.</p></div></div>
-    <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="report" alt="" aria-hidden="true"><div class="bub"><b class="name">조수 하루</b><p>핵심 원칙은 모든 원단을 같은 장비·같은 조건으로 측정하는 것입니다. 묶음을 누르시면 항목이 나옵니다.</p></div></div>
+    <div class="say" data-who="moa"><img class="who" data-who="moa" data-mood="report" alt="" aria-hidden="true"><div class="bub"><b class="name">편직이</b><p>원단 하나마다 기록할 항목을 8묶음으로 정리했습니다.</p></div></div>
+    <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="report" alt="" aria-hidden="true"><div class="bub"><b class="name">평직이</b><p>핵심 원칙은 모든 원단을 같은 장비·같은 조건으로 측정하는 것입니다. 묶음을 누르시면 항목이 나옵니다.</p></div></div>
   </div>
   <div class="panel">
     <h4>원단 1개마다 기록할 8묶음 · 묶음을 눌러 보세요</h4>
@@ -514,7 +516,7 @@ footer table.tb{font-size:13.5px}
 <section class="level lv" id="lv4"><div class="wrap">
   <div class="lvhead"><span class="hexno">4</span><h2>보고④ 모델링 — 작은 모델부터 단계적으로 (M1~M4)</h2></div>
   <div class="tags"><span class="tag m">방법: 기준선 → 트리 앙상블 → 신경망</span><span class="tag s">시뮬레이션: 설명용 모형</span></div>
-  <div class="brief"><div class="bh">핵심 보고</div><dl><dt>결론</dt><dd>기준선 → 트리 앙상블 → 신경망 순서로 올리고, 기준선을 이길 때만 복잡한 모델을 쓰겠습니다.</dd><dt>근거</dt><dd>가상 실험에서 원단 27개·변수 19개면 교차검증 R²가 −0.88로, 평균값으로 찍는 것보다 못합니다.</dd><dt class="ask">요청</dt><dd>1차년도 첫 목표를 "구조 + 물성 → 동적 마찰"로 하는 순서를 승인해 주십시오.</dd></dl></div>
+  <div class="brief"><div class="bh">핵심 보고</div><dl><dt>결론</dt><dd>기준선 → 트리 앙상블 → 신경망 순서로 올리고, 기준선을 이길 때만 복잡한 모델을 쓰겠습니다.</dd><dt>근거</dt><dd>가상 실험에서 원단 27개·변수 19개면 교차검증 R²가 −0.88로, 평균값으로 찍는 것보다 못합니다.</dd><dt class="ask">요청</dt><dd>1차년도 목표가 "직물 특성 → 실측 전기 특성 회귀"로 바뀌었습니다(2026-11-17). 이 모델 순서를 그대로 쓰는 안을 승인해 주십시오.</dd></dl></div>
   <div class="twin">
     <div class="why"><h4>왜 작은 모델부터 하나</h4>
       <ol><li><b>문제 상황:</b> 원단 수에 비해 항목이 많으면 모델이 원단을 "외워" 버립니다.</li>
@@ -523,12 +525,12 @@ footer table.tb{font-size:13.5px}
       <div class="easy"><b>쉽게 말하면:</b> 기출문제만 외운 학생은 기출 점수는 높아도 새 문제에서 떨어집니다.</div>
     </div>
     <div class="mathq"><h4>계산 근거 — 질의응답</h4>
-      <div class="say" data-who="moa"><img class="who" data-who="moa" data-mood="think" alt="" aria-hidden="true"><div class="bub"><b class="name">인턴 모아</b><p>R²가 0.7이면 잘 맞는 것인지 질문드립니다.</p></div></div>
+      <div class="say" data-who="moa"><img class="who" data-who="moa" data-mood="think" alt="" aria-hidden="true"><div class="bub"><b class="name">편직이</b><p>R²가 0.7이면 잘 맞는 것인지 질문드립니다.</p></div></div>
       <p class="school">학교 수학으로 보면: 분산(평균에서 떨어진 정도의 제곱 평균)의 비율입니다.</p>
       <div class="eqline">R² = 1 − (예측 오차의 제곱합 ÷ 전체 변동의 제곱합)</div>
       <table><tr><th>조각</th><th>뜻</th></tr><tr><td>전체 변동</td><td>원단끼리 값이 다른 정도</td></tr><tr><td>예측 오차</td><td>모델이 설명하지 못하고 남긴 차이</td></tr><tr><td>R²</td><td>원단 사이 차이 중 모델이 설명한 몫 (1이 완벽)</td></tr></table>
       <div class="try"><b>숫자로 한 번 해 보기:</b> 전체 변동 100, 예측 오차 30이면 R² = 1 − 30 ÷ 100 = 0.70입니다.</div>
-      <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="spark" alt="" aria-hidden="true"><div class="bub"><b class="name">조수 하루</b><p>어떤 데이터로 측정한 R²인지가 중요합니다. 학습에 쓴 원단으로 측정하면 늘 높게 나옵니다.</p></div></div>
+      <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="spark" alt="" aria-hidden="true"><div class="bub"><b class="name">평직이</b><p>어떤 데이터로 측정한 R²인지가 중요합니다. 학습에 쓴 원단으로 측정하면 늘 높게 나옵니다.</p></div></div>
     </div>
   </div>
   <div class="pair">
@@ -536,8 +538,8 @@ footer table.tb{font-size:13.5px}
     <div><span class="tag nn">이 연구에서는</span><p>학습 R²는 높고 <span class="jt" data-k="교차검증">교차검증</span> R²가 낮으면 <span class="jt" data-k="과적합">과적합</span>입니다. 원단 수를 늘리거나 변수를 줄여야 합니다.</p></div>
   </div>
   <div class="talk"><p class="th">질의응답</p>
-    <div class="say" data-who="sia"><img class="who" data-who="sia" data-mood="explain" alt="" aria-hidden="true"><div class="bub"><b class="name">인턴 시아</b><p>지금 원단 27개에 항목 19개를 그대로 넣으면 어떻게 되는지 질문드립니다.</p></div></div>
-    <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="firm" alt="" aria-hidden="true"><div class="bub"><b class="name">조수 하루</b><p>가상 데이터로 실험한 결과를 보고드리겠습니다. "지금 상태" 버튼을 눌러 보십시오.</p></div></div>
+    <div class="say" data-who="sia"><img class="who" data-who="sia" data-mood="explain" alt="" aria-hidden="true"><div class="bub"><b class="name">능직이</b><p>지금 원단 27개에 항목 19개를 그대로 넣으면 어떻게 되는지 질문드립니다.</p></div></div>
+    <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="firm" alt="" aria-hidden="true"><div class="bub"><b class="name">평직이</b><p>가상 데이터로 실험한 결과를 보고드리겠습니다. "지금 상태" 버튼을 눌러 보십시오.</p></div></div>
   </div>
   <div class="panel">
     <h4>과적합 실험실 — 원단 수와 변수 수를 바꿔 보세요 <span class="stampnote">설명용 모형 · 실제 데이터 아님</span></h4>
@@ -576,12 +578,12 @@ footer table.tb{font-size:13.5px}
       <div class="easy"><b>쉽게 말하면:</b> 같은 학생이 쓴 답안 세 장을 나눠, 한 장으로 공부하고 다른 장으로 시험을 보면 점수가 오릅니다.</div>
     </div>
     <div class="mathq"><h4>계산 근거 — 질의응답</h4>
-      <div class="say" data-who="sia"><img class="who" data-who="sia" data-mood="think" alt="" aria-hidden="true"><div class="bub"><b class="name">인턴 시아</b><p>R²와 RMSE가 서로 다른 것을 재는지 질문드립니다.</p></div></div>
+      <div class="say" data-who="sia"><img class="who" data-who="sia" data-mood="think" alt="" aria-hidden="true"><div class="bub"><b class="name">능직이</b><p>R²와 RMSE가 서로 다른 것을 재는지 질문드립니다.</p></div></div>
       <p class="school">학교 수학으로 보면: <b>제곱근</b>으로 이어진 두 눈금입니다.</p>
       <div class="eqline">RMSE ÷ 표준편차 ≈ √(1 − R²)</div>
       <table><tr><th>조각</th><th>뜻</th></tr><tr><td>RMSE</td><td>평균적으로 빗나간 크기 (원래 단위)</td></tr><tr><td>표준편차</td><td>원단끼리 흩어진 크기</td></tr></table>
       <div class="try"><b>숫자로 한 번 해 보기:</b> R² = 0.64이면 √(1 − 0.64) = √0.36 = 0.6. 오차가 원단 사이 흩어짐의 60%라는 뜻입니다.</div>
-      <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="spark" alt="" aria-hidden="true"><div class="bub"><b class="name">조수 하루</b><p>같은 것을 다른 눈금으로 읽는 것입니다. 아래 계기판에서 R²를 움직이시면 RMSE 칸도 함께 움직입니다.</p></div></div>
+      <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="spark" alt="" aria-hidden="true"><div class="bub"><b class="name">평직이</b><p>같은 것을 다른 눈금으로 읽는 것입니다. 아래 계기판에서 R²를 움직이시면 RMSE 칸도 함께 움직입니다.</p></div></div>
     </div>
   </div>
   <div class="pair">
@@ -589,8 +591,8 @@ footer table.tb{font-size:13.5px}
     <div><span class="tag nn">이 연구에서는</span><p>같은 원단의 반복 측정 3번이 학습과 시험에 나뉘면, 모델은 "이웃한 같은 원단"을 찾아 맞힐 뿐입니다.</p></div>
   </div>
   <div class="talk"><p class="th">질의응답</p>
-    <div class="say" data-who="moa"><img class="who" data-who="moa" data-mood="think" alt="" aria-hidden="true"><div class="bub"><b class="name">인턴 모아</b><p>나누는 방식만 바꿔도 점수가 달라지는지 질문드립니다.</p></div></div>
-    <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="firm" alt="" aria-hidden="true"><div class="bub"><b class="name">조수 하루</b><p>같은 모델, 같은 데이터로 비교했습니다. 두 버튼을 차례로 눌러 보십시오.</p></div></div>
+    <div class="say" data-who="moa"><img class="who" data-who="moa" data-mood="think" alt="" aria-hidden="true"><div class="bub"><b class="name">편직이</b><p>나누는 방식만 바꿔도 점수가 달라지는지 질문드립니다.</p></div></div>
+    <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="firm" alt="" aria-hidden="true"><div class="bub"><b class="name">평직이</b><p>같은 모델, 같은 데이터로 비교했습니다. 두 버튼을 차례로 눌러 보십시오.</p></div></div>
   </div>
   <div class="panel">
     <h4>나누는 방식 실험 — 원단 30개 × 반복 측정 3번 <span class="stampnote">설명용 모형 · 실제 데이터 아님</span></h4>
@@ -623,8 +625,8 @@ footer table.tb{font-size:13.5px}
   </div>
   <details><summary>연구계획서의 5년 큰 그림 펼치기</summary>
   <div class="tw"><table class="tb"><tr><th>연차</th><th>목표</th><th>평가 기준(계획서 기재)</th></tr>
-  <tr><td>1차 (2026)</td><td>구조·물성 DB와 동적 마찰 예측 기초 모델</td><td>데이터의 정량성·재현성, 기초 모델 검증</td></tr>
-  <tr><td>2차 (2027)</td><td>마찰전기 센서 성능 예측 (Structure-to-Performance)</td><td>R²·RMSE, 보정 전후 예측 성능 비교</td></tr>
+  <tr><td>1차 (2026)</td><td>직물 특성 → 실측 전기 특성 → 생성 → 예측 (2026-11-17 방향, 원안: 구조·물성 DB와 동적 마찰 예측)</td><td>전기 특성 측정 재현성, 원단 단위 교차검증, 생성 직물 일부 실측 확인</td></tr>
+  <tr><td>2차 (2027)</td><td>이미지 결합과 마찰전기 센서 성능 예측 고도화 (Structure-to-Performance)</td><td>R²·RMSE, 보정 전후 예측 성능 비교</td></tr>
   <tr><td>3차 (2028)</td><td>옷에 넣었을 때의 성능 재예측 (Wearable-aware)</td><td>착용환경 반영 후 예측 정확도 향상</td></tr>
   <tr><td>4차 (2029)</td><td>여러 센서로 인체 동작 인식</td><td>동작 분류 정확도 90% 이상, 최소 센서로 성능 90% 유지</td></tr>
   <tr><td>5차 (2030)</td><td>개인정보 보호형 온디바이스 플랫폼</td><td>모델 80% 이상 경량화에 성능 95% 유지, 세탁 10~20회 후 출력 80% 유지</td></tr></table></div></details>
@@ -633,7 +635,7 @@ footer table.tb{font-size:13.5px}
 <section class="level" id="ask"><div class="wrap">
   <h2>결정이 필요한 질문 10가지</h2>
   <p class="lead">아래 답에 따라 계획의 범위와 일정이 바뀝니다. 답을 들은 항목을 눌러 표시해 두시면 검토 결과 정리에 함께 모입니다.</p>
-  <div class="say" data-who="moa"><img class="who" data-who="moa" data-mood="ok" alt="" aria-hidden="true"><div class="bub"><b class="name">인턴 모아</b><p>답을 들은 질문은 제가 기록해 두겠습니다. <span class="num" id="askN">0 / 10</span></p></div></div>
+  <div class="say" data-who="moa"><img class="who" data-who="moa" data-mood="ok" alt="" aria-hidden="true"><div class="bub"><b class="name">편직이</b><p>답을 들은 질문은 제가 기록해 두겠습니다. <span class="num" id="askN">0 / 10</span></p></div></div>
   <div class="qlist" id="qlist"></div>
 </div></section>
 
@@ -644,7 +646,7 @@ footer table.tb{font-size:13.5px}
   <div class="tw" id="revT"></div>
   <div class="ctrl"><button class="bt primary" id="revCopy">검토 결과 복사</button><span class="small muted" id="revMsg" aria-live="polite"></span></div>
   <pre class="cite" id="revTxt" hidden></pre>
-  <div class="say" data-who="moa"><img class="who" data-who="moa" data-mood="report" alt="" aria-hidden="true"><div class="bub"><b class="name">인턴 모아</b><p id="revSay">아직 표시된 검토 사항이 없습니다.</p></div></div>
+  <div class="say" data-who="moa"><img class="who" data-who="moa" data-mood="report" alt="" aria-hidden="true"><div class="bub"><b class="name">편직이</b><p id="revSay">아직 표시된 검토 사항이 없습니다.</p></div></div>
 </div></section>
 
 <section class="level" id="summary"><div class="wrap">
@@ -653,7 +655,7 @@ footer table.tb{font-size:13.5px}
     <tr><th>보고</th><th>핵심 한 줄</th><th>지금 상태</th><th>다음 행동</th></tr>
     <tr><td>① 데이터 현황</td><td>원단 27개 × 73항목, 공통은 19개</td><td>정답 Y 0개</td><td>정답 측정 계획 확정 (G1)</td></tr>
     <tr><td>② 탐색 분석</td><td>같은 종류끼리 모이고, 두 장비 값은 압축 일만 뚜렷이 맞음</td><td>계산 완료 (실측)</td><td>핵심 후보 변수 10개 안팎 고르기</td></tr>
-    <tr><td>③ 데이터 준비</td><td>8묶음을 같은 장비·조건으로, 원단 50~100개</td><td>실 특성·동적 마찰·마찰전기 없음</td><td>실험계획 확정, 측정 시작 (G2)</td></tr>
+    <tr><td>③ 데이터 준비</td><td>직물 특성 X와 전기 특성 Y를 같은 장비·조건으로, 원단 50~100개</td><td>전기 특성(마찰전기) 실측 없음</td><td>실험계획 확정, 측정 시작 (G2)</td></tr>
     <tr><td>④ 모델링</td><td>기준선 → 트리 앙상블 → 신경망, 이길 때만 채택</td><td>설계 완료</td><td>기초 예측 모델 (G3)</td></tr>
     <tr><td>⑤ 평가 기준</td><td>원단 단위로 나누고 여러 지표를 함께</td><td>합격선 제안</td><td>미팅에서 합격선 확정</td></tr>
   </table></div>
@@ -667,10 +669,10 @@ footer table.tb{font-size:13.5px}
 <section class="level" id="outro"><div class="wrap">
   <h2>맺음 보고</h2>
   <div class="outro">
-    <div class="say" data-who="sia"><img class="who" data-who="sia" data-mood="proud" alt="" aria-hidden="true"><div class="bub"><b class="name">인턴 시아</b><p>보고 순서대로 정리했습니다. 현황, 탐색, 준비, 모델, 평가입니다.</p></div></div>
-    <div class="say" data-who="moa"><img class="who" data-who="moa" data-mood="sparkle" alt="" aria-hidden="true"><div class="bub"><b class="name">인턴 모아</b><p>검토 결과는 위 표에 모아 두었습니다. 복사해서 회의록에 붙이실 수 있습니다.</p></div></div>
-    <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="report" alt="" aria-hidden="true"><div class="bub"><b class="name">조수 하루</b><p>가장 먼저 필요한 것은 마찰전기 정답 데이터의 측정 계획입니다.</p></div></div>
-    <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="proud" alt="" aria-hidden="true"><div class="bub"><b class="name">조수 하루</b><p>말씀해 주신 의견을 반영해 일정과 합격선을 확정한 뒤 다시 보고드리겠습니다.</p></div></div>
+    <div class="say" data-who="sia"><img class="who" data-who="sia" data-mood="proud" alt="" aria-hidden="true"><div class="bub"><b class="name">능직이</b><p>보고 순서대로 정리했습니다. 현황, 탐색, 준비, 모델, 평가입니다.</p></div></div>
+    <div class="say" data-who="moa"><img class="who" data-who="moa" data-mood="sparkle" alt="" aria-hidden="true"><div class="bub"><b class="name">편직이</b><p>검토 결과는 위 표에 모아 두었습니다. 복사해서 회의록에 붙이실 수 있습니다.</p></div></div>
+    <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="report" alt="" aria-hidden="true"><div class="bub"><b class="name">평직이</b><p>가장 먼저 필요한 것은 마찰전기 정답 데이터의 측정 계획입니다.</p></div></div>
+    <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="proud" alt="" aria-hidden="true"><div class="bub"><b class="name">평직이</b><p>말씀해 주신 의견을 반영해 일정과 합격선을 확정한 뒤 다시 보고드리겠습니다.</p></div></div>
   </div>
 </div></section>
 
@@ -690,7 +692,7 @@ footer table.tb{font-size:13.5px}
 <section class="level" id="export"><div class="wrap">
   <h2>온톨로지·서지 꾸러미 — 이 페이지의 지식을 가져가기</h2>
   <div class="kpis k5" id="exK"></div>
-  <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="report" alt="" aria-hidden="true"><div class="bub"><b class="name">조수 하루</b><p id="exSay">출처 없는 주장은 꾸러미에 넣지 않았어요.</p></div></div>
+  <div class="say" data-who="asst"><img class="who" data-who="asst" data-mood="report" alt="" aria-hidden="true"><div class="bub"><b class="name">평직이</b><p id="exSay">출처 없는 주장은 꾸러미에 넣지 않았어요.</p></div></div>
   <h3>이 페이지 인용하기</h3>
   <div class="ctrl"><div class="group" role="group" aria-label="인용 형식"><button class="bt" data-cf="plain" aria-pressed="true">일반 문장</button><button class="bt" data-cf="bib" aria-pressed="false">BibTeX</button><button class="bt" data-cf="ris" aria-pressed="false">RIS</button></div><button class="bt" id="citeCopy">복사</button></div>
   <pre class="cite" id="citeBox"></pre>

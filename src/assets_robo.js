@@ -1,4 +1,4 @@
-/* ---------- 주판봇 수정·보완 요청 ---------- */
+/* ---------- 부직이 수정·보완 요청 ---------- */
 var PG=LAB.page||{file:'',title:''};
 var RK=[['fix','내용 수정','어느 부분을 어떻게 바꿀지 적어 주세요. 예: "27개 → 29개로"'],
  ['add','내용 추가','무엇을 더 넣을지 적어 주세요. 예: "부직포 사례 하나 더"'],
@@ -61,7 +61,7 @@ if($('#roboReq')){
       '<span class="rqb"><button type="button" class="bt sm" data-done="'+r.id+'">'+(r.st==='done'?'되돌리기':'반영 완료')+'</button><button type="button" class="bt sm" data-del="'+r.id+'">삭제</button></span></li>'}).join(''):'<li class="muted">이 쪽에는 아직 요청이 없습니다.</li>';}
   /* 섹션마다 작은 요청 단추 */
   $$('section.level h2').forEach(function(h){if(h.closest('#robo,#reqs'))return;var t=h.textContent.replace(/\s+/g,' ').trim();
-    var b=document.createElement('button');b.type='button';b.className='rqpin';b.title='이 부분 수정·보완 요청';b.setAttribute('aria-label',t+' — 주판봇에게 수정 요청');b.innerHTML='<img alt="" src="'+robo('calc')+'">요청';
+    var b=document.createElement('button');b.type='button';b.className='rqpin';b.title='이 부분 수정·보완 요청';b.setAttribute('aria-label',t+' — 부직이에게 수정 요청');b.innerHTML='<img alt="" src="'+robo('calc')+'">요청';
     b.addEventListener('click',function(){RQ.sec=t;paintRQ();$('#robo').scrollIntoView({behavior:reduce?'auto':'smooth'});setTimeout(function(){var f=$('#rqKind button');if(f)f.focus({preventScroll:true})},400);roboSay('calc','"'+(t.length>30?t.slice(0,29)+'…':t)+'" 부분이군요. 무엇을 할지 골라 주세요.');});
     h.appendChild(b);});
   var fab=$('#roboFab');if(fab){fab.querySelector('img').src=robo('smile');fab.addEventListener('click',function(){$('#robo').scrollIntoView({behavior:reduce?'auto':'smooth'})});}
@@ -75,14 +75,14 @@ if($('#reqT')){
     $('#reqK').innerHTML='<div class="kpi i"><b>'+L.length+'</b><span>전체 요청</span></div><div class="kpi a"><b>'+open.length+'</b><span>남은 요청</span></div><div class="kpi r"><b>'+now.length+'</b><span>다음 보고 전</span></div><div class="kpi g"><b>'+(L.length-open.length)+'</b><span>반영 완료</span></div>';
     var S=RF==='all'?L:RF==='done'?L.filter(function(r){return r.st==='done'}):open;
     S=S.slice().sort(function(a,b){var o={now:0,week:1,later:2};return (o[a.pri]-o[b.pri])||a.id.localeCompare(b.id)});
-    $('#reqT').innerHTML=S.length?'<table class="tb"><tr><th>번호</th><th>쪽 · 위치</th><th>유형</th><th>기한</th><th>내용</th><th>상태</th></tr>'+S.map(function(r){return '<tr><td style="white-space:nowrap">'+r.id+'</td><td><a href="'+r.page+'#robo">'+esc(r.ptitle)+'</a><br><span class="small muted">'+esc(r.sec)+'</span></td><td>'+esc(RKM[r.kind][1])+'</td><td>'+RPM[r.pri]+'</td><td>'+(r.quote?'<span class="small muted">“'+esc(r.quote)+'”</span><br>':'')+esc(r.memo||'—')+'</td><td><button type="button" class="bt sm" data-rdone="'+r.id+'">'+(r.st==='done'?'반영 완료 ✓':'미처리')+'</button></td></tr>'}).join('')+'</table>':'<p class="muted">표시할 요청이 없습니다. 각 쪽 아래 주판봇 칸이나 제목 옆 "요청" 단추로 남기실 수 있습니다.</p>';
+    $('#reqT').innerHTML=S.length?'<table class="tb"><tr><th>번호</th><th>쪽 · 위치</th><th>유형</th><th>기한</th><th>내용</th><th>상태</th></tr>'+S.map(function(r){return '<tr><td style="white-space:nowrap">'+r.id+'</td><td><a href="'+r.page+'#robo">'+esc(r.ptitle)+'</a><br><span class="small muted">'+esc(r.sec)+'</span></td><td>'+esc(RKM[r.kind][1])+'</td><td>'+RPM[r.pri]+'</td><td>'+(r.quote?'<span class="small muted">“'+esc(r.quote)+'”</span><br>':'')+esc(r.memo||'—')+'</td><td><button type="button" class="bt sm" data-rdone="'+r.id+'">'+(r.st==='done'?'반영 완료 ✓':'미처리')+'</button></td></tr>'}).join('')+'</table>':'<p class="muted">표시할 요청이 없습니다. 각 쪽 아래 부직이 칸이나 제목 옆 "요청" 단추로 남기실 수 있습니다.</p>';
     $('#reqSay').textContent=L.length?'남은 요청 '+open.length+'건 중 다음 보고 전까지 '+now.length+'건입니다. 반영하면 상태를 눌러 바꿔 주세요.':'아직 접수된 요청이 없습니다. 제목 옆 "요청" 단추를 누르면 바로 시작됩니다.';
     var f=$('#roboFace2');if(f)f.src=robo(open.length?'chart':'smile');};
   $('#reqs').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;
     if(b.dataset.rf){RF=b.dataset.rf;$$('#reqs [data-rf]').forEach(function(x){x.setAttribute('aria-pressed',x===b)});HOOK.reqSum();}
     if(b.dataset.rdone){var r=rqAll().find(function(r){return r.id===b.dataset.rdone});if(r){r.st=r.st==='done'?'open':'done';rqSave();}}});
   function reqMd(){var L=rqAll(),by={};L.forEach(function(r){(by[r.ptitle]=by[r.ptitle]||[]).push(r)});
-    var o=['# 주판봇 수정·보완 요청서','','- 문서: 직물 구조로 성능을 미리 맞히는 AI — 연구 계획 브리핑','- 작성: '+new Date().toLocaleDateString('sv-SE')+' · 전체 '+L.length+'건, 남은 '+L.filter(function(r){return r.st!=='done'}).length+'건',''];
+    var o=['# 부직이 수정·보완 요청서','','- 문서: 직물 구조로 성능을 미리 맞히는 AI — 연구 계획 브리핑','- 작성: '+new Date().toLocaleDateString('sv-SE')+' · 전체 '+L.length+'건, 남은 '+L.filter(function(r){return r.st!=='done'}).length+'건',''];
     Object.keys(by).forEach(function(k){o.push('## '+k,'');by[k].forEach(function(r){o.push('- ['+(r.st==='done'?'x':' ')+'] **'+r.id+'** ('+RKM[r.kind][1]+' · '+RPM[r.pri]+') — '+r.sec);if(r.quote)o.push('  > '+r.quote.replace(/\n/g,' '));if(r.memo)o.push('  '+r.memo);});o.push('');});return o.join('\n');}
   function reqCsv(){return '﻿'+[['번호','쪽','위치','유형','기한','인용','메모','상태','작성']].concat(rqAll().map(function(r){return [r.id,r.ptitle,r.sec,RKM[r.kind][1],RPM[r.pri],r.quote,r.memo,r.st==='done'?'반영 완료':'미처리',r.ts]})).map(function(row){return row.map(function(c){c=String(c==null?'':c);return /[",\n]/.test(c)?'"'+c.replace(/"/g,'""')+'"':c}).join(',')}).join('\n');}
   $('#reqCopy').addEventListener('click',function(){var t=reqMd(),pre=$('#reqTxt');pre.textContent=t;pre.hidden=false;

@@ -53,7 +53,7 @@ node("lab:claim/pca-68", "Claim", "두 축이 정보의 68%", "two PCs explain 6
 node("lab:claim/ftt-kes-cw", "Claim", "두 장비는 압축 일만 뚜렷이 일치", "FTT and KES agree only on compression work", "산업 원단 14개에서 CW↔WC 순위 상관 0.72(p = 0.003), 나머지 네 쌍은 0.09~0.34.", "#lv2", conf="mid", ev=["F04"], src=[{"cite": "AI 데이터셋 엑셀", "loc": "산업 원단 14개, 스피어만"}])
 node("lab:claim/iso139", "Claim", "표준 상태 20 ± 2 °C, 65 ± 4 %", "ISO 139 standard atmosphere", "섬유 시험의 표준 상태는 온도 20 °C, 상대습도 65 %, 허용 범위 ±2 °C, ±4 %.", "#lv3", ev=["F05"], src=[{"cite": "ISO 139:2005/Amd 1:2011", "loc": "3.1, 3.3"}])
 node("lab:claim/kickoff-sample", "Claim", "목표 원단 50~100개", "target 50–100 fabrics", "킥오프 문서는 최소 50~100 샘플, 변수당 5~10개 규칙을 제시했다.", "#lv3", ev=["F06"], src=[{"cite": "Kick off 2025-12-11", "loc": "2-2-2, 3"}])
-node("lab:claim/grant-plan", "Claim", "5년 과제 연차 목표", "five-year plan", "1차년도 구조·물성 DB와 기초 모델, 2차년도 마찰전기 성능 예측.", "#plan", ev=["F08"], src=[{"cite": "연구계획서 2026", "loc": "2-2) 연구과제의 내용"}])
+node("lab:claim/grant-plan", "Claim", "5년 과제 연차 목표", "five-year plan", "계획서 원안은 1차년도 구조·물성 DB와 기초 모델, 2차년도 마찰전기 성능 예측. 2026-11-17 방향으로 1차년도에 직물 특성 → 실측 전기 특성 → 생성 → 예측을 수행.", "#plan", ev=["F08"], src=[{"cite": "연구계획서 2026", "loc": "2-2) 연구과제의 내용"}])
 node("lab:claim/kes-hand", "Claim", "KES-FB는 태를 기계로 잰다", "KES-FB measures hand objectively", "가와바타 위원회가 기계 측정으로 태를 평가하는 체계를 정리했다.", "#lv2", ev=["F07"], src=[{"cite": "Kawabata 1980"}])
 # 질문
 node("lab:question/core", "Question", "구조만으로 성능을 맞힐 수 있을까", "can structure predict performance", "실을 고르고 조직을 정하는 순간 마찰전기와 촉감을 미리 알 수 있을까?", "#top", status="known", conf="mid")
