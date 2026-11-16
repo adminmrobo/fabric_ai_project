@@ -25,6 +25,24 @@ COVER = T[T.index('<div class="cover" id="top">'):T.index('<header class="hero">
 INTRO = sec('intro')
 
 EXTRA_CSS = r"""
+.sm4{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin:14px 0}
+.sm4 .st4{position:relative;border:1px solid var(--rule);border-radius:12px;padding:10px;background:#fff}
+.sm4 .st4:not(:last-child)::after{content:"→";position:absolute;right:-19px;top:42%;font-size:20px;font-weight:800;color:#1e55c8}
+.sm4 .st4 h5{margin:0 0 6px;font-size:14px}.sm4 .st4 h5 i{font-style:normal;display:inline-block;width:22px;height:22px;line-height:22px;text-align:center;border-radius:50%;background:#1e55c8;color:#fff;font-size:12px;margin-right:4px}
+.sm4 canvas{width:100%;height:auto;display:block;border-radius:8px;background:#f4f6f8}
+.sm4 #smA{cursor:crosshair}.sm4 p{font-size:13.5px;line-height:1.6;margin:8px 0 0;color:var(--muted)}
+.vtxt{font-family:ui-monospace,Menlo,monospace;font-size:12px;background:#f4f6f8;border-radius:6px;padding:6px 8px;margin:6px 0;word-break:break-all;line-height:1.5}
+.nnflow{display:grid;grid-template-columns:1.1fr 1.6fr 1fr 1fr 1.3fr 1fr;gap:16px;align-items:stretch;margin:14px 0}
+.nnflow>div{position:relative;border:1px solid var(--rule);border-radius:12px;padding:10px;background:#fff;font-size:13.5px;line-height:1.55}
+.nnflow>div:not(:last-child)::after{content:"→";position:absolute;right:-15px;top:40%;font-weight:800;color:#1e55c8}
+.nnflow h5{margin:0 0 6px;font-size:13.5px}.nnflow canvas{width:100%;height:auto;display:block;border-radius:6px;border:1px solid var(--rule)}
+.nnflow .fm{display:grid;grid-template-columns:1fr 1fr;gap:6px}.nnflow .fm figure{margin:0;font-size:11.5px;text-align:center;color:var(--muted)}
+.nnflow .concept{background:#fbfcfd;border-style:dashed}
+#smVec{display:grid;grid-template-columns:auto minmax(40px,1fr) auto;gap:5px 8px;align-items:center;font-size:12.5px}#smVec .track{height:10px;min-width:40px;position:relative;background:#eef1f4;border-radius:5px}#smVec .fill{position:absolute;top:0;bottom:0;border-radius:5px}
+.nnflow canvas{max-width:240px;margin:0 auto}
+@media (max-width:980px){.nnflow{grid-template-columns:1fr 1fr}.nnflow>div::after{display:none}}
+@media (max-width:860px){.sm4{grid-template-columns:1fr 1fr}.sm4 .st4::after{display:none}}
+@media (max-width:420px){.nnflow{grid-template-columns:1fr}}
 .labcard{display:grid;grid-template-columns:1fr auto;gap:4px 16px;align-items:center;border:1.5px solid #1e55c8;border-radius:14px;padding:14px 18px;margin:12px 0 16px;background:#f4f7fd}
 .labcard .lk{grid-column:1/-1;font-size:12px;font-weight:700;color:#1e55c8;letter-spacing:.04em}
 .labcard .ln{font-size:17px}.labcard .lp{font-size:15px}.labcard .lf{font-size:13.5px;color:var(--muted);grid-column:1}
@@ -108,7 +126,7 @@ for e in KG['edges']:
 def chip(s): return f'<span class="st {s["st"]}">{s["stl"]}</span>'
 
 def nav(cur):
-    L = [('index.html', '전체 계획'), ('plan_years.html', '연차별 계획'), ('stages.html', '스테이지·FLOW')]
+    L = [('index.html', '전체 계획'), ('index.html#ai-summary', 'SUMMARY'), ('plan_years.html', '연차별 계획'), ('stages.html', '스테이지·FLOW')]
     h = '<nav class="top" aria-label="문서 바로가기"><div class="wrap"><a class="logo" href="index.html">섬유 AI 연구 브리핑</a>'
     for f, t in L: h += f'<a class="l" href="{f}"' + (' aria-current="page"' if f == cur else '') + f'>{t}</a>'
     h += '<span class="sep">|</span>'
@@ -332,11 +350,12 @@ sizes['plan_years.html'] = page('plan_years.html', '연차별 연구계획', yrs
 
 # ---------------- INDEX ----------------
 hero = T[T.index('<header class="hero">'):T.index('<section class="level" id="intro">')]
-hero = hero.replace('2026-11-14 기준', '2026-11-16 기준').replace('한양대 섬유 AI 과제 · 연구 계획 브리핑 01', '한양대 스마트텍스타일연구실 · 연구 계획 브리핑 01').replace('</h1>', '</h1>'+'<div class="labcard" role="note" aria-label="주관 연구실"><span class="lk">주관 연구실</span><b class="ln">한양대학교 생활과학대학 의류학과 · 스마트텍스타일연구실</b><span class="lp">담당 교수 <b>배지현 교수</b></span><span class="lf">연구 분야: 스마트섬유소재 · 섬유기반소자 · 섬유구조설계 · 지속가능성 소재 및 공정</span><a class="bt primary" href="https://fashion.hanyang.ac.kr/-19" target="_blank" rel="noopener">연구실 소개 페이지 열기 ↗</a></div>', 1).replace('보고마다 결론을 먼저 말씀드리고, 끝에 교수님 검토가 필요한 사항을 정리했습니다. 그림은 직접 눌러 확인하실 수 있습니다.',
+hero = hero.replace('2026-11-14 기준', '2026-11-16 기준').replace('한양대 섬유 AI 과제 · 연구 계획 브리핑 01', '한양대 스마트텍스타일연구실 · 연구 계획 브리핑 01').replace('</h1>', '</h1>'+'<div class="labcard" role="note" aria-label="PM 연구실"><span class="lk">PM</span><b class="ln">한양대학교 생활과학대학 의류학과 · 스마트텍스타일연구실</b><span class="lp">담당 교수 <b>배지현 교수</b></span><span class="lf">연구 분야: 스마트섬유소재 · 섬유기반소자 · 섬유구조설계 · 지속가능성 소재 및 공정</span><a class="bt primary" href="https://fashion.hanyang.ac.kr/-19" target="_blank" rel="noopener">연구실 소개 페이지 열기 ↗</a></div>', 1).replace('보고마다 결론을 먼저 말씀드리고, 끝에 교수님 검토가 필요한 사항을 정리했습니다. 그림은 직접 눌러 확인하실 수 있습니다.',
     '이 쪽은 전체 계획의 요약입니다. 연차별 계획, 스테이지 흐름, 스테이지별 상세 쪽으로 이어집니다. 아직 정해지지 않은 것은 <span class="st plan">예정</span>으로 표시했습니다.')
 hero = hero.replace('보고마다 검토 사항을 정리해 두었습니다. 표시해 주시면 마지막에 모아 드리겠습니다.', '스테이지마다 검토 사항이 있습니다. 표시해 주시면 이 쪽 아래에 모아 드리겠습니다.')
 intro = re.sub(r'<h3 style="margin-top:22px">오늘 보고 순서</h3>\s*<ol class="agenda">.*?</ol>', '', INTRO, flags=re.S)
 docmap = ('<h2 id="map" style="margin-top:30px">문서 지도 — 어디부터 보시면 되나</h2><div class="mapc">'
+    '<a class="card" href="#ai-summary"><span>0</span><b>SUMMARY — 사진이 벡터가 되기까지</b><span class="d">처음 오신 분은 여기부터. 원단 사진 → 확대 → 숫자 → 벡터, 딥러닝이 사진을 나누는 방법.</span></a>'
     '<a class="card" href="plan_years.html"><span>1</span><b>연차별 연구계획</b><span class="d">5년 로드맵. 연차마다 목표·내용·평가 착안점. 3~5차년도는 예정.</span></a>'
     '<a class="card" href="stages.html"><span>2</span><b>전체 연구 스테이지 및 FLOW</b><span class="d">흐름도와 일정 막대, 7개 스테이지 카드.</span></a>'
     '<a class="card" href="stage_0_kickoff.html"><span>3</span><b>스테이지별 상세 (S0~S6)</b><span class="d">S0 데이터 현황·결정 질문부터. 스테이지마다 검토 사항.</span></a>'
@@ -367,8 +386,44 @@ REQS = ('<section class="level" id="reqs"><div class="wrap"><h2>주판봇 요청
   '<div class="tw" id="reqT"></div>'
   '<div class="ctrl"><button type="button" class="bt primary" id="reqCopy">요청서 복사</button><button type="button" class="bt" id="reqMd">요청서 .md 내려받기</button><button type="button" class="bt" id="reqCsv">표 .csv 내려받기</button><span class="small muted" id="reqMsg" aria-live="polite"></span></div>'
   '<p class="small muted dlnote" aria-live="polite"></p><pre class="cite" id="reqTxt" hidden></pre></div></section>')
+SUMHTML = ('<section class="level" id="ai-summary"><div class="wrap"><h2>SUMMARY — 원단 사진이 AI 안에서 숫자(벡터)가 되기까지</h2>'
+ '<p class="lead">"AI가 원단을 보고 촉감을 맞힌다"는 말이 처음엔 막연합니다. 원단 사진 한 장이 <b>섬유(직물) → 직물 확대 → 확대 모습 → 벡터</b>로 바뀌는 과정과, 딥러닝 모델이 그 사진을 어떻게 벡터로 나누는지 그림으로 보여 드립니다. 아래 그림은 실습용 원단 사진으로 화면에서 직접 계산합니다.</p>'
+ + say('sia', 'think', 'AI는 원단 사진을 어떻게 알아봅니까? 사람처럼 "거칠다"고 느끼는 겁니까?')
+ + say('asst', 'report', '느끼지 않습니다. 사진을 숫자로 바꾸고, 그 숫자에서 패턴을 계산합니다. 원단을 고르고 사진에서 확대할 곳을 눌러 보십시오.')
+ + '<div class="panel"><h4>1부 · 사진 한 장이 벡터가 되는 4단계 <span class="realnote">실제 사진으로 계산</span></h4>'
+ '<div class="ctrl"><div class="group" role="group" aria-label="원단 고르기" id="smPick"></div></div>'
+ '<div class="ctrl"><div class="group"><span class="glabel">확대 위치</span><button type="button" class="bt sm" data-smv="l" aria-label="왼쪽으로">←</button><button type="button" class="bt sm" data-smv="u" aria-label="위로">↑</button><button type="button" class="bt sm" data-smv="d" aria-label="아래로">↓</button><button type="button" class="bt sm" data-smv="r" aria-label="오른쪽으로">→</button></div>'
+ '<div class="group"><span class="glabel">확대 배율</span><input type="range" id="smZoom" min="10" max="40" step="2" value="20" aria-label="확대 배율"><span class="val" id="smZoomV">5배</span></div></div>'
+ '<div class="sm4">'
+ '<div class="st4"><h5><i>1</i>섬유(직물) 원단</h5><canvas id="smA" width="240" height="240" aria-label="원단 사진. 누르면 확대할 위치를 고릅니다"></canvas><p>원단 전체를 찍은 사진입니다. 노란 네모를 누른 곳으로 옮길 수 있습니다.</p></div>'
+ '<div class="st4"><h5><i>2</i>직물 확대</h5><canvas id="smB" width="240" height="240" aria-label="노란 네모 부분 확대"></canvas><p>노란 네모 안을 크게 본 모습입니다. 실이 지나가는 결과 교차점이 보입니다.</p></div>'
+ '<div class="st4"><h5><i>3</i>확대 모습 = 숫자 격자</h5><canvas id="smC" width="240" height="240" aria-label="8 곱하기 8 밝기 격자"></canvas><p>확대한 곳을 8 × 8칸으로 나누고 칸마다 밝기를 0(검정)~1(흰색) 숫자로 적습니다.</p></div>'
+ '<div class="st4"><h5><i>4</i>벡터로 분해</h5><div class="vtxt" id="smVecTxt"></div><canvas id="smD" width="240" height="120" aria-label="64개 숫자 막대"></canvas><p>격자를 한 줄로 펼치면 숫자 64개짜리 목록, 곧 <b>벡터</b>가 됩니다. 막대 하나가 숫자 하나입니다.</p></div>'
+ '</div>'
+ + say('robo', 'calc', '<span id="smSay">계산 중입니다.</span>')
+ + '</div>'
+ '<div class="panel"><h4>2부 · 딥러닝 모델은 이 사진을 어떻게 벡터로 나누나 <span class="realnote">1층은 실제 계산 · 2~3층은 개념도</span></h4>'
+ '<p class="small">딥러닝 이미지 모델(합성곱 신경망, CNN)은 작은 "돋보기 필터"를 사진 위로 밀며 무늬를 찾습니다. 아래 1층 필터 4개는 학습된 필터를 흉내 낸 예시이고, 위 1부에서 고른 곳에 실제로 적용한 결과입니다.</p>'
+ '<div class="nnflow">'
+ '<div><h5>입력</h5><canvas id="smIn" width="160" height="160" aria-label="입력 밝기 격자 40 곱하기 40"></canvas><p class="small" style="margin:6px 0 0">확대한 곳 40 × 40 = 숫자 1,600개</p></div>'
+ '<div><h5>1층 · 결 찾기 필터</h5><div class="fm">'
+ + ''.join(f'<figure><canvas id="smF{j}" width="120" height="120" aria-label="{n} 필터 반응"></canvas><figcaption>{n}</figcaption></figure>' for j, n in enumerate(['가로결', '세로결', '사선결 ↗', '사선결 ↘']))
+ + '</div><p class="small" style="margin:6px 0 0">색이 진한 곳 = 그 방향의 결이 강한 곳</p></div>'
+ '<div class="concept"><h5>2층 · 결의 조합</h5>가로결 + 세로결이 만나는 곳 → <b>실 교차점</b>, 둥근 반응 → <b>편직 고리</b>, 작은 덩어리 → <b>보풀</b></div>'
+ '<div class="concept"><h5>3층 · 조직 무늬</h5>교차점이 사선으로 늘어서면 <b>능직</b>, 세로 골이 반복되면 <b>리브</b>처럼 원단 전체의 짜임을 알아봅니다.</div>'
+ '<div><h5>요약 → 특징 벡터</h5><div id="smVec"></div><p class="small" style="margin:6px 0 0">필터 반응을 평균 내 숫자 몇 개로 줄입니다. 결 막대 4개는 가장 강한 결을 꽉 차게 그려 방향을 비교합니다. 여기서는 6개, 실제 모델은 수백 개입니다.</p></div>'
+ '<div class="concept"><h5>예측 <span class="st plan">예정</span></h5>특징 벡터 + 구조·물성 값 → <b>태 점수</b>, <b>마찰전기 출력</b>. 정답(Y)을 측정한 뒤 학습합니다(S2·S5).</div>'
+ '</div></div>'
+ '<div class="panel"><h4>3부 · 벡터로 원단끼리 비교하기 <span class="realnote">실제 사진으로 계산</span></h4>'
+ '<p class="small">원단 5장 각각의 사진 전체를 같은 방법으로 6개 숫자(특징 벡터)로 바꿨습니다. 벡터끼리 거리가 짧을수록 AI 눈에는 비슷한 원단입니다.</p><div class="tw" id="smTab"></div></div>'
+ '<div class="talk"><p class="th">질의응답</p>'
+ + say('moa', 'think', '그럼 이 벡터만 있으면 촉감을 맞힐 수 있습니까?')
+ + say('asst', 'report', '아직은 아닙니다. 벡터는 "사진이 어떻게 생겼나"까지만 담습니다. 이 벡터와 실제로 잰 촉감·마찰전기 값을 짝지어 학습해야 예측이 됩니다. 그래서 S2에서 정답 측정이 먼저입니다.')
+ + say('robo', 'meh', '주의할 점 하나. 벡터가 사진의 흐림·밝기만 담으면 AI가 엉뚱한 지름길을 배웁니다. <a href="image_data.html">이미지 데이터 분석</a>에 계산해 두었습니다.')
+ + '</div><p class="small muted">벡터: 숫자를 순서대로 늘어놓은 목록. 합성곱 신경망(CNN): 작은 필터를 사진 위로 밀며 무늬를 찾는 딥러닝 모델. 2·3층 설명은 일반적인 CNN의 동작을 쉽게 풀어 쓴 개념도입니다.</p></div></section>')
 kgs, exs = sec('kg'), sec('export')
-idx = COVER + hero + intro + summary + review + REQS + outro + kgs + exs + tail((None, ('plan_years.html', '연차별 연구계획')))
-sizes['index.html'] = page('index.html', 'INDEX — 전체 연구 계획 정리', idx, kg=True)
+idx = COVER + hero + SUMHTML + intro + summary + review + REQS + outro + kgs + exs + tail((None, ('plan_years.html', '연차별 연구계획')))
+SMI = json.load(open(os.path.join(B, '..', 'analysis', 'summary', 'summary_imgs.json'), encoding='utf-8'))
+sizes['index.html'] = page('index.html', 'INDEX — 전체 연구 계획 정리', idx, kg=True, extra={'sm': SMI})
 exec(open(f'{B}/pages_extra.py', encoding='utf-8').read())
 for k, v in sizes.items(): print(k, round(v / 1024), 'KB')
