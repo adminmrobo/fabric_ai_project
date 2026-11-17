@@ -81,7 +81,7 @@ img_body = wrap(crumb(('index.html', 'INDEX'), (None, '섬유 이미지 데이�
  '<details><summary>계산 방법 펼치기</summary><ul class="small">'
  '<li>모든 사진을 흑백 512×512로 줄인 뒤 계산했습니다.</li><li>명암 대비 = 밝기의 표준편차, 선명도 = 라플라시안(경계 강조) 결과의 분산, 고주파 비율 = 2차원 푸리에 변환에서 반지름 64 바깥 에너지 비율.</li>'
  '<li>사진 지문 = 32×32 이산 코사인 변환 왼쪽 위 8×8의 중앙값 비교(64비트).</li><li>신뢰구간 = 윌슨 방법.</li></ul></details>')
-sizes['image_data.html'] = page('image_data.html', '섬유 이미지 데이터 리뷰·분석', img_body + tail((('references.html', '참고 레퍼런스'), ('data_guide.html', '가상 섬유 데이터 작성 가이드'))), extra={'img': IMF})
+sizes['image_data.html'] = page('image_data.html', '섬유 이미지 데이터 리뷰·분석', img_body + SUMHTML + tail((('references.html', '참고 레퍼런스'), ('data_guide.html', '가상 섬유 데이터 작성 가이드'))), extra={'img': IMF, 'sm': SMI})
 
 # ================= 가상 섬유 데이터 작성 가이드 =================
 COLS = [

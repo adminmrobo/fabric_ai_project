@@ -264,6 +264,19 @@ footer table.tb{font-size:13.5px}
 @media (max-width:520px){.say img.who{width:52px;height:52px}.gauges{grid-template-columns:1fr}.cover .stampc{display:none}input[type=range]{width:130px}}
 @media (max-width:460px){.kpis,.kpis.k5,.panel .kpis{grid-template-columns:repeat(2,1fr)}.wrap{padding:0 14px}}
 
+.s3d{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;align-items:start}
+.s3d .cv{position:relative;border:1px solid var(--rule);border-radius:12px;background:#fff;overflow:hidden}
+.s3d canvas{display:block;width:100%;height:470px;cursor:grab;touch-action:none}
+.s3d canvas:active{cursor:grabbing}
+.s3d .hint{position:absolute;left:10px;bottom:8px;font-size:12px;color:var(--muted);background:rgba(255,255,255,.85);padding:1px 6px;border-radius:4px}
+.s3d .side h5{margin:0 0 6px;font-size:15px}
+.s3d .steps3 button{display:block;width:100%;text-align:left;margin:0 0 6px}
+.s3d .steps3 button b{display:inline-block;width:22px}
+.s3d .exp{font-size:14px;line-height:1.7;background:#f7f9fb;border:1px solid var(--rule);border-radius:10px;padding:10px 12px;min-height:120px}
+.s3d .lg{font-size:12.5px;line-height:1.9;margin-top:8px}
+.s3d .lg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+@media (max-width:900px){.s3d{grid-template-columns:1fr}.s3d canvas{height:380px}}
+
 .sm4{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin:14px 0}
 .sm4 .st4{position:relative;border:1px solid var(--rule);border-radius:12px;padding:10px;background:#fff}
 .sm4 .st4:not(:last-child)::after{content:"→";position:absolute;right:-19px;top:42%;font-size:20px;font-weight:800;color:#1e55c8}
