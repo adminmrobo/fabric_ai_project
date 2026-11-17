@@ -145,7 +145,7 @@ function draw(){var d=window.devicePixelRatio||1;W=cv.clientWidth||700;H=cv.clie
    ctx.strokeStyle='#16212b';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(b.q[0],b.q[1],6,0,7);ctx.stroke()}}}
 var EXP={1:'<b>① 실측 현황.</b> 가로로 원단 27개(Huvis 11 · 연구실 2 · 산업 14), 앞뒤로 측정 묶음 9개가 놓입니다. 막대 높이는 그 묶음의 채움 비율입니다. 산업 원단은 KES 묶음까지 차 있고, Huvis·연구실은 FTT 위주입니다. 평균 채움률 68%. 맨 앞 빨간 칸 줄이 <b>전기 특성 Y</b>로, 27개 모두 비어 있습니다.',
  2:'<b>② 27개 모두에 있는 19항목.</b> 출처마다 장비와 항목이 달라, 27개를 함께 쓸 수 있는 항목은 기본 물성 1 + 표면 6 + 역학 10 + 열 2 = <b>19개</b>입니다(초록). 회색은 일부 원단에만 있는 항목입니다. 지금 생성 모델이 배울 수 있는 직물 특성 X는 이 19개입니다.',
- 3:'<b>③ 직물 특성 공간.</b> 19항목을 주성분 분석(PCA)으로 두 축(PC1 열 전달·압축 일·거칠기, PC2 굽힘 일·압축 회복)에 요약해, 원단 27개를 바닥에 놓았습니다(실측, S1과 같은 값). 같은 종류끼리 모이고 부직포는 넓게 흩어집니다. 이 무리 모양이 생성 모델이 배울 "패턴"의 바닥 절반입니다.',
+ 3:'<b>③ 직물 특성 공간.</b> 19항목을 주성분 분석(PCA)으로 두 축에 요약해(PC1·PC2는 19개 변수를 섞은 종합 점수 — 아래 <a href="#pcexp">PC1·PC2는 무엇인가</a>), 원단 27개를 바닥에 놓았습니다(실측, S1과 같은 값). 같은 종류끼리 모이고 부직포는 넓게 흩어집니다. 이 무리 모양이 생성 모델이 배울 "패턴"의 바닥 절반입니다.',
  4:'<b>④ 전기 특성 Y — 연속변수.</b> 세로축이 전기 특성입니다. Y는 "있다/없다" 같은 범주가 아니라 전압·전류·전하밀도처럼 <b>연속변수</b>입니다. 하지만 아직 <b>0개</b> 측정되어 모든 원단의 높이가 "?"입니다. 그래서 S2의 전기 특성 실측이 첫 관문입니다.',
  5:'<b>⑤ 측정 후 — 패턴 학습과 새 직물 (가상).</b> Y를 쟀다고 가정하고 원단들을 높이에 올렸습니다. 생성 모델이 직물 특성과 Y가 함께 나타나는 패턴(보라 타원체, 종류별 무리)을 배우고, 그 패턴에서 새 직물(연보라)을 만듭니다.',
  6:'<b>⑥ 연속값 예측과 일부 검증 (가상).</b> 새 직물마다 Y를 연속값과 범위(초록 막대, ±2σ)로 냅니다. 무리에서 먼 직물일수록 막대가 깁니다. 기대값 최고 3개와 범위가 가장 넓은 3개를 실제로 만들어 잰다고 가정했습니다(빨강, ✓ 범위 안 / ✗ 밖). 어떤 직물 특성이 Y를 얼마나 바꾸는지는 아래 <a href="#rel3">관계 보기</a>에서 변수 2개씩 골라 봅니다.'};
@@ -311,3 +311,50 @@ cv.addEventListener('pointerup',function(){drag=null});window.addEventListener('
 
 HTML = HTML_T.replace('@@DATA@@', _data()).replace('@@SAY2@@\n<p class="small muted">①②', '@@SAY2@@\n@@REL@@\n<p class="small muted">①②').replace('@@REL@@', rel_html())
 CSS = CSS + REL_CSS
+
+# ---- PC1·PC2 구성 설명: 19개 변수의 가중합 ----
+def pc_html():
+    # (표시명, 묶음, PC1 강조, PC2 강조) — 강조는 S1 분석 기록(PC1: 열 전달·압축 일·거칠기 / PC2: 굽힘 일·압축 회복)에 따른 정성 표시
+    rows = [('평량', '기본', 0, 0),
+            ('마찰계수 앞', '표면', 0, 0), ('마찰계수 뒤', '표면', 0, 0), ('거칠기 진폭 앞', '표면', 1, 0), ('거칠기 진폭 뒤', '표면', 1, 0), ('거칠기 파장 앞', '표면', 0, 0), ('거칠기 파장 뒤', '표면', 0, 0),
+            ('굽힘 강성 앞', '역학', 0, 0), ('굽힘 강성 뒤', '역학', 0, 0), ('굽힘 일 앞 L', '역학', 0, 1), ('굽힘 일 앞 C', '역학', 0, 1), ('굽힘 일 뒤 L', '역학', 0, 1), ('굽힘 일 뒤 C', '역학', 0, 1),
+            ('압축 일 앞', '역학', 1, 0), ('압축 일 뒤', '역학', 1, 0), ('압축 회복률 앞', '역학', 0, 1), ('압축 회복률 뒤', '역학', 0, 1),
+            ('접촉 냉온감 Qmax 앞', '열', 1, 0), ('접촉 냉온감 Qmax 뒤', '열', 1, 0)]
+    BC = {'기본': '#5b6874', '표면': '#2f5d9e', '역학': '#13733a', '열': '#c9302c'}
+    W, rh, top = 760, 22, 30
+    H = top + rh * len(rows) + 20
+    p1 = (600, top + rh * 5); p2 = (600, top + rh * 13)
+    s = [f'<svg viewBox="0 0 {W} {H}" role="img" aria-label="19개 변수가 PC1과 PC2로 섞여 들어가는 그림" style="width:100%;height:auto">',
+         '<g font-family="sans-serif" font-size="12.5">',
+         f'<text x="10" y="18" font-weight="700" fill="#16212b">27개 원단 모두에 있는 19개 변수</text><text x="600" y="18" font-weight="700" fill="#16212b" text-anchor="middle">종합 점수 2개</text>']
+    for i, (nm, g, a, b) in enumerate(rows):
+        y = top + rh * i + 14
+        s.append(f'<rect x="10" y="{y-12}" width="200" height="18" rx="4" fill="{BC[g]}" opacity=".10"/><text x="18" y="{y+1}" fill="{BC[g]}">{g}</text><text x="58" y="{y+1}" fill="#16212b">{nm}</text>')
+        for (tx, ty), on, cls, col in [(p1, a, 'pc1', '#a35c00'), (p2, b, 'pc2', '#6f5aa8')]:
+            w = 3.2 if on else 0.8
+            op = .9 if on else .28
+            s.append(f'<path class="pcl {cls}" d="M212,{y-3} C400,{y-3} 420,{ty} {tx-62},{ty}" stroke="{col if on else "#9aa5b1"}" stroke-width="{w}" fill="none" opacity="{op}"/>')
+    for (x, y), nm, pct, col, desc in [(p1, 'PC1', '39%', '#a35c00', '열 전달 · 압축 일 · 거칠기'), (p2, 'PC2', '29%', '#6f5aa8', '굽힘 일 · 압축 회복')]:
+        s.append(f'<rect x="{x-62}" y="{y-34}" width="150" height="68" rx="12" fill="#fff" stroke="{col}" stroke-width="2.5"/><text x="{x+13}" y="{y-10}" text-anchor="middle" font-size="17" font-weight="800" fill="{col}">{nm} · 정보 {pct}</text><text x="{x+13}" y="{y+10}" text-anchor="middle" font-size="11.5" fill="#16212b">크게 실린 변수:</text><text x="{x+13}" y="{y+25}" text-anchor="middle" font-size="11.5" fill="#16212b">{desc}</text>')
+    s.append('</g></svg>')
+    svg = ''.join(s)
+    return r"""
+<h3 id="pcexp" style="margin-top:34px">PC1·PC2는 무엇인가 — 19개 변수를 섞어 만든 종합 점수 <span class="realnote">실측 분석(S1) 기반 · 굵기는 정성 표시</span></h3>
+<p>3D 그림의 바닥 두 축 PC1·PC2는 새로 잰 값이 아닙니다. <b>19개 변수에 가중치를 곱해 더한 종합 점수</b>입니다. 경기종합지수가 여러 경제지표를 가중합해 경기를 숫자 하나로 보여 주는 것과 같은 방식입니다.</p>
+<div class="eqline">PC1 = w₁×평량 + w₂×마찰계수(앞) + w₃×마찰계수(뒤) + … + w₁₉×접촉 냉온감(뒤)</div>
+<div class="eqline">PC2 = v₁×평량 + v₂×마찰계수(앞) + … + v₁₉×접촉 냉온감(뒤) &nbsp;<span class="small muted">(가중치가 다른 두 번째 조합)</span></div>
+<div class="ctrl" style="margin:10px 0 4px"><div class="group" role="group" aria-label="보기"><button type="button" class="bt sm" data-pcv="both" aria-pressed="true">둘 다</button><button type="button" class="bt sm" data-pcv="pc1" aria-pressed="false">PC1만</button><button type="button" class="bt sm" data-pcv="pc2" aria-pressed="false">PC2만</button></div></div>
+<div class="panel" id="pcSvg">""" + svg + r"""</div>
+<div class="pair">
+ <div><span class="tag fly">어떻게 정하나</span><p>① 19개 변수를 로그 변환하고 표준화(평균 0, 표준편차 1)해 단위를 맞춥니다. ② 원단 27개가 가장 넓게 퍼지는 방향을 찾아 그 방향의 가중치 조합을 PC1로 삼습니다. ③ PC1과 겹치지 않으면서 다음으로 넓게 퍼지는 방향이 PC2입니다.</p></div>
+ <div><span class="tag nn">읽는 법</span><p>PC1이 큰 원단은 열 전달·압축 일·표면 거칠기 쪽 값이 함께 큰 원단이고, PC2가 큰 원단은 굽힘 일·압축 회복 쪽 값이 큰 원단입니다. 두 축이 19개 변수 정보의 68%를 담고, 나머지 32%는 PC3 이하에 남습니다.</p></div>
+</div>
+<p class="small muted">굵은 선은 S1 분석에서 "크게 실린" 변수로 기록된 묶음을 표시한 것이고, 선 굵기는 정확한 가중치 크기가 아닙니다. 엑셀 원본을 넣으면 19개 가중치 값을 그대로 막대로 보여 드릴 수 있습니다. 생성 모델과 관계 보기의 실제 계산은 PC 두 개가 아니라 19개 변수 전체로 합니다.</p>
+<script>
+(function(){var box=document.getElementById('pcSvg');if(!box)return;
+document.querySelectorAll('[data-pcv]').forEach(function(b){b.addEventListener('click',function(){var v=b.dataset.pcv;document.querySelectorAll('[data-pcv]').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});
+ box.querySelectorAll('.pcl').forEach(function(l){l.style.display=(v==='both'||l.classList.contains(v))?'':'none'})})})})();
+</script>
+"""
+
+HTML = HTML.replace('@@SAY2@@\n', '@@SAY2@@\n' + pc_html(), 1)
