@@ -262,7 +262,7 @@ REFG = [
   ('Minazio, P. G. (1995). FAST – Fabric Assurance by Simple Testing. <i>International Journal of Clothing Science and Technology</i>, 7(2/3), 43–48.', 'https://doi.org/10.1108/09556229510087146', '계획서가 KES-FB와 함께 쓰는 FAST 장비 소개.', ['s2']),
   ('ISO 139:2005/Amd 1:2011. Textiles — Standard atmospheres for conditioning and testing.', 'https://standards.iteh.ai/catalog/standards/iso/f70fad6d-df27-498d-9fee-e548484a50e4/iso-139-2005-amd-1-2011', '측정 환경 20 ± 2 °C, 65 ± 4 % RH 기준.', ['s2'])]),
  ('마찰전기와 직물 센서', [
-  ('Fan, F.-R., Tian, Z.-Q., & Wang, Z. L. (2012). Flexible triboelectric generator. <i>Nano Energy</i>, 1(2), 328–334.', 'https://doi.org/10.1016/j.nanoen.2012.01.004', '마찰전기 발전기(TENG)의 출발점. 정답 Y의 물리 배경.', ['s5']),
+  ('Fan, F.-R., Tian, Z.-Q., & Wang, Z. L. (2012). Flexible triboelectric generator. <i>Nano Energy</i>, 1(2), 328–334.', 'https://doi.org/10.1016/j.nanoen.2012.01.004', '마찰전기 발전기(TENG)의 출발점. 전기 특성 Y의 물리 배경.', ['s5']),
   ('Zou, H., Zhang, Y., Guo, L., et al. (2019). Quantifying the triboelectric series. <i>Nature Communications</i>, 10, 1427.', 'https://doi.org/10.1038/s41467-019-09461-x', '마찰전기 전하 밀도를 정해진 조건에서 재는 표준 방법. 측정 조건 정하기(S5-2).', ['s5']),
   ('Xiong, J., & Lee, P. S. (2019). Progress on wearable triboelectric nanogenerators in shapes of fiber, yarn, and textile. <i>Science and Technology of Advanced Materials</i>.', 'https://doi.org/10.1080/14686996.2019.1650396', '섬유·실·직물 형태 TENG 개관. 후보 구조 설계.', ['s5', 's6'])]),
  ('시뮬레이션과 Sim-to-Real', [

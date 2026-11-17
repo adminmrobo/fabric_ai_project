@@ -20,7 +20,7 @@ node("lab:concept/triboelectricity", "Concept", "마찰전기", "triboelectricit
 node("lab:concept/teng", "Concept", "TENG (마찰전기 나노발전기)", "triboelectric nanogenerator", "마찰전기를 모아 전기 신호로 쓰는 소자. 누르거나 문지르면 신호가 나와 배터리 없이 움직임을 감지한다.", "#why", 2, "systems")
 node("lab:concept/structure-variables", "Concept", "구조 변수 (B·C)", "structure variables", "실 특성(B)과 제작 조건(C). 원인 쪽 변수.", "#lv3", 2, "basics")
 node("lab:concept/fabric-properties", "Concept", "직물 물성 (A)", "fabric properties", "인장·굽힘·압축·표면·열 물성. 구조와 성능 사이의 중간 단계.", "#lv1", 2, "basics")
-node("lab:concept/performance-target", "Concept", "성능 정답 (Y)", "performance target", "모델이 맞혀야 할 값. 마찰전기 출력(전압·전류·전하밀도) 또는 태 점수.", "#lv1", 2, "evaluation")
+node("lab:concept/performance-target", "Concept", "전기 특성 (Y)", "performance target", "모델이 맞혀야 할 값. 마찰전기 출력(전압·전류·전하밀도) 또는 태 점수.", "#lv1", 2, "evaluation")
 node("lab:term/mediator", "Term", "매개변수", "mediator", "원인이 결과에 닿기 전에 거치는 중간 변수. 이 연구에서는 직물 물성.", "#lv4", 3, "evaluation")
 node("lab:method/kes-fb", "Method", "KES-FB (가와바타 평가 시스템)", "Kawabata Evaluation System for Fabrics", "인장·전단·굽힘·압축·표면 시험으로 직물의 태를 숫자로 재는 장비 체계.", "#lv2", 2, "evaluation", ev=["F07"], src=[{"cite": "Kawabata 1980"}])
 node("lab:method/ftt", "Method", "FTT (촉감 측정기)", "Fabric Touch Tester", "한 번의 측정으로 굽힘·압축·표면·열을 재는 장비. 엑셀 열 이름으로 추정했다.", "#lv2", 2, "evaluation", conf="mid")
@@ -36,7 +36,7 @@ node("lab:method/sim-to-real", "Method", "Sim-to-Real", "sim-to-real", "시뮬�
 node("lab:method/shap", "Method", "SHAP", "SHAP", "예측값 하나를 변수별 기여도로 나눠 보여 주는 해석 방법.", "#lv4", 3, "evaluation")
 node("lab:method/group-cv", "Method", "원단 단위 교차검증", "grouped cross-validation", "같은 원단의 반복 측정을 한 묶음에 넣어 나누는 교차검증.", "#lv5", 3, "evaluation")
 # 한계·문제
-node("lab:limitation/no-target", "Limitation", "정답 데이터가 없음", "no target values", "마찰전기 출력·태 점수가 없어 예측 모델을 만들 수 없다.", "#lv1", 1)
+node("lab:limitation/no-target", "Limitation", "전기 특성 실측이 없음", "no target values", "마찰전기 출력·태 점수가 없어 예측 모델을 만들 수 없다.", "#lv1", 1)
 node("lab:limitation/source-confound", "Limitation", "출처와 직물 종류가 겹침", "source-type confounding", "Huvis 원단이 대부분 부직포라 차이가 장비 때문인지 원단 때문인지 가를 수 없다.", "#lv2", 2)
 node("lab:limitation/small-sample", "Limitation", "원단 수가 적음", "small sample", "원단을 다 모아도 100개 안팎이라 항목이 많으면 외우기 쉽다.", "#lv3", 2)
 node("lab:problem/overfitting", "Problem", "과적합", "overfitting", "학습 데이터를 외워 학습 점수는 높지만 새 데이터에서는 틀리는 상태.", "#lv4", 2, "evaluation")
@@ -53,11 +53,11 @@ node("lab:claim/pca-68", "Claim", "두 축이 정보의 68%", "two PCs explain 6
 node("lab:claim/ftt-kes-cw", "Claim", "두 장비는 압축 일만 뚜렷이 일치", "FTT and KES agree only on compression work", "산업 원단 14개에서 CW↔WC 순위 상관 0.72(p = 0.003), 나머지 네 쌍은 0.09~0.34.", "#lv2", conf="mid", ev=["F04"], src=[{"cite": "AI 데이터셋 엑셀", "loc": "산업 원단 14개, 스피어만"}])
 node("lab:claim/iso139", "Claim", "표준 상태 20 ± 2 °C, 65 ± 4 %", "ISO 139 standard atmosphere", "섬유 시험의 표준 상태는 온도 20 °C, 상대습도 65 %, 허용 범위 ±2 °C, ±4 %.", "#lv3", ev=["F05"], src=[{"cite": "ISO 139:2005/Amd 1:2011", "loc": "3.1, 3.3"}])
 node("lab:claim/kickoff-sample", "Claim", "목표 원단 50~100개", "target 50–100 fabrics", "킥오프 문서는 최소 50~100 샘플, 변수당 5~10개 규칙을 제시했다.", "#lv3", ev=["F06"], src=[{"cite": "Kick off 2025-12-11", "loc": "2-2-2, 3"}])
-node("lab:claim/grant-plan", "Claim", "5년 과제 연차 목표", "five-year plan", "계획서 원안은 1차년도 구조·물성 DB와 기초 모델, 2차년도 마찰전기 성능 예측. 2026-11-17 방향으로 1차년도에 직물 특성 → 실측 전기 특성 → 생성 → 예측을 수행.", "#plan", ev=["F08"], src=[{"cite": "연구계획서 2026", "loc": "2-2) 연구과제의 내용"}])
+node("lab:claim/grant-plan", "Claim", "5년 과제 연차 목표", "five-year plan", "계획서 원안은 1차년도 구조·물성 DB와 기초 모델, 2차년도 마찰전기 성능 예측. 2026-11-17 방향으로 1차년도에 실측 직물 패턴(결합분포)을 학습한 생성 모델로 새 직물을 만들고 전기적 특성을 연속값으로 예측.", "#plan", ev=["F08"], src=[{"cite": "연구계획서 2026", "loc": "2-2) 연구과제의 내용"}])
 node("lab:claim/kes-hand", "Claim", "KES-FB는 태를 기계로 잰다", "KES-FB measures hand objectively", "가와바타 위원회가 기계 측정으로 태를 평가하는 체계를 정리했다.", "#lv2", ev=["F07"], src=[{"cite": "Kawabata 1980"}])
 # 질문
 node("lab:question/core", "Question", "구조만으로 성능을 맞힐 수 있을까", "can structure predict performance", "실을 고르고 조직을 정하는 순간 마찰전기와 촉감을 미리 알 수 있을까?", "#top", status="known", conf="mid")
-node("lab:question/target-plan", "Question", "정답 측정 계획", "target measurement plan", "마찰전기를 어떤 장치·모드·상대 물질로 언제부터 측정하나?", "#ask", conf="mid")
+node("lab:question/target-plan", "Question", "전기 특성 측정 계획", "target measurement plan", "마찰전기를 어떤 장치·모드·상대 물질로 언제부터 측정하나?", "#ask", conf="mid")
 node("lab:question/column-suffix", "Question", "열 이름 _1·_2·_3의 뜻", "column suffix meaning", "_1이 FTT, _2가 KES-FB, _3이 일반 시험인지 확인 필요.", "#ask", conf="low")
 node("lab:question/instrument", "Question", "어느 장비로 통일할까", "which instrument", "새 원단을 FTT와 KES-FB 중 어느 장비로 통일해 측정할까?", "#ask", conf="mid")
 # 비유
