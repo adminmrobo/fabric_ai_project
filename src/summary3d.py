@@ -26,14 +26,14 @@ def _data():
 HTML_T = r"""
 <section class="level" id="ai-summary"><div class="wrap">
 <h2>SUMMARY — 실측 직물 데이터로 보는 1차년도 방법: 패턴을 배운 생성 모델로 새 직물을 만들고, 전기 특성(연속변수)을 예측하기</h2>
-<p class="lead">받은 엑셀의 원단 27개를 3D로 그대로 세웠습니다. ①~④는 <b>실측 · 엑셀 직접 집계</b>이고, ⑤⑥은 전기 특성을 잰 뒤에 할 일을 같은 원단 위에 <b>가상 값</b>으로 미리 그려 본 것입니다. 그림을 끌면 돌아가고, 막대나 점에 마우스를 올리면 값이 나옵니다.</p>
+<p class="lead">처음 화면은 마지막 단계 ⑥(가상 예측값)입니다. 받은 엑셀의 원단 27개를 3D로 그대로 세웠습니다. ①~④는 <b>실측 · 엑셀 직접 집계</b>이고, ⑤⑥은 전기 특성을 잰 뒤에 할 일을 같은 원단 위에 <b>가상 값</b>으로 미리 그려 본 것입니다. 그림을 끌면 돌아가고, 막대나 점에 마우스를 올리면 값이 나옵니다.</p>
 @@SAY1@@
 <div class="s3d">
  <div class="cv"><canvas id="s3dCv" aria-label="3D 그림: 원단 27개와 측정 묶음 9개의 채움 막대, 공통 19항목, 직물 특성 공간, 전기 특성 연속변수 축, 측정 후 계획"></canvas><span class="hint">끌어서 회전 · 휠로 확대 · 올리면 값 표시</span></div>
  <div class="side">
   <h5>단계</h5>
   <div class="steps3" role="group" aria-label="단계">
-   <button type="button" class="bt" data-s3="1" aria-pressed="true"><b>①</b>실측 현황 — 원단 27 × 묶음 9</button>
+   <button type="button" class="bt" data-s3="1" aria-pressed="false"><b>①</b>실측 현황 — 원단 27 × 묶음 9</button>
    <button type="button" class="bt" data-s3="2" aria-pressed="false"><b>②</b>27개 모두에 있는 19항목</button>
    <button type="button" class="bt" data-s3="3" aria-pressed="false"><b>③</b>직물 특성 공간 (19항목 PCA)</button>
    <button type="button" class="bt" data-s3="4" aria-pressed="false"><b>④</b>전기 특성 Y — 연속변수, 0개</button>
@@ -46,6 +46,18 @@ HTML_T = r"""
  </div>
 </div>
 @@SAY2@@
+<h3 id="inv3" style="margin-top:34px">역방향 보기 — 원하는 전기 특성 Y에서 직물을 예상하기 <span class="stampnote">측정 전 · 가상 값</span></h3>
+<p>위 ⑥은 "이 직물이면 Y가 얼마인가"를 봤습니다. 생성 모델은 직물 특성과 Y의 패턴을 함께 배우므로 <b>방향을 뒤집을 수도 있습니다</b>. 원하는 Y 값을 정하면, 그 Y와 함께 나타나는 직물 특성의 분포 p(직물 특성 | Y)에서 후보 직물을 뽑고, 가장 닮은 실측 원단을 찾아 줍니다. 센서용으로 출력이 높은 직물을 설계할 때 쓰는 방향입니다.</p>
+<div class="s3d">
+ <div class="cv"><canvas id="invCv" aria-label="3D 그림: 목표 전기 특성 높이의 평면, 그 높이에서 예상되는 직물 후보와 바닥의 분포"></canvas><span class="hint">끌어서 회전 · 올리면 값 표시</span></div>
+ <div class="side">
+  <h5>목표 전기 특성 Y</h5>
+  <div class="ctrl" style="margin:0 0 8px"><div class="group"><span class="glabel">Y*</span><input type="range" id="invY" min="0" max="100" step="1" value="80" aria-label="목표 전기 특성"><span class="val" id="invYv"></span></div></div>
+  <div class="ctrl" style="margin:0 0 8px"><button type="button" class="bt sm" data-inv="hi">출력 높게</button> <button type="button" class="bt sm" data-inv="mid">중간</button> <button type="button" class="bt sm" data-inv="lo">출력 낮게</button></div>
+  <div class="exp" id="invExp" aria-live="polite"></div>
+  <div class="lg"><span><i style="background:rgba(214,160,40,.5);border-radius:2px"></i>목표 Y 높이의 평면</span><br><span><i style="background:#d6a028"></i>예상 직물 후보 (p(X | Y*)에서 뽑음)</span><br><span><i style="background:rgba(214,160,40,.25);border-radius:2px"></i>바닥: 후보가 나올 곳 (2σ)</span><br><span><i style="background:#8e78c9"></i>부직포</span> <span><i style="background:#2f5d9e"></i>제직물</span> <span><i style="background:#d8685a"></i>편직물</span> (실측 원단)</div>
+ </div>
+</div>
 <p class="small muted">①②는 <a href="stage_0_kickoff.html#lv1">S0 채움 지도</a>, ③은 <a href="stage_1_explore.html">S1 PCA</a>와 같은 실측 값입니다. ④의 전기 특성 Y는 전압·전류·전하밀도 같은 연속변수이며, 아직 한 개도 측정되지 않았습니다. ⑤⑥의 높이·타원체·새 직물·검증 결과는 측정 전이라 가상 값입니다. 사진을 벡터로 바꾸는 이전 SUMMARY는 2차년도 이미지 쪽(<a href="image_data.html#img-summary">이미지 데이터 분석</a>)으로 옮겼습니다.</p>
 </div></section>
 <script>
@@ -152,7 +164,49 @@ cv.addEventListener('pointerleave',function(){hov=null;draw()});cv.addEventListe
 cv.addEventListener('wheel',function(e){e.preventDefault();zoom=Math.max(0.6,Math.min(2,zoom*(e.deltaY<0?1.08:0.93)));draw()},{passive:false});
 if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){auto=false;rb.setAttribute('aria-pressed','false')}
 var last=0;function tick(t){if(auto&&!hov&&t-last>33){yaw=base+0.4*Math.sin(t/2600);draw();last=t}requestAnimationFrame(tick)}requestAnimationFrame(tick);
-window.addEventListener('resize',draw);setStep(1);
+window.addEventListener('resize',draw);setStep(6);
+
+/* ---- 역방향: p(X | Y*) ---- */
+(function(){var ic=document.getElementById('invCv');if(!ic)return;
+ var ys=S.map(function(s){return s.y}),ylo=Math.min.apply(0,ys),yhi=Math.max.apply(0,ys),yv=ylo+(yhi-ylo)*0.8,iy=0.7,ip=0.45,ictx,IW,IH,ih=null,IHOT=[],idrag=null;
+ function ipr(x,y,z){var cy=Math.cos(iy),sy=Math.sin(iy),cp=Math.cos(ip),sp=Math.sin(ip),X=x*cy-z*sy,Z=x*sy+z*cy,Y=y*cp-Z*sp,Dp=y*sp+Z*cp,f=4.8/(4.8+Dp),sc=Math.min(IW*.75,IH)*0.27;return [IW/2+X*sc*f,IH*0.64-Y*sc*f,Dp]}
+ function iln(a,b,c,w,d){var p=ipr(a[0],a[1],a[2]),q=ipr(b[0],b[1],b[2]);ictx.strokeStyle=c;ictx.lineWidth=w||1;ictx.setLineDash(d||[]);ictx.beginPath();ictx.moveTo(p[0],p[1]);ictx.lineTo(q[0],q[1]);ictx.stroke();ictx.setLineDash([])}
+ function itx(t,a,c,al){var p=ipr(a[0],a[1],a[2]);ictx.fillStyle=c||'#16212b';ictx.textAlign=al||'left';ictx.fillText(t,p[0],p[1]);ictx.textAlign='left'}
+ function condX(y){/* 성분별 p(x,z | y) */var C=G.map(function(g){var syy=g.S[2][2],sx=[g.S[0][2],g.S[1][2]],d=y-g.m[2];
+   var w=g.w*Math.exp(-d*d/(2*syy))/Math.sqrt(syy),m=[g.m[0]+sx[0]/syy*d,g.m[1]+sx[1]/syy*d],
+   c=[[g.S[0][0]-sx[0]*sx[0]/syy,g.S[0][1]-sx[0]*sx[1]/syy],[g.S[1][0]-sx[1]*sx[0]/syy,g.S[1][1]-sx[1]*sx[1]/syy]];return {w:w,m:m,c:c,t:g.t}});
+   var W=C.reduce(function(a,b){return a+b.w},0)||1e-12;C.forEach(function(c){c.w/=W});return C}
+ function cands(C){var r=rng(77),g=gnF(r),out=[];for(var i=0;i<40;i++){var t=r(),k=0,acc=0;for(var j=0;j<C.length;j++){acc+=C[j].w;if(t<=acc){k=j;break}}var c=C[k],a=c.c[0][0],b=c.c[0][1],d=c.c[1][1],l11=Math.sqrt(Math.max(a,1e-6)),l21=b/l11,l22=Math.sqrt(Math.max(d-l21*l21,1e-6)),e1=g(),e2=g();
+   out.push({x:c.m[0]+l11*e1,z:c.m[1]+l21*e1+l22*e2,t:c.t})}return out}
+ function idraw(){var d=window.devicePixelRatio||1;IW=ic.clientWidth||700;IH=ic.clientHeight||470;if(ic.width!==Math.round(IW*d)){ic.width=Math.round(IW*d);ic.height=Math.round(IH*d)}
+  ictx=ic.getContext('2d');ictx.setTransform(d,0,0,d,0,0);ictx.clearRect(0,0,IW,IH);ictx.font='12px sans-serif';IHOT=[];
+  for(var i=-4;i<=4;i++){var t=i/4;iln([t*1.1,F,-1.1],[t*1.1,F,1.1],'#eef1f4');iln([-1.1,F,t*1.1],[1.1,F,t*1.1],'#eef1f4')}
+  iln([-1.1,F,-1.1],[1.25,F,-1.1],'#16212b',1.5);iln([-1.1,F,-1.1],[-1.1,F,1.25],'#16212b',1.5);iln([-1.1,F,-1.1],[-1.1,1.05,-1.1],'#c9302c',1.5);
+  itx('PC1 →',[1.3,F,-1.15]);itx('PC2 →',[-1.0,F,1.35],'#16212b','center');itx('전기 특성 Y ↑ (가상)',[-1.1,1.12,-1.1],'#c9302c');
+  var C=condX(yv),cd=cands(C),Yp=Y3(yv);
+  C.forEach(function(c){if(c.w<0.03)return;var a=c.c[0][0],b=c.c[0][1],dd=c.c[1][1],l11=Math.sqrt(Math.max(a,1e-6)),l21=b/l11,l22=Math.sqrt(Math.max(dd-l21*l21,1e-6)),P=[],Q=[];
+   for(var k=0;k<=36;k++){var t=k/36*6.2832,e1=2*Math.cos(t),e2=2*Math.sin(t),x=c.m[0]+l11*e1,z=c.m[1]+l21*e1+l22*e2;P.push(ipr(x,F,z));Q.push(ipr(x,Yp,z))}
+   [[P,'rgba(214,160,40,'+(0.12+0.3*c.w).toFixed(2)+')'],[Q,'rgba(214,160,40,'+(0.1+0.25*c.w).toFixed(2)+')']].forEach(function(o){ictx.beginPath();o[0].forEach(function(q,k){k?ictx.lineTo(q[0],q[1]):ictx.moveTo(q[0],q[1])});ictx.closePath();ictx.fillStyle=o[1];ictx.fill();ictx.strokeStyle='rgba(176,120,0,.6)';ictx.lineWidth=1;ictx.stroke()})});
+  var pl=[[-1.1,Yp,-1.1],[1.1,Yp,-1.1],[1.1,Yp,1.1],[-1.1,Yp,1.1]].map(function(p){return ipr(p[0],p[1],p[2])});ictx.beginPath();pl.forEach(function(q,k){k?ictx.lineTo(q[0],q[1]):ictx.moveTo(q[0],q[1])});ictx.closePath();ictx.fillStyle='rgba(214,160,40,.10)';ictx.fill();ictx.strokeStyle='rgba(176,120,0,.7)';ictx.stroke();
+  itx('Y* = '+yv.toFixed(2),[1.15,Yp,1.1],'#a35c00');
+  var it=[];S.forEach(function(s){it.push({k:'r',s:s,q:ipr(s.x,Y3(s.y),s.z)})});cd.forEach(function(c){it.push({k:'c',c:c,q:ipr(c.x,Yp,c.z)})});it.sort(function(a,b){return b.q[2]-a.q[2]});
+  it.forEach(function(o){var q=o.q;if(o.k==='r'){ictx.fillStyle=TC[o.s.type][1];ictx.globalAlpha=.55;ictx.beginPath();ictx.arc(q[0],q[1],4.2,0,7);ictx.fill();ictx.globalAlpha=1;IHOT.push({q:q,t:o.s.id+' ('+TC[o.s.type][0]+') · Y(가상) '+o.s.y.toFixed(2)})}
+   else{iln([o.c.x,Yp,o.c.z],[o.c.x,F,o.c.z],'rgba(176,120,0,.25)',1,[2,3]);ictx.fillStyle='#d6a028';ictx.beginPath();ictx.arc(q[0],q[1],3.6,0,7);ictx.fill();ictx.strokeStyle='#fff';ictx.lineWidth=.8;ictx.stroke();IHOT.push({q:q,t:'예상 직물 후보 · '+TC[o.c.t][0]+' 쪽 · PC1 '+(o.c.x*ax).toFixed(2)+', PC2 '+(o.c.z*az).toFixed(2)})}});
+  if(ih){var bb=null,bd=196;IHOT.forEach(function(h){var e=(h.q[0]-ih[0])*(h.q[0]-ih[0])+(h.q[1]-ih[1])*(h.q[1]-ih[1]);if(e<bd){bd=e;bb=h}});if(bb){var w=ictx.measureText(bb.t).width+14,x0=Math.min(Math.max(4,bb.q[0]+10),IW-w-4),y0=Math.max(4,bb.q[1]-30);ictx.fillStyle='rgba(22,33,43,.9)';ictx.fillRect(x0,y0,w,22);ictx.fillStyle='#fff';ictx.fillText(bb.t,x0+7,y0+15)}}
+  /* 설명: 성분 비중, 후보 중심과 가장 닮은 실측 원단 */
+  var vote={};cd.forEach(function(c){var best=null,bd=1e9;S.forEach(function(s){var e=Math.hypot(s.x-c.x,s.z-c.z);if(e<bd){bd=e;best=s}});vote[best.id]=(vote[best.id]||0)+1});
+  var near=S.filter(function(s){return vote[s.id]}).map(function(s){return {s:s,v:vote[s.id]}}).sort(function(a,b){return b.v-a.v}).slice(0,3);
+  var mix=C.slice().sort(function(a,b){return b.w-a.w}).filter(function(c){return c.w>=0.05}).map(function(c){return TC[c.t][0]+' '+Math.round(c.w*100)+'%'}).join(' · ');
+  document.getElementById('invYv').textContent=yv.toFixed(2);
+  document.getElementById('invExp').innerHTML='<b>목표 Y* = '+yv.toFixed(2)+'</b> (가상 단위)일 때 예상되는 직물 쪽: <b>'+mix+'</b>.<br>후보 40개(주황)가 가장 많이 닮은 실측 원단: '+near.map(function(n){return '<b>'+n.s.id+'</b>('+TC[n.s.type][0]+', '+n.v+'개)'}).join(', ')+'.<br><span class="small muted">실측 원단의 Y가 측정되면 같은 계산이 실제 값으로 바뀝니다. 후보는 실제로 만들어 Y를 재어 확인합니다.</span>'}
+ var sl=document.getElementById('invY');function setY(p){yv=ylo+(yhi-ylo)*p/100;sl.value=p;idraw()}
+ sl.addEventListener('input',function(){setY(+sl.value)});
+ document.querySelectorAll('[data-inv]').forEach(function(b){b.addEventListener('click',function(){setY({hi:90,mid:50,lo:10}[b.dataset.inv])})});
+ ic.addEventListener('pointerdown',function(e){idrag=[e.clientX,e.clientY,iy,ip];ic.setPointerCapture(e.pointerId)});
+ ic.addEventListener('pointermove',function(e){var r=ic.getBoundingClientRect();ih=[e.clientX-r.left,e.clientY-r.top];if(idrag){iy=idrag[2]+(e.clientX-idrag[0])*.01;ip=Math.max(-.05,Math.min(1.3,idrag[3]+(e.clientY-idrag[1])*.008))}idraw()});
+ ic.addEventListener('pointerup',function(){idrag=null});ic.addEventListener('pointerleave',function(){ih=null;idraw()});window.addEventListener('resize',idraw);setY(80);
+})();
+
 })();
 </script>
 """
