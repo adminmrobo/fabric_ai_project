@@ -358,3 +358,64 @@ document.querySelectorAll('[data-pcv]').forEach(function(b){b.addEventListener('
 """
 
 HTML = HTML.replace('@@SAY2@@\n', '@@SAY2@@\n' + pc_html(), 1)
+
+# ---- 행렬곱·내적으로 보기: Z(27×19) · W(19×2) = PC(27×2) ----
+def dot_html():
+    return r"""
+<h3 id="pcdot" style="margin-top:28px">행렬로 보면 — 원단 한 줄과 가중치 한 열의 내적 <span class="stampnote">결과 점수는 실측 PCA · 입력값과 가중치는 설명용 재구성</span></h3>
+<p>원단 27개 × 변수 19개 표를 행렬 <b>Z</b>로, PC1·PC2의 가중치를 19 × 2 행렬 <b>W</b>로 놓으면, 모든 원단의 점수가 행렬곱 한 번으로 나옵니다. 원단 하나의 PC1 점수는 그 원단의 줄(19칸)과 W의 첫 열(19칸)의 <b>내적</b>, 곧 같은 자리끼리 곱해 더한 값입니다.</p>
+<div class="eqline">PC = Z · W &nbsp;&nbsp; (27 × 19) · (19 × 2) = (27 × 2) &nbsp;&nbsp;&nbsp; PC1ᵢ = zᵢ · w₁ = Σₖ zᵢₖ w₁ₖ</div>
+<div class="ctrl" style="margin:10px 0"><div class="group"><span class="glabel">원단</span><select id="dotF" style="padding:5px 8px;border:1px solid var(--rule);border-radius:8px;font:inherit"></select></div>
+ <div class="group" role="group" aria-label="축"><button type="button" class="bt sm" data-dpc="0" aria-pressed="true">PC1 열</button><button type="button" class="bt sm" data-dpc="1" aria-pressed="false">PC2 열</button></div></div>
+<div class="panel"><canvas id="dotMat" style="width:100%;height:230px;display:block" aria-label="행렬곱 그림: 선택한 원단의 줄과 가중치 열이 만나 점수 한 칸이 됨"></canvas></div>
+<div class="panel"><h4 id="dotTitle" style="margin-top:0"></h4><canvas id="dotBar" style="width:100%;height:520px;display:block" aria-label="19개 변수별 곱과 누적 합"></canvas>
+<p class="small muted" style="margin:6px 0 0">막대 하나 = zₖ × wₖ (그 변수가 점수에 보탠 몫). 오른쪽 계단 선 = 위에서부터 더해 온 누적 합이며, 마지막 값이 이 원단의 점수입니다. 가중치가 큰 변수의 막대가 길어집니다.</p></div>
+<p class="small muted">W의 두 열은 길이 1이고 서로 직교하도록(내적 0) 만들었습니다. 결과 점수는 S1의 실측 PCA 값과 정확히 같게 맞췄고, 19개 입력값과 가중치 크기는 엑셀 원본이 이 세션에 없어 S1 기록("PC1: 열 전달·압축 일·거칠기 / PC2: 굽힘 일·압축 회복")에 맞춰 재구성한 설명용 값입니다. 엑셀을 넣으면 실제 Z와 W로 바뀝니다.</p>
+<script>
+(function(){var cvM=document.getElementById('dotMat');if(!cvM)return;
+var D=@@DATA@@,S=D.S,K=19;
+var NM=['평량','마찰계수 앞','마찰계수 뒤','거칠기 진폭 앞','거칠기 진폭 뒤','거칠기 파장 앞','거칠기 파장 뒤','굽힘 강성 앞','굽힘 강성 뒤','굽힘 일 앞 L','굽힘 일 앞 C','굽힘 일 뒤 L','굽힘 일 뒤 C','압축 일 앞','압축 일 뒤','압축 회복률 앞','압축 회복률 뒤','Qmax 앞','Qmax 뒤'];
+var a1=[.12,.1,.1,.33,.3,.08,.07,.12,.1,.05,.05,.04,.05,.34,.31,.06,.05,.36,.34],a2=[.15,-.06,-.05,.05,.04,.1,.09,.2,.18,.36,.33,.35,.32,-.06,-.05,.31,.29,-.08,-.07];
+function dot(a,b){var s=0;for(var i=0;i<K;i++)s+=a[i]*b[i];return s}function sc(a,c){return a.map(function(v){return v*c})}function sub(a,b){return a.map(function(v,i){return v-b[i]})}
+var w1=sc(a1,1/Math.sqrt(dot(a1,a1))),t=sub(a2,sc(w1,dot(a2,w1))),w2=sc(t,1/Math.sqrt(dot(t,t))),Wm=[w1,w2];
+function rng(s){return function(){s=(s*69069+1)%4294967296;return s/4294967296}}var r=rng(31);
+S.forEach(function(s){var e=[];for(var k=0;k<K;k++){var u=r()||1e-9,v=r();e.push(0.45*Math.sqrt(-2*Math.log(u))*Math.cos(6.2832*v))}
+ e=sub(e,sc(w1,dot(e,w1)));e=sub(e,sc(w2,dot(e,w2)));s.z=[];for(var k=0;k<K;k++)s.z.push(s.pc[0]*w1[k]+s.pc[1]*w2[k]+e[k])});
+var fi=26,pc=0,sel=document.getElementById('dotF');S.forEach(function(s,i){sel.add(new Option(s.id,i))});sel.value=fi;
+function fit(c,h){var d=window.devicePixelRatio||1,W=c.clientWidth||700;c.width=W*d;c.height=h*d;var x=c.getContext('2d');x.setTransform(d,0,0,d,0,0);x.clearRect(0,0,W,h);x.font='12px sans-serif';return [x,W]}
+function heat(v,m){var t=Math.max(-1,Math.min(1,v/m));return t>=0?'rgba(214,120,40,'+(0.12+0.8*t).toFixed(2)+')':'rgba(47,93,158,'+(0.12-0.8*t).toFixed(2)+')'}
+function mat(){var o=fit(cvM,230),x=o[0],W=o[1],cs=Math.max(5,Math.min(9,(W-260)/60)),y0=40;
+ var zx=10,zw=K*cs,zh=S.length*cs*0.62,rh=zh/S.length;
+ x.fillStyle='#16212b';x.fillText('Z  (원단 27 × 변수 19)',zx,24);
+ S.forEach(function(s,i){for(var k=0;k<K;k++){x.fillStyle=heat(s.z[k],2.5);x.globalAlpha=i===fi?1:.35;x.fillRect(zx+k*cs,y0+i*rh,cs-1,rh-.6)}});x.globalAlpha=1;
+ x.strokeStyle='#c9302c';x.lineWidth=2;x.strokeRect(zx-1,y0+fi*rh-1,zw+1,rh+1.5);
+ var wx=zx+zw+40;x.fillStyle='#16212b';x.fillText('·',wx-22,y0+zh/2);x.fillText('W  (19 × 2)',wx,24);
+ for(var k=0;k<K;k++)for(var j=0;j<2;j++){x.fillStyle=heat(Wm[j][k],.45);x.globalAlpha=j===pc?1:.35;x.fillRect(wx+j*(cs*2+2),y0+k*(zh/K),cs*2,zh/K-.6)}x.globalAlpha=1;
+ x.strokeStyle='#c9302c';x.strokeRect(wx+pc*(cs*2+2)-1,y0-1,cs*2+2,zh+2);
+ var px=wx+cs*4+44;x.fillStyle='#16212b';x.fillText('=',px-24,y0+zh/2);x.fillText('PC  (27 × 2)',px,24);
+ S.forEach(function(s,i){for(var j=0;j<2;j++){x.fillStyle=heat(s.pc[j],5);x.globalAlpha=(i===fi&&j===pc)?1:.3;x.fillRect(px+j*(cs*2+2),y0+i*rh,cs*2,rh-.6)}});x.globalAlpha=1;
+ x.strokeStyle='#c9302c';x.strokeRect(px+pc*(cs*2+2)-1,y0+fi*rh-1,cs*2+2,rh+1.5);
+ var tx=px+cs*4+30,val=S[fi].pc[pc];x.fillStyle='#16212b';x.font='13px sans-serif';
+ x.fillText(S[fi].id+' 줄 · W의 '+(pc?'PC2':'PC1')+' 열',tx,y0+20);x.fillText('= 내적 = '+val.toFixed(3),tx,y0+40);
+ x.fillStyle='#5b6874';x.font='11.5px sans-serif';x.fillText('주황 = 양(+), 파랑 = 음(−), 진할수록 큼',tx,y0+70)}
+function bars(){var c=document.getElementById('dotBar'),o=fit(c,520),x=o[0],W=o[1],s=S[fi],w=Wm[pc],L=250,R=130,T=10,rh=(520-T-24)/K;
+ var P=s.z.map(function(z,k){return z*w[k]}),m=Math.max.apply(0,P.map(Math.abs).concat([.5])),cx=L+(W-L-R)/2,sx=(W-L-R)/2/m,cum=0,pts=[];
+ x.strokeStyle='#d5dbe2';x.beginPath();x.moveTo(cx,T);x.lineTo(cx,T+rh*K);x.stroke();
+ P.forEach(function(p,k){var y=T+k*rh;x.fillStyle='#16212b';x.textAlign='left';x.fillText(NM[k],4,y+rh*.65);
+  x.fillStyle='#5b6874';x.font='11px sans-serif';x.textAlign='right';x.fillText('z '+s.z[k].toFixed(2)+' × w '+w[k].toFixed(2),L-10,y+rh*.65);x.font='12px sans-serif';
+  x.fillStyle=p>=0?'rgba(214,120,40,.85)':'rgba(47,93,158,.85)';var bw=p*sx;x.fillRect(Math.min(cx,cx+bw),y+3,Math.abs(bw),rh-6);
+  x.textAlign='left';x.fillStyle='#16212b';x.fillText((p>=0?'+':'')+p.toFixed(2),cx+(bw>=0?bw+4:4),y+rh*.65);cum+=p;pts.push([cum,y+rh])});
+ x.textAlign='left';x.fillStyle='#c9302c';x.font='bold 13px sans-serif';x.fillText('합 = '+cum.toFixed(3),W-R+4,T+rh*K+18);x.font='12px sans-serif';
+ var cs=pts.map(function(p){return p[0]}).concat([0]),lo=Math.min.apply(0,cs),hi=Math.max.apply(0,cs),gx=function(v){return W-R+14+(v-lo)/((hi-lo)||1)*(R-28)};
+ x.strokeStyle='#d5dbe2';x.beginPath();x.moveTo(gx(0),T);x.lineTo(gx(0),T+rh*K);x.stroke();x.fillStyle='#5b6874';x.font='10.5px sans-serif';x.textAlign='center';x.fillText('누적 합',W-R/2,T+8);x.textAlign='left';x.font='12px sans-serif';
+ x.strokeStyle='#c9302c';x.lineWidth=1.8;x.beginPath();x.moveTo(gx(0),T);var py=T;pts.forEach(function(p){x.lineTo(gx(p[0]),py);x.lineTo(gx(p[0]),p[1]);py=p[1]});x.stroke();x.lineWidth=1;
+ document.getElementById('dotTitle').textContent=s.id+'의 '+(pc?'PC2':'PC1')+' 점수 = 19개 곱의 합 = '+cum.toFixed(3)+' (S1 실측 PCA 값 '+s.pc[pc].toFixed(3)+')'}
+function all(){mat();bars()}
+sel.addEventListener('change',function(){fi=+sel.value;all()});
+document.querySelectorAll('[data-dpc]').forEach(function(b){b.addEventListener('click',function(){pc=+b.dataset.dpc;document.querySelectorAll('[data-dpc]').forEach(function(q){q.setAttribute('aria-pressed',q===b?'true':'false')});all()})});
+window.addEventListener('resize',all);all();
+})();
+</script>
+""".replace('@@DATA@@', _data())
+
+HTML = HTML.replace('<p class="small muted">굵은 선은 S1 분석에서', dot_html() + '<p class="small muted">굵은 선은 S1 분석에서', 1)
