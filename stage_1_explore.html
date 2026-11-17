@@ -621,7 +621,7 @@ buildFlow();flowSel('n1');
 }
 /* ---------- ① 채움 지도 ---------- */
 if($('#heat')){
-var GH=[['기본 물성',5],['표면 · FTT',12],['역학 · FTT',16],['열 · FTT',8],['표면 · KES',6],['역학 · KES',21],['인장강도',2],['통기·보온',3],['전기 특성 Y',0]];
+var GH=[['기본 물성',5],['표면 · FTT',12],['역학 · FTT',16],['열 · FTT',8],['표면 · KES',6],['역학 · KES',21],['인장강도',2],['통기·보온',3],['전기 특성 Y<br>연속변수',0]];
 var heat=$('#heat');heat.style.gridTemplateColumns='minmax(150px,1.3fr) repeat(9,minmax(52px,1fr))';
 function buildHeat(src){var h='<div class="h" role="columnheader">원단</div>';GH.forEach(function(g){h+='<div class="h" role="columnheader">'+g[0]+'<br>('+g[1]+')</div>'});
   DATA.samples.forEach(function(s){var dim=(src!=='all'&&s.src!==src)?' dim':'';
@@ -632,8 +632,8 @@ function buildHeat(src){var h='<div class="h" role="columnheader">원단</div>';
   heat.innerHTML=h;
   var sel=DATA.samples.filter(function(s){return src==='all'||s.src===src}),tot=0;sel.forEach(function(s){tot+=s.cov.reduce(function(a,b){return a+b},0)});
   $('#covK').innerHTML='<div class="kpi g"><b>'+sel.length+'</b><span>원단 수</span></div><div class="kpi a"><b>'+Math.round(100*tot/(73*sel.length))+'%</b><span>평균 채움률</span></div>'+
-   '<div class="kpi m"><b>'+DATA.commonBySrc[src]+'</b><span>이 묶음 모두에 있는 항목</span></div><div class="kpi r"><b>0</b><span>전기 특성 Y</span></div>';
-  var I={all:['a','27개 전체로 함께 분석할 수 있는 항목은 19개뿐입니다. 전기 특성 Y 열은 모두 비어 있습니다.'],
+   '<div class="kpi m"><b>'+DATA.commonBySrc[src]+'</b><span>이 묶음 모두에 있는 항목</span></div><div class="kpi r"><b>0</b><span>전기 특성 Y (연속변수) 측정 수</span></div>';
+  var I={all:['a','27개 전체로 함께 분석할 수 있는 항목은 19개뿐입니다. 전기 특성 Y 열은 모두 비어 있습니다. Y는 전압·전류·전하밀도 같은 연속변수입니다.'],
    Industrial:['g','산업 원단 14개는 FTT 계열과 KES-FB 계열이 함께 있어 가장 꽉 차 있습니다. 14개 모두에 있는 항목 59개.'],
    Huvis:['a','Huvis 11개는 대부분 부직포이고 KES-FB 값이 없습니다. 11개 모두에 있는 항목 39개.'],
    Lab:['r','연구실 원단 2개는 기본 물성은 모두 있지만 KES-FB·인장강도·통기 항목이 없습니다. 둘 모두에 있는 항목 31개.']}[src];

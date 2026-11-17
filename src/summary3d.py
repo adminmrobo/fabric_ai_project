@@ -16,115 +16,144 @@ CSS = r"""
 @media (max-width:900px){.s3d{grid-template-columns:1fr}.s3d canvas{height:380px}}
 """
 
-HTML = r"""
+import json, os
+
+def _data():
+    d = json.load(open(os.path.join(os.path.dirname(__file__), 'data.json'), encoding='utf-8'))
+    S = [{'id': s['id'], 'src': s['src'], 'type': s['type'], 'cov': s['cov'], 'pc': s['pc']} for s in d['samples']]
+    return json.dumps({'S': S, 'gsize': d['gsize'], 'ev': d['ev']}, ensure_ascii=False, separators=(',', ':'))
+
+HTML_T = r"""
 <section class="level" id="ai-summary"><div class="wrap">
-<h2>SUMMARY — 실측 직물 패턴을 배운 생성 모델로 새 직물을 만들고, 전기 특성을 연속값으로 예측하기</h2>
-<p class="lead">1차년도 방법을 3D 공간 하나로 보여 드립니다. 바닥의 두 축은 직물 특성, 세로축은 전기 특성입니다. 단계를 차례로 누르면 <b>실측 → 패턴 학습 → 새 직물 생성 → 전기 특성 예측 → 일부 검증</b>이 쌓입니다. 그림을 끌면 돌아갑니다.</p>
+<h2>SUMMARY — 실측 직물 데이터로 보는 1차년도 방법: 패턴을 배운 생성 모델로 새 직물을 만들고, 전기 특성(연속변수)을 예측하기</h2>
+<p class="lead">받은 엑셀의 원단 27개를 3D로 그대로 세웠습니다. ①~④는 <b>실측 · 엑셀 직접 집계</b>이고, ⑤⑥은 전기 특성을 잰 뒤에 할 일을 같은 원단 위에 <b>가상 값</b>으로 미리 그려 본 것입니다. 그림을 끌면 돌아가고, 막대나 점에 마우스를 올리면 값이 나옵니다.</p>
 @@SAY1@@
 <div class="s3d">
- <div class="cv"><canvas id="s3dCv" aria-label="3D 그림: 직물 특성 두 축과 전기 특성 축 위의 실측 직물, 학습한 패턴, 생성 직물, 예측 범위, 검증 직물"></canvas><span class="hint">끌어서 회전 · 휠로 확대</span></div>
+ <div class="cv"><canvas id="s3dCv" aria-label="3D 그림: 원단 27개와 측정 묶음 9개의 채움 막대, 공통 19항목, 직물 특성 공간, 전기 특성 연속변수 축, 측정 후 계획"></canvas><span class="hint">끌어서 회전 · 휠로 확대 · 올리면 값 표시</span></div>
  <div class="side">
-  <h5>단계 <span class="stampnote">설명용 모형 · 가상 데이터</span></h5>
+  <h5>단계</h5>
   <div class="steps3" role="group" aria-label="단계">
-   <button type="button" class="bt" data-s3="1" aria-pressed="true"><b>①</b>실측 직물 27개</button>
-   <button type="button" class="bt" data-s3="2" aria-pressed="false"><b>②</b>패턴(결합분포) 학습</button>
-   <button type="button" class="bt" data-s3="3" aria-pressed="false"><b>③</b>새 직물 생성</button>
-   <button type="button" class="bt" data-s3="4" aria-pressed="false"><b>④</b>전기 특성 예측 (연속값 + 범위)</button>
-   <button type="button" class="bt" data-s3="5" aria-pressed="false"><b>⑤</b>일부 제작·측정 검증</button>
+   <button type="button" class="bt" data-s3="1" aria-pressed="true"><b>①</b>실측 현황 — 원단 27 × 묶음 9</button>
+   <button type="button" class="bt" data-s3="2" aria-pressed="false"><b>②</b>27개 모두에 있는 19항목</button>
+   <button type="button" class="bt" data-s3="3" aria-pressed="false"><b>③</b>직물 특성 공간 (19항목 PCA)</button>
+   <button type="button" class="bt" data-s3="4" aria-pressed="false"><b>④</b>전기 특성 Y — 연속변수, 0개</button>
+   <button type="button" class="bt" data-s3="5" aria-pressed="false"><b>⑤</b>측정 후: 패턴 학습·새 직물 <span class="small">(가상)</span></button>
+   <button type="button" class="bt" data-s3="6" aria-pressed="false"><b>⑥</b>연속값 예측·일부 검증 <span class="small">(가상)</span></button>
   </div>
-  <div class="ctrl" style="margin:4px 0 8px"><div class="group"><span class="glabel">생성 수</span><input type="range" id="s3dN" min="20" max="200" step="10" value="80" aria-label="생성 직물 수"><span class="val" id="s3dNv">80</span></div>
-  <button type="button" class="bt sm" id="s3dRot" aria-pressed="true">자동 회전</button></div>
+  <div class="ctrl" style="margin:4px 0 8px"><button type="button" class="bt sm" id="s3dRot" aria-pressed="true">자동 회전</button> <span class="stampnote" id="s3dTag">실측 · 엑셀 직접 집계</span></div>
   <div class="exp" id="s3dExp" aria-live="polite"></div>
-  <div class="lg"><span><i style="background:#2f5d9e"></i>실측 직물</span><br><span><i style="background:#6f5aa8;border-radius:2px"></i>학습한 패턴 (무리별 타원체)</span><br><span><i style="background:#b9a7e8"></i>생성한 새 직물</span><br><span><i style="background:#13733a"></i>예측 곡면과 범위 (±2σ)</span><br><span><i style="background:#c9302c"></i>검증용으로 실제 잰 직물</span></div>
+  <div class="lg" id="s3dLg"></div>
  </div>
 </div>
 @@SAY2@@
-<p class="small muted">축 이름(표면 거칠기, 압축 탄성, 출력 전압)과 점들은 원리를 보여 드리기 위한 가상 값입니다. 실제 직물 특성은 10개 안팎이라 3D로 다 그릴 수 없어, 두 개만 골라 보인 것으로 생각해 주십시오. 실측 데이터가 모이면 같은 그림을 실제 값으로 다시 그립니다. 사진을 벡터로 바꾸는 이전 SUMMARY는 2차년도 이미지 쪽(<a href="image_data.html#img-summary">이미지 데이터 분석</a>)으로 옮겼습니다.</p>
+<p class="small muted">①②는 <a href="stage_0_kickoff.html#lv1">S0 채움 지도</a>, ③은 <a href="stage_1_explore.html">S1 PCA</a>와 같은 실측 값입니다. ④의 전기 특성 Y는 전압·전류·전하밀도 같은 연속변수이며, 아직 한 개도 측정되지 않았습니다. ⑤⑥의 높이·타원체·새 직물·검증 결과는 측정 전이라 가상 값입니다. 사진을 벡터로 바꾸는 이전 SUMMARY는 2차년도 이미지 쪽(<a href="image_data.html#img-summary">이미지 데이터 분석</a>)으로 옮겼습니다.</p>
 </div></section>
 <script>
 (function(){
 var cv=document.getElementById('s3dCv');if(!cv)return;
+var D=@@DATA@@,S=D.S,GS=D.gsize.concat([0]);
+var GN=['기본 물성','표면 · FTT','역학 · FTT','열 · FTT','표면 · KES','역학 · KES','인장강도','통기·보온','전기 특성 Y'];
+var COMMON=[1,6,10,2,0,0,0,0,0];
+var TC={Nonwoven:['부직포','#8e78c9'],Woven:['제직물','#2f5d9e'],Knit:['편직물','#d8685a']};
+var SRCN={Huvis:'Huvis',Lab:'연구실',Industrial:'산업'};
 function rng(s){return function(){s=(s*69069+1)%4294967296;return s/4294967296}}
-var R=rng(7);function gn(){var u=R()||1e-9,v=R();return Math.sqrt(-2*Math.log(u))*Math.cos(6.2832*v)}
-function truth(x,z){return 0.15+0.45*x+0.25*z+0.22*Math.sin(2.6*x)}
-var CL=[{c:[-0.55,-0.35],s:[0.16,0.14],n:10,nm:'평직 무리'},{c:[0.25,0.45],s:[0.15,0.13],n:9,nm:'능직 무리'},{c:[0.55,-0.4],s:[0.13,0.15],n:8,nm:'편직 무리'}];
-var NOISE=0.06,REAL=[];
-CL.forEach(function(k,ki){for(var i=0;i<k.n;i++){var x=k.c[0]+k.s[0]*gn(),z=k.c[1]+k.s[1]*gn();REAL.push({x:x,z:z,y:truth(x,z)+NOISE*gn(),k:ki})}});
-/* GMM: 무리별 평균·공분산 (3차원: x,z,y) */
-function stats(P){var n=P.length,m=[0,0,0];P.forEach(function(p){m[0]+=p.x/n;m[1]+=p.z/n;m[2]+=p.y/n});
- var S=[[0,0,0],[0,0,0],[0,0,0]];P.forEach(function(p){var d=[p.x-m[0],p.z-m[1],p.y-m[2]];for(var i=0;i<3;i++)for(var j=0;j<3;j++)S[i][j]+=d[i]*d[j]/(n-1)});
- for(var i=0;i<3;i++)S[i][i]+=1e-4;return {m:m,S:S,w:n/REAL.length}}
-var G=CL.map(function(k,ki){return stats(REAL.filter(function(p){return p.k===ki}))});
-function chol(S){var L=[[0,0,0],[0,0,0],[0,0,0]];for(var i=0;i<3;i++)for(var j=0;j<=i;j++){var s=S[i][j];for(var q=0;q<j;q++)s-=L[i][q]*L[j][q];L[i][j]=i===j?Math.sqrt(Math.max(s,1e-9)):s/L[j][j]}return L}
+function gnF(r){return function(){var u=r()||1e-9,v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(6.2832*v)}}
+/* ③ 실측 PCA 좌표 → [-1,1] */
+var px=S.map(function(s){return s.pc[0]}),pz=S.map(function(s){return s.pc[1]});
+var ax=Math.max.apply(0,px.map(Math.abs)),az=Math.max.apply(0,pz.map(Math.abs));
+S.forEach(function(s,i){s.x=s.pc[0]/ax*0.95;s.z=s.pc[1]/az*0.95;s.bx=-1.25+2.5*i/(S.length-1)});
+/* ⑤⑥ 가상 Y: 측정 전이므로 설명용 */
+var g1=gnF(rng(17)),OFF={Woven:0.12,Knit:0.02,Nonwoven:-0.18};
+function hypo(x,z,t){return 0.2+0.3*x+0.18*z+(OFF[t]||0)}
+S.forEach(function(s){s.y=hypo(s.x,s.z,s.type)+0.05*g1()});
+function stats(P,w){var n=P.length,m=[0,0,0];P.forEach(function(p){m[0]+=p.x/n;m[1]+=p.z/n;m[2]+=p.y/n});
+ var C=[[0,0,0],[0,0,0],[0,0,0]];P.forEach(function(p){var d=[p.x-m[0],p.z-m[1],p.y-m[2]];for(var i=0;i<3;i++)for(var j=0;j<3;j++)C[i][j]+=d[i]*d[j]/(n-1)});
+ for(var i=0;i<3;i++)C[i][i]+=2e-3;return {m:m,S:C,w:n/S.length}}
+var TY=['Nonwoven','Woven','Knit'],G=TY.map(function(t){var g=stats(S.filter(function(s){return s.type===t}));g.t=t;return g});
+function chol(A){var L=[[0,0,0],[0,0,0],[0,0,0]];for(var i=0;i<3;i++)for(var j=0;j<=i;j++){var s=A[i][j];for(var q=0;q<j;q++)s-=L[i][q]*L[j][q];L[i][j]=i===j?Math.sqrt(Math.max(s,1e-9)):s/L[j][j]}return L}
 G.forEach(function(g){g.L=chol(g.S)});
-function cond(x,z){/* 혼합 조건부 분포 y|x,z: 평균과 표준편차 */
- var ws=[],mu=[],vv=[];G.forEach(function(g){var a=g.S[0][0],b=g.S[0][1],d=g.S[1][1],det=a*d-b*b,ia=[[d/det,-b/det],[-b/det,a/det]];
-  var dx=x-g.m[0],dz=z-g.m[1],q=dx*(ia[0][0]*dx+ia[0][1]*dz)+dz*(ia[1][0]*dx+ia[1][1]*dz);
-  ws.push(g.w*Math.exp(-q/2)/Math.sqrt(det));var c=[g.S[2][0],g.S[2][1]],k0=c[0]*ia[0][0]+c[1]*ia[1][0],k1=c[0]*ia[0][1]+c[1]*ia[1][1];
-  mu.push(g.m[2]+k0*dx+k1*dz);vv.push(Math.max(g.S[2][2]-(k0*c[0]+k1*c[1]),1e-4))});
- var W=ws.reduce(function(a,b){return a+b},0)||1e-12,m=0,v=0;for(var i=0;i<G.length;i++)m+=ws[i]/W*mu[i];for(var i=0;i<G.length;i++)v+=ws[i]/W*(vv[i]+(mu[i]-m)*(mu[i]-m));
- var dens=W;return {m:m,s:Math.sqrt(v),d:dens}}
-var GEN=[],VER=[];
-function regen(N){var r=rng(91);function g2(){var u=r()||1e-9,v=r();return Math.sqrt(-2*Math.log(u))*Math.cos(6.2832*v)}GEN=[];
- for(var i=0;i<N;i++){var t=r(),k=0,acc=0;for(var j=0;j<G.length;j++){acc+=G[j].w;if(t<=acc){k=j;break}}var g=G[k],e=[g2()*1.25,g2()*1.25,g2()];
-  var p=[0,0,0];for(var a=0;a<3;a++){p[a]=g.m[a];for(var b=0;b<=a;b++)p[a]+=g.L[a][b]*e[b]}
-  var c=cond(p[0],p[1]);GEN.push({x:p[0],z:p[1],y:c.m,s:c.s})}
- /* 검증 후보: 기대값 최고 3 + 범위 가장 넓은 3 */
- var byM=GEN.slice().sort(function(a,b){return b.y-a.y}).slice(0,3),byS=GEN.slice().sort(function(a,b){return b.s-a.s}).filter(function(p){return byM.indexOf(p)<0}).slice(0,3);
- var r2=rng(5);VER=byM.concat(byS).map(function(p){var u=r2()||1e-9,v=r2();var meas=truth(p.x,p.z)+NOISE*Math.sqrt(-2*Math.log(u))*Math.cos(6.2832*v);return {p:p,y:meas,ok:Math.abs(meas-p.y)<=2*Math.sqrt(p.s*p.s+NOISE*NOISE)}})}
-var step=1,yaw=0.75,pitch=0.42,zoom=1,auto=true,N=80;regen(N);
-var ctx,W,H;
-function prj(x,y,z){/* 월드: x 오른쪽, y 위, z 앞 */var cy=Math.cos(yaw),sy=Math.sin(yaw),cp=Math.cos(pitch),sp=Math.sin(pitch);
- var X=x*cy-z*sy,Z=x*sy+z*cy,Y=y*cp-Z*sp,D=y*sp+Z*cp;var f=4.6/(4.6+D),s=Math.min(W,H)*0.27*zoom;return [W/2+X*s*f,H*0.64-Y*s*f,D]}
-function Y3(y){return (y-0.15)*1.3}/* 전기 특성 → 세로 좌표 */
-function line(a,b,col,w,dash){var p=prj(a[0],a[1],a[2]),q=prj(b[0],b[1],b[2]);ctx.strokeStyle=col;ctx.lineWidth=w||1;ctx.setLineDash(dash||[]);ctx.beginPath();ctx.moveTo(p[0],p[1]);ctx.lineTo(q[0],q[1]);ctx.stroke();ctx.setLineDash([])}
-function txt(t,a,col){var p=prj(a[0],a[1],a[2]);ctx.fillStyle=col||'#5b6874';ctx.fillText(t,p[0],p[1])}
+function cond(x,z){var ws=[],mu=[],vv=[];G.forEach(function(g){var a=g.S[0][0],b=g.S[0][1],d=g.S[1][1],det=a*d-b*b,ia=[[d/det,-b/det],[-b/det,a/det]];
+  var dx=x-g.m[0],dz=z-g.m[1],q=dx*(ia[0][0]*dx+ia[0][1]*dz)+dz*(ia[1][0]*dx+ia[1][1]*dz);ws.push(g.w*Math.exp(-q/2)/Math.sqrt(det));
+  var c=[g.S[2][0],g.S[2][1]],k0=c[0]*ia[0][0]+c[1]*ia[1][0],k1=c[0]*ia[0][1]+c[1]*ia[1][1];mu.push(g.m[2]+k0*dx+k1*dz);vv.push(Math.max(g.S[2][2]-(k0*c[0]+k1*c[1]),1e-4))});
+ var W=ws.reduce(function(a,b){return a+b},0)||1e-12,m=0,v=0,i;for(i=0;i<3;i++)m+=ws[i]/W*mu[i];for(i=0;i<3;i++)v+=ws[i]/W*(vv[i]+(mu[i]-m)*(mu[i]-m));return {m:m,s:Math.sqrt(v)}}
+var GEN=[],VER=[];(function(){var r=rng(91),g=gnF(r);for(var i=0;i<60;i++){var t=r(),k=0,acc=0;for(var j=0;j<3;j++){acc+=G[j].w;if(t<=acc){k=j;break}}var c=G[k],e=[g()*1.2,g()*1.2,g()],p=[0,0,0];
+  for(var a=0;a<3;a++){p[a]=c.m[a];for(var b=0;b<=a;b++)p[a]+=c.L[a][b]*e[b]}var cc=cond(p[0],p[1]);GEN.push({x:p[0],z:p[1],y:cc.m,s:cc.s,t:c.t})}
+ var byM=GEN.slice().sort(function(a,b){return b.y-a.y}).slice(0,3),byS=GEN.slice().sort(function(a,b){return b.s-a.s}).filter(function(p){return byM.indexOf(p)<0}).slice(0,3),g2=gnF(rng(5));
+ VER=byM.concat(byS).map(function(p){var y=hypo(p.x,p.z,p.t)+0.05*g2();return {p:p,y:y,ok:Math.abs(y-p.y)<=2*Math.sqrt(p.s*p.s+0.0025)}})})();
+var step=1,yaw=0.3,pitch=0.55,base=0.3,zoom=1,auto=true,ctx,W,H,hov=null,HOT=[];
+function prj(x,y,z){var cy=Math.cos(yaw),sy=Math.sin(yaw),cp=Math.cos(pitch),sp=Math.sin(pitch);var X=x*cy-z*sy,Z=x*sy+z*cy,Y=y*cp-Z*sp,Dp=y*sp+Z*cp;
+ var f=4.8/(4.8+Dp),s=Math.min(W*0.75,H)*(step<=2?0.24:0.27)*zoom;return [W/2+X*s*f,H*(step<=2?0.42:0.58)-Y*s*f,Dp]}
+function Y3(y){return F+0.2+(y+0.4)*1.2}
+function ln(a,b,col,w,dash){var p=prj(a[0],a[1],a[2]),q=prj(b[0],b[1],b[2]);ctx.strokeStyle=col;ctx.lineWidth=w||1;ctx.setLineDash(dash||[]);ctx.beginPath();ctx.moveTo(p[0],p[1]);ctx.lineTo(q[0],q[1]);ctx.stroke();ctx.setLineDash([])}
+function tx(t,a,col,al){var p=prj(a[0],a[1],a[2]);ctx.fillStyle=col||'#5b6874';ctx.textAlign=al||'left';ctx.fillText(t,p[0],p[1]);ctx.textAlign='left'}
+function poly(P,fill,stroke){ctx.beginPath();P.forEach(function(q,i){i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1])});ctx.closePath();if(fill){ctx.fillStyle=fill;ctx.fill()}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=.6;ctx.stroke()}}
+var F=-0.9;
+function bars(){var faces=[],dx=0.034,dz=0.075;
+ S.forEach(function(s,i){for(var j=0;j<9;j++){var z=-1+2*j/8,x=s.bx,full=GS[j]?s.cov[j]/GS[j]:0,v=s.cov[j];
+  if(j===8){var c=[[x-dx,F,z-dz],[x+dx,F,z-dz],[x+dx,F,z+dz],[x-dx,F,z+dz]].map(function(p){return prj(p[0],p[1],p[2])});faces.push({d:prj(x,F,z)[2]+0.01,P:c,f:'rgba(201,48,44,.10)',k:'rgba(201,48,44,.8)'});
+    HOT.push({q:prj(x,F+0.05,z),t:s.id+' · 전기 특성 Y (연속변수) · 측정 0'});continue}
+  var h,col;if(step===2){h=COMMON[j]?COMMON[j]/GS[j]:0;if(!v)h=0;col=COMMON[j]?'19,115,58':'170,180,191'}else{h=full;col='19,115,58'}
+  var ghost=step===2&&!COMMON[j]&&v;if(ghost)h=full;
+  if(h<=0){continue}var top=F+h*0.85,al=ghost?0.12:(0.25+0.65*h);
+  var c=[[x-dx,F,z-dz],[x+dx,F,z-dz],[x+dx,F,z+dz],[x-dx,F,z+dz],[x-dx,top,z-dz],[x+dx,top,z-dz],[x+dx,top,z+dz],[x-dx,top,z+dz]].map(function(p){return prj(p[0],p[1],p[2])});
+  var F5=[[4,5,6,7,1],[0,1,5,4,.78],[1,2,6,5,.62],[2,3,7,6,.78],[3,0,4,7,.62]];
+  F5.forEach(function(fc){var P=[c[fc[0]],c[fc[1]],c[fc[2]],c[fc[3]]],dd=(P[0][2]+P[1][2]+P[2][2]+P[3][2])/4,sh=fc[4];
+   faces.push({d:dd,P:P,f:'rgba('+col.split(',').map(function(u){return Math.round(+u*sh+255*(1-sh)*(1-al)*0)}).join(',')+','+(al*(fc[4]===1?1:.9)).toFixed(2)+')',k:ghost?'rgba(150,160,170,.3)':'rgba(255,255,255,.5)'})});
+  HOT.push({q:prj(x,top,z),t:s.id+' ('+SRCN[s.src]+' · '+TC[s.type][0]+') · '+GN[j]+' '+(step===2&&COMMON[j]?Math.min(v,COMMON[j])+'/'+COMMON[j]+' 공통':v+'/'+GS[j])})}});
+ faces.sort(function(a,b){return b.d-a.d});faces.forEach(function(f){poly(f.P,f.f,f.k)});
+ ctx.font='11px sans-serif';for(var j=0;j<9;j++)tx(GN[j],[1.32,F,-1+2*j/8],j===8?'#c9302c':'#16212b');
+ [['Huvis 11',0,10],['연구실 2',11,12],['산업 14',13,26]].forEach(function(g){var a=S[g[1]].bx,b=S[g[2]].bx;ln([a,F,1.2],[b,F,1.2],'#16212b',2);tx(g[0],[(a+b)/2,F,1.45],'#16212b','center')});
+ ctx.font='12px sans-serif'}
+function floor(){for(var i=-4;i<=4;i++){var t=i/4;ln([t*1.3,F,-1.1],[t*1.3,F,1.1],'#eef1f4');ln([-1.3,F,t*1.1],[1.3,F,t*1.1],'#eef1f4')}}
+function space(){ln([-1.1,F,-1.1],[1.25,F,-1.1],'#16212b',1.5);ln([-1.1,F,-1.1],[-1.1,F,1.25],'#16212b',1.5);
+ tx('PC1 ('+Math.round(D.ev[0]*100)+'%) →',[1.3,F,-1.18],'#16212b');tx('PC2 ('+Math.round(D.ev[1]*100)+'%) →',[-1.0,F,1.35],'#16212b','center');
+ if(step>=4){ln([-1.1,F,-1.1],[-1.1,1.05,-1.1],'#c9302c',1.6);tx('전기 특성 Y ↑ (연속변수: 전압·전류·전하밀도)',[-1.1,1.12,-1.1],'#c9302c')}
+ var it=[];
+ if(step>=5){G.forEach(function(g){[[0,1],[0,2],[1,2]].forEach(function(pl){var P=[];for(var a=0;a<=36;a++){var t=a/36*6.2832,e=[0,0,0];e[pl[0]]=2*Math.cos(t);e[pl[1]]=2*Math.sin(t);var p=[0,0,0];for(var r=0;r<3;r++){p[r]=g.m[r];for(var c=0;c<=r;c++)p[r]+=g.L[r][c]*e[c]}P.push(prj(p[0],Y3(p[2]),p[1]))}
+   ctx.strokeStyle='rgba(111,90,168,.5)';ctx.lineWidth=1.3;ctx.beginPath();P.forEach(function(q,i){i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1])});ctx.stroke()})})}
+ S.forEach(function(s){var y=step>=5?Y3(s.y):F;it.push({k:'r',s:s,q:prj(s.x,y,s.z)})});
+ if(step>=5)GEN.forEach(function(p){it.push({k:'g',p:p,q:prj(p.x,Y3(p.y),p.z)})});
+ if(step>=6)VER.forEach(function(v){it.push({k:'v',v:v,q:prj(v.p.x,Y3(v.y),v.p.z)})});
+ it.sort(function(a,b){return b.q[2]-a.q[2]});
+ it.forEach(function(o){var q=o.q;if(o.k==='r'){var s=o.s;
+   if(step===4){ln([s.x,F,s.z],[s.x,0.85,s.z],'rgba(201,48,44,.35)',1,[3,4]);tx('?',[s.x,0.9,s.z],'#c9302c','center')}
+   if(step>=5)ln([s.x,F,s.z],[s.x,Y3(s.y),s.z],'rgba(47,93,158,.25)',1);
+   ctx.fillStyle=TC[s.type][1];ctx.beginPath();ctx.arc(q[0],q[1],5.2,0,7);ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=1.2;ctx.stroke();
+   HOT.push({q:q,t:s.id+' ('+SRCN[s.src]+' · '+TC[s.type][0]+') · PC1 '+s.pc[0].toFixed(2)+', PC2 '+s.pc[1].toFixed(2)+(step>=5?' · Y(가상) '+s.y.toFixed(2):step===4?' · Y 미측정':'')})}
+  else if(o.k==='g'){var p=o.p;if(step>=6)ln([p.x,Y3(p.y-2*p.s),p.z],[p.x,Y3(p.y+2*p.s),p.z],'rgba(19,115,58,.5)',1.2);ctx.fillStyle='rgba(185,167,232,.95)';ctx.beginPath();ctx.arc(q[0],q[1],3.2,0,7);ctx.fill();
+   HOT.push({q:q,t:'새 직물(가상) · '+TC[p.t][0]+' 무리 · Y 예상 '+p.y.toFixed(2)+(step>=6?' ± '+(2*p.s).toFixed(2):'')})}
+  else{var v=o.v;ln([v.p.x,Y3(v.p.y),v.p.z],[v.p.x,Y3(v.y),v.p.z],'#c9302c',1.5,[3,3]);ctx.fillStyle='#c9302c';ctx.beginPath();ctx.arc(q[0],q[1],5.6,0,7);ctx.fill();
+   ctx.fillStyle='#fff';ctx.font='bold 10px sans-serif';ctx.fillText(v.ok?'✓':'✗',q[0]-3.5,q[1]+3.5);ctx.font='12px sans-serif';HOT.push({q:q,t:'검증(가상) · 측정 '+v.y.toFixed(2)+' / 예상 '+v.p.y.toFixed(2)+(v.ok?' · 범위 안':' · 범위 밖')})}});
+ if(step===5)G.forEach(function(g){tx(TC[g.t][0]+' 무리',[g.m[0],Y3(g.m[2])+0.3,g.m[1]],'#6f5aa8','center')})}
 function draw(){var d=window.devicePixelRatio||1;W=cv.clientWidth||700;H=cv.clientHeight||470;if(cv.width!==Math.round(W*d)){cv.width=Math.round(W*d);cv.height=Math.round(H*d)}
- ctx=cv.getContext('2d');ctx.setTransform(d,0,0,d,0,0);ctx.clearRect(0,0,W,H);ctx.font='12px sans-serif';
- var F=-1.05;/* 바닥 높이 */
- for(var i=-4;i<=4;i++){var t=i/4;line([t,F,-1],[t,F,1],'#e6eaef');line([-1,F,t],[1,F,t],'#e6eaef')}
- line([-1,F,-1],[1.15,F,-1],'#16212b',1.5);line([-1,F,-1],[-1,F,1.15],'#16212b',1.5);line([-1,F,-1],[-1,1.0,-1],'#16212b',1.5);
- txt('표면 거칠기 →',[1.2,F,-1.08],'#16212b');txt('압축 탄성 →',[-1.05,F,1.25],'#16212b');txt('출력 전압 ↑',[-1.05,1.08,-1],'#c9302c');
- var items=[];
- /* ② 패턴: 무리별 타원체 테두리 3개 + 바닥 그림자 */
- if(step>=2){G.forEach(function(g){var L=g.L;[[0,1],[0,2],[1,2]].forEach(function(pl){var pts=[];for(var a=0;a<=36;a++){var t=a/36*6.2832,e=[0,0,0];e[pl[0]]=2*Math.cos(t);e[pl[1]]=2*Math.sin(t);
-   var p=[0,0,0];for(var r=0;r<3;r++){p[r]=g.m[r];for(var c=0;c<=r;c++)p[r]+=L[r][c]*e[c]}pts.push(prj(p[0],Y3(p[2]),p[1]))}
-   ctx.strokeStyle='rgba(111,90,168,.55)';ctx.lineWidth=1.4;ctx.beginPath();pts.forEach(function(q,i){i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1])});ctx.stroke()});
-   var sh=[];for(var a=0;a<=36;a++){var t=a/36*6.2832,e=[2*Math.cos(t),2*Math.sin(t),0],x=g.m[0]+L[0][0]*e[0],z=g.m[1]+L[1][0]*e[0]+L[1][1]*e[1];sh.push(prj(x,F,z))}
-   ctx.fillStyle='rgba(111,90,168,.10)';ctx.beginPath();sh.forEach(function(q,i){i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1])});ctx.fill()})}
- /* ④ 예측 곡면: 패턴이 있는 곳만 */
- if(step>=4){var n=12;for(var i=0;i<=n;i++)for(var j=0;j<n;j++){var a=-1+2*i/n,b1=-1+2*j/n,b2=-1+2*(j+1)/n,c1=cond(a,b1),c2=cond(a,b2);
-   var al=Math.min(1,Math.max(c1.d,c2.d)*1.6);if(al<0.06)continue;
-   line([a,Y3(c1.m),b1],[a,Y3(c2.m),b2],'rgba(19,115,58,'+(0.35*al).toFixed(2)+')',1);line([b1,Y3(cond(b1,a).m),a],[b2,Y3(cond(b2,a).m),a],'rgba(19,115,58,'+(0.35*al).toFixed(2)+')',1)}}
- REAL.forEach(function(p){items.push({t:'r',p:p,q:prj(p.x,Y3(p.y),p.z)})});
- if(step>=3)GEN.forEach(function(p){items.push({t:'g',p:p,q:prj(p.x,Y3(step>=4?p.y:F+0.02),p.z)})});
- if(step>=5)VER.forEach(function(v){items.push({t:'v',p:v,q:prj(v.p.x,Y3(v.y),v.p.z)})});
- items.sort(function(a,b){return b.q[2]-a.q[2]});
- items.forEach(function(it){var p=it.p,q=it.q;
-  if(it.t==='r'){if(step===1){line([p.x,F,p.z],[p.x,Y3(p.y),p.z],'rgba(47,93,158,.25)',1)}ctx.fillStyle='#2f5d9e';ctx.beginPath();ctx.arc(q[0],q[1],4.6,0,7);ctx.fill();ctx.strokeStyle='#fff';ctx.lineWidth=1;ctx.stroke()}
-  else if(it.t==='g'){if(step>=4){line([p.x,Y3(p.y-2*p.s),p.z],[p.x,Y3(p.y+2*p.s),p.z],'rgba(19,115,58,.5)',1.2)}
-   ctx.fillStyle=step>=4?'#8f78d6':'#b9a7e8';ctx.beginPath();ctx.arc(q[0],q[1],3.2,0,7);ctx.fill()}
-  else{var e=prj(p.p.x,Y3(p.p.y),p.p.z);line([p.p.x,Y3(p.p.y),p.p.z],[p.p.x,Y3(p.y),p.p.z],'#c9302c',1.5,[3,3]);
-   ctx.fillStyle='#c9302c';ctx.beginPath();ctx.arc(q[0],q[1],5.5,0,7);ctx.fill();ctx.fillStyle='#fff';ctx.font='bold 10px sans-serif';ctx.fillText(p.ok?'✓':'✗',q[0]-3.5,q[1]+3.5);ctx.font='12px sans-serif'}});
- if(step>=2&&step<4){G.forEach(function(g,i){txt(CL[i].nm,[g.m[0],Y3(g.m[2])+0.32,g.m[1]],'#6f5aa8')})}
-}
-var EXP={1:'<b>① 실측 직물 27개.</b> 직물마다 직물 특성(바닥 두 축)과 전기 특성(높이)을 함께 쟀습니다. 전기 특성은 엄격한 정답이 아니라 이 직물이 가진 특성 중 하나입니다. 점들이 조직별로 무리 지어 있습니다.',
- 2:'<b>② 패턴 학습 (비지도).</b> 생성 모델이 "어떤 직물 특성이 어떤 전기 특성과 함께 나타나는가"를 배웁니다. 보라 타원체가 배운 패턴(결합분포)입니다. 여기서는 가장 단순한 생성 모델인 가우시안 혼합으로 그렸습니다.',
- 3:'<b>③ 새 직물 생성.</b> 배운 패턴에서 새 직물을 뽑았습니다(연보라, 바닥). 실측에 없던 직물이지만 패턴 안에서 나왔으므로 그럴듯한 조합입니다. 생성 수를 바꿔 보십시오.',
- 4:'<b>④ 전기 특성 예측.</b> 새 직물마다 전기 특성을 연속값(회귀형 출력)으로 냈습니다. 초록 막대가 범위(±2σ)이고 초록 그물이 직물 특성별 예상값의 곡면입니다. 무리에서 먼 직물일수록 막대가 깁니다 — 모델이 덜 확실하다는 뜻입니다.',
- 5:'<b>⑤ 일부 제작·측정 검증.</b> 기대값이 가장 높은 3개와 범위가 가장 넓은 3개를 실제로 만들어 쟀다고 가정했습니다(빨강). ✓는 측정값이 예상 범위 안, ✗는 밖입니다. 잰 직물은 실측 데이터에 더해 ②부터 다시 학습합니다.'};
+ ctx=cv.getContext('2d');ctx.setTransform(d,0,0,d,0,0);ctx.clearRect(0,0,W,H);ctx.font='12px sans-serif';HOT=[];floor();
+ if(step<=2)bars();else space();
+ if(hov){var b=null,bd=196;HOT.forEach(function(h){var e=(h.q[0]-hov[0])*(h.q[0]-hov[0])+(h.q[1]-hov[1])*(h.q[1]-hov[1]);if(e<bd){bd=e;b=h}});
+  if(b){ctx.font='12px sans-serif';var w=ctx.measureText(b.t).width+14,x0=Math.min(Math.max(4,b.q[0]+10),W-w-4),y0=Math.max(4,b.q[1]-30);ctx.fillStyle='rgba(22,33,43,.9)';ctx.fillRect(x0,y0,w,22);ctx.fillStyle='#fff';ctx.fillText(b.t,x0+7,y0+15);
+   ctx.strokeStyle='#16212b';ctx.lineWidth=1.5;ctx.beginPath();ctx.arc(b.q[0],b.q[1],6,0,7);ctx.stroke()}}}
+var EXP={1:'<b>① 실측 현황.</b> 가로로 원단 27개(Huvis 11 · 연구실 2 · 산업 14), 앞뒤로 측정 묶음 9개가 놓입니다. 막대 높이는 그 묶음의 채움 비율입니다. 산업 원단은 KES 묶음까지 차 있고, Huvis·연구실은 FTT 위주입니다. 평균 채움률 68%. 맨 앞 빨간 칸 줄이 <b>전기 특성 Y</b>로, 27개 모두 비어 있습니다.',
+ 2:'<b>② 27개 모두에 있는 19항목.</b> 출처마다 장비와 항목이 달라, 27개를 함께 쓸 수 있는 항목은 기본 물성 1 + 표면 6 + 역학 10 + 열 2 = <b>19개</b>입니다(초록). 회색은 일부 원단에만 있는 항목입니다. 지금 생성 모델이 배울 수 있는 직물 특성 X는 이 19개입니다.',
+ 3:'<b>③ 직물 특성 공간.</b> 19항목을 주성분 분석(PCA)으로 두 축(PC1 열 전달·압축 일·거칠기, PC2 굽힘 일·압축 회복)에 요약해, 원단 27개를 바닥에 놓았습니다(실측, S1과 같은 값). 같은 종류끼리 모이고 부직포는 넓게 흩어집니다. 이 무리 모양이 생성 모델이 배울 "패턴"의 바닥 절반입니다.',
+ 4:'<b>④ 전기 특성 Y — 연속변수.</b> 세로축이 전기 특성입니다. Y는 "있다/없다" 같은 범주가 아니라 전압·전류·전하밀도처럼 <b>연속변수</b>입니다. 하지만 아직 <b>0개</b> 측정되어 모든 원단의 높이가 "?"입니다. 그래서 S2의 전기 특성 실측이 첫 관문입니다.',
+ 5:'<b>⑤ 측정 후 — 패턴 학습과 새 직물 (가상).</b> Y를 쟀다고 가정하고 원단들을 높이에 올렸습니다. 생성 모델이 직물 특성과 Y가 함께 나타나는 패턴(보라 타원체, 종류별 무리)을 배우고, 그 패턴에서 새 직물(연보라)을 만듭니다.',
+ 6:'<b>⑥ 연속값 예측과 일부 검증 (가상).</b> 새 직물마다 Y를 연속값과 범위(초록 막대, ±2σ)로 냅니다. 무리에서 먼 직물일수록 막대가 깁니다. 기대값 최고 3개와 범위가 가장 넓은 3개를 실제로 만들어 잰다고 가정했습니다(빨강, ✓ 범위 안 / ✗ 밖).'};
+var LG={bar:'<span><i style="background:rgba(19,115,58,.8);border-radius:2px"></i>채움 비율이 높은 묶음</span><br><span><i style="background:rgba(19,115,58,.25);border-radius:2px"></i>채움 비율이 낮은 묶음</span><br><span><i style="background:#fcebea;border:1px solid #c9302c;border-radius:2px"></i>전기 특성 Y — 비어 있음</span>',
+ pts:'<span><i style="background:#8e78c9"></i>부직포</span> <span><i style="background:#2f5d9e"></i>제직물</span> <span><i style="background:#d8685a"></i>편직물</span>',
+ more:'<br><span><i style="background:#6f5aa8;border-radius:2px"></i>학습한 패턴</span><br><span><i style="background:#b9a7e8"></i>새 직물 (가상)</span><br><span><i style="background:#13733a"></i>예측 범위 ±2σ</span><br><span><i style="background:#c9302c"></i>검증 (가상)</span>'};
 function setStep(s){step=s;document.querySelectorAll('[data-s3]').forEach(function(b){b.setAttribute('aria-pressed',+b.getAttribute('data-s3')<=s?'true':'false')});
- var t=EXP[s];if(s===5){var ok=VER.filter(function(v){return v.ok}).length;t+=' 이번 결과: '+VER.length+'개 중 '+ok+'개가 범위 안.'}document.getElementById('s3dExp').innerHTML=t;draw()}
+ var t=EXP[s];if(s===6){var ok=VER.filter(function(v){return v.ok}).length;t+=' 이번 가상 결과: 6개 중 '+ok+'개가 범위 안.'}document.getElementById('s3dExp').innerHTML=t;
+ var tag=document.getElementById('s3dTag');tag.textContent=s<=4?'실측 · 엑셀 직접 집계':'측정 전 · 가상 값';tag.className=s<=4?'realnote':'stampnote';
+ document.getElementById('s3dLg').innerHTML=s<=2?LG.bar:LG.pts+(s>=5?LG.more:'');pitch=s<=3?0.85:0.5;draw()}
 document.querySelectorAll('[data-s3]').forEach(function(b){b.addEventListener('click',function(){setStep(+b.getAttribute('data-s3'))})});
-var sl=document.getElementById('s3dN');sl.addEventListener('input',function(){N=+sl.value;document.getElementById('s3dNv').textContent=N;regen(N);setStep(step)});
 var rb=document.getElementById('s3dRot');rb.addEventListener('click',function(){auto=!auto;rb.setAttribute('aria-pressed',auto?'true':'false')});
 var drag=null;cv.addEventListener('pointerdown',function(e){drag=[e.clientX,e.clientY,yaw,pitch];auto=false;rb.setAttribute('aria-pressed','false');cv.setPointerCapture(e.pointerId)});
-cv.addEventListener('pointermove',function(e){if(!drag)return;yaw=drag[2]+(e.clientX-drag[0])*0.01;pitch=Math.max(-0.1,Math.min(1.3,drag[3]+(e.clientY-drag[1])*0.008));draw()});
-cv.addEventListener('pointerup',function(){drag=null});
-cv.addEventListener('wheel',function(e){e.preventDefault();zoom=Math.max(0.6,Math.min(1.8,zoom*(e.deltaY<0?1.08:0.93)));draw()},{passive:false});
-var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;if(reduce){auto=false;rb.setAttribute('aria-pressed','false')}
-var last=0;function tick(t){if(auto&&t-last>33){yaw+=0.006;draw();last=t}requestAnimationFrame(tick)}requestAnimationFrame(tick);
+cv.addEventListener('pointermove',function(e){var r=cv.getBoundingClientRect();hov=[e.clientX-r.left,e.clientY-r.top];if(drag){yaw=drag[2]+(e.clientX-drag[0])*0.01;pitch=Math.max(-0.05,Math.min(1.3,drag[3]+(e.clientY-drag[1])*0.008))}draw()});
+cv.addEventListener('pointerleave',function(){hov=null;draw()});cv.addEventListener('pointerup',function(){drag=null;base=yaw});
+cv.addEventListener('wheel',function(e){e.preventDefault();zoom=Math.max(0.6,Math.min(2,zoom*(e.deltaY<0?1.08:0.93)));draw()},{passive:false});
+if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches){auto=false;rb.setAttribute('aria-pressed','false')}
+var last=0;function tick(t){if(auto&&!hov&&t-last>33){yaw=base+0.4*Math.sin(t/2600);draw();last=t}requestAnimationFrame(tick)}requestAnimationFrame(tick);
 window.addEventListener('resize',draw);setStep(1);
 })();
 </script>
 """
+HTML = HTML_T.replace('@@DATA@@', _data())

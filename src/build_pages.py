@@ -371,7 +371,7 @@ hero = hero.replace('보고마다 검토 사항을 정리해 두었습니다. �
 intro = re.sub(r'<h3 style="margin-top:22px">오늘 보고 순서</h3>\s*<ol class="agenda">.*?</ol>', '', INTRO, flags=re.S)
 docmap = (DIRBOX + '<h2 id="map" style="margin-top:30px">문서 지도 — 어디부터 보시면 되나</h2><div class="mapc">'
     '<a class="card" href="method_review.html"><span>★</span><b>1차년도 연구 방법 검토 (문헌)</b><span class="d">실측 패턴을 배운 생성 모델로 새 직물 생성, 전기 특성을 연속값으로 예측. 정의, 문헌, 위험, 검증, 모의실험.</span></a>'
-    '<a class="card" href="#ai-summary"><span>0</span><b>SUMMARY — 1차년도 방법을 3D로</b><span class="d">처음 오신 분은 여기부터. 실측 → 패턴 학습 → 새 직물 생성 → 전기 특성 예측 → 일부 검증.</span></a>'
+    '<a class="card" href="#ai-summary"><span>0</span><b>SUMMARY — 실측 데이터로 보는 1차년도 방법 (3D)</b><span class="d">처음 오신 분은 여기부터. 원단 27 × 측정 묶음 채움 → 공통 19항목 → 직물 특성 공간 → 전기 특성 Y(연속변수) → 측정 후 계획.</span></a>'
     '<a class="card" href="plan_years.html"><span>1</span><b>연차별 연구계획</b><span class="d">5년 로드맵. 연차마다 목표·내용·평가 착안점. 3~5차년도는 예정.</span></a>'
     '<a class="card" href="stages.html"><span>2</span><b>전체 연구 스테이지 및 FLOW</b><span class="d">흐름도와 일정 막대, 7개 스테이지 카드.</span></a>'
     '<a class="card" href="stage_0_kickoff.html"><span>3</span><b>스테이지별 상세 (S0~S6)</b><span class="d">S0 데이터 현황·결정 질문부터. 스테이지마다 검토 사항.</span></a>'
@@ -438,7 +438,7 @@ SUMHTML = ('<section class="level" id="img-summary"><div class="wrap"><h2>2차�
  + say('robo', 'meh', '주의할 점 하나. 벡터가 사진의 흐림·밝기만 담으면 AI가 엉뚱한 지름길을 배웁니다. <a href="image_data.html">이미지 데이터 분석</a>에 계산해 두었습니다.')
  + '</div><p class="small muted">벡터: 숫자를 순서대로 늘어놓은 목록. 합성곱 신경망(CNN): 작은 필터를 사진 위로 밀며 무늬를 찾는 딥러닝 모델. 2·3층 설명은 일반적인 CNN의 동작을 쉽게 풀어 쓴 개념도입니다.</p></div></section>')
 kgs, exs = sec('kg'), sec('export')
-SUM3 = S3D.HTML.replace('@@SAY1@@', say('asst', 'report', '교수님, 1차년도 방법 전체를 그림 한 장으로 보고드립니다. ① 실측부터 ⑤ 검증까지 차례로 눌러 보십시오.')).replace('@@SAY2@@', '<div class="talk"><p class="th">질의응답</p>' + say('sia', 'think', '④에서 막대가 긴 직물은 버립니까?') + say('asst', 'report', '버리지 않습니다. 모델이 가장 모르는 곳이라, 실제로 만들어 재면 모델이 가장 많이 배웁니다. 그래서 ⑤에서 일부러 섞어 고릅니다.') + say('moa', 'think', '실측 직물이 27개뿐인데 패턴을 배울 수 있습니까?') + say('asst', 'report', '27개로는 무리가 서너 개인 단순한 패턴까지만 배울 수 있습니다. 그래서 S2에서 원단을 50~100개로 늘리고, 원단 수에 맞춰 단순한 생성 모델부터 씁니다.') + '</div>')
+SUM3 = S3D.HTML.replace('@@SAY1@@', say('asst', 'report', '교수님, 받은 원단 27개의 실측 현황에서 출발해 1차년도 방법을 그림 한 장으로 보고드립니다. ①부터 차례로 눌러 보십시오.')).replace('@@SAY2@@', '<div class="talk"><p class="th">질의응답</p>' + say('sia', 'think', '④에서 Y가 전부 "?"인데, 지금 할 수 있는 일은 무엇입니까?') + say('asst', 'report', '직물 특성 쪽 패턴(③)은 지금도 볼 수 있습니다. 하지만 전기 특성과 함께 나타나는 패턴은 Y를 재야 배울 수 있습니다. 그래서 S2에서 연속변수인 전압·전류·전하밀도를 같은 조건으로 재는 것이 첫 관문입니다.') + say('moa', 'think', '공통 항목이 19개, 원단이 27개뿐인데 패턴을 배울 수 있습니까?') + say('asst', 'report', '27개로는 종류별 무리 세 개 정도의 단순한 패턴까지만 배울 수 있습니다. 그래서 S2에서 원단을 50~100개로 늘리고 장비를 하나로 맞추며, 원단 수에 맞춰 단순한 생성 모델부터 씁니다.') + say('sia', 'think', '⑥에서 범위 막대가 긴 직물은 버립니까?') + say('asst', 'report', '버리지 않습니다. 모델이 가장 모르는 곳이라, 실제로 만들어 재면 모델이 가장 많이 배웁니다.') + '</div>')
 idx = COVER + hero + SUM3 + intro + summary + review + REQS + outro + kgs + exs + tail((None, ('plan_years.html', '연차별 연구계획')))
 SMI = json.load(open(os.path.join(B, '..', 'analysis', 'summary', 'summary_imgs.json'), encoding='utf-8'))
 sizes['index.html'] = page('index.html', 'INDEX — 전체 연구 계획 정리', idx, kg=True)
