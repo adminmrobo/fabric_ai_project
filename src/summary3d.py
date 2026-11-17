@@ -136,7 +136,7 @@ var EXP={1:'<b>① 실측 현황.</b> 가로로 원단 27개(Huvis 11 · 연구�
  3:'<b>③ 직물 특성 공간.</b> 19항목을 주성분 분석(PCA)으로 두 축(PC1 열 전달·압축 일·거칠기, PC2 굽힘 일·압축 회복)에 요약해, 원단 27개를 바닥에 놓았습니다(실측, S1과 같은 값). 같은 종류끼리 모이고 부직포는 넓게 흩어집니다. 이 무리 모양이 생성 모델이 배울 "패턴"의 바닥 절반입니다.',
  4:'<b>④ 전기 특성 Y — 연속변수.</b> 세로축이 전기 특성입니다. Y는 "있다/없다" 같은 범주가 아니라 전압·전류·전하밀도처럼 <b>연속변수</b>입니다. 하지만 아직 <b>0개</b> 측정되어 모든 원단의 높이가 "?"입니다. 그래서 S2의 전기 특성 실측이 첫 관문입니다.',
  5:'<b>⑤ 측정 후 — 패턴 학습과 새 직물 (가상).</b> Y를 쟀다고 가정하고 원단들을 높이에 올렸습니다. 생성 모델이 직물 특성과 Y가 함께 나타나는 패턴(보라 타원체, 종류별 무리)을 배우고, 그 패턴에서 새 직물(연보라)을 만듭니다.',
- 6:'<b>⑥ 연속값 예측과 일부 검증 (가상).</b> 새 직물마다 Y를 연속값과 범위(초록 막대, ±2σ)로 냅니다. 무리에서 먼 직물일수록 막대가 깁니다. 기대값 최고 3개와 범위가 가장 넓은 3개를 실제로 만들어 잰다고 가정했습니다(빨강, ✓ 범위 안 / ✗ 밖).'};
+ 6:'<b>⑥ 연속값 예측과 일부 검증 (가상).</b> 새 직물마다 Y를 연속값과 범위(초록 막대, ±2σ)로 냅니다. 무리에서 먼 직물일수록 막대가 깁니다. 기대값 최고 3개와 범위가 가장 넓은 3개를 실제로 만들어 잰다고 가정했습니다(빨강, ✓ 범위 안 / ✗ 밖). 어떤 직물 특성이 Y를 얼마나 바꾸는지는 아래 <a href="#rel3">관계 보기</a>에서 변수 2개씩 골라 봅니다.'};
 var LG={bar:'<span><i style="background:rgba(19,115,58,.8);border-radius:2px"></i>채움 비율이 높은 묶음</span><br><span><i style="background:rgba(19,115,58,.25);border-radius:2px"></i>채움 비율이 낮은 묶음</span><br><span><i style="background:#fcebea;border:1px solid #c9302c;border-radius:2px"></i>전기 특성 Y — 비어 있음</span>',
  pts:'<span><i style="background:#8e78c9"></i>부직포</span> <span><i style="background:#2f5d9e"></i>제직물</span> <span><i style="background:#d8685a"></i>편직물</span>',
  more:'<br><span><i style="background:#6f5aa8;border-radius:2px"></i>학습한 패턴</span><br><span><i style="background:#b9a7e8"></i>새 직물 (가상)</span><br><span><i style="background:#13733a"></i>예측 범위 ±2σ</span><br><span><i style="background:#c9302c"></i>검증 (가상)</span>'};
@@ -157,3 +157,103 @@ window.addEventListener('resize',draw);setStep(1);
 </script>
 """
 HTML = HTML_T.replace('@@DATA@@', _data())
+
+# ---- 관계 보기: 변수 2개 × Y, 나머지 17개 고정 (다항 모델의 3D 단면) ----
+VARS = [
+ ('W', '평량', 'g/m²'), ('SFC_F', '마찰계수 · 앞면', ''), ('SFC_B', '마찰계수 · 뒷면', ''),
+ ('SRA_F', '표면 거칠기 진폭 · 앞면', 'μm'), ('SRA_B', '표면 거칠기 진폭 · 뒷면', 'μm'),
+ ('SRW_F', '거칠기 파장 · 앞면', 'mm'), ('SRW_B', '거칠기 파장 · 뒷면', 'mm'),
+ ('BAR_F', '굽힘 강성 · 앞면', ''), ('BAR_B', '굽힘 강성 · 뒷면', ''),
+ ('BW_FL', '굽힘 일 · 앞면 L', ''), ('BW_FC', '굽힘 일 · 앞면 C', ''), ('BW_BL', '굽힘 일 · 뒷면 L', ''), ('BW_BC', '굽힘 일 · 뒷면 C', ''),
+ ('CW_F', '압축 일 · 앞면', ''), ('CW_B', '압축 일 · 뒷면', ''),
+ ('CRR_F', '압축 회복률 · 앞면', ''), ('CRR_B', '압축 회복률 · 뒷면', ''),
+ ('Qmax_F', '접촉 냉온감 Qmax · 앞면', 'W/cm²'), ('Qmax_B', '접촉 냉온감 Qmax · 뒷면', 'W/cm²'),
+]
+
+REL_CSS = r"""
+.rel3{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px;align-items:start;margin-top:14px}
+.rel3 canvas{display:block;width:100%;height:440px;border:1px solid var(--rule);border-radius:12px;background:#fff;cursor:grab;touch-action:none}
+.rel3 select{width:100%;padding:6px;border:1px solid var(--rule);border-radius:8px;font:inherit;margin:2px 0 8px}
+.rel3 .eqbox{font-family:"IBM Plex Mono",monospace;font-size:12.5px;line-height:1.7;background:#f7f9fb;border:1px solid var(--rule);border-radius:10px;padding:8px 10px;word-break:break-word}
+.rel3 details{margin-top:8px;font-size:13px}.rel3 details .fx{display:grid;grid-template-columns:1fr 90px 34px;gap:4px;align-items:center;margin:3px 0}
+.rel3 details .fx.off{opacity:.35}.rel3 details input{width:100%}
+@media (max-width:900px){.rel3{grid-template-columns:1fr}}
+"""
+
+def rel_html():
+    names = json.dumps([[k, n, u] for k, n, u in VARS], ensure_ascii=False)
+    return r"""
+<h3 id="rel3" style="margin-top:34px">관계 보기 — 변수 2개를 고르고, 나머지 17개는 고정 <span class="stampnote">계수는 가상 · 측정 후 실제 계수로 교체</span></h3>
+<p>위 ③④처럼 주성분 축에 놓으면 원단 배치는 보이지만, <b>어떤 직물 특성이 Y를 얼마나 바꾸는지</b>는 보이지 않습니다. 그래서 실제 계산은 19개 공통 항목 전체로 하고, 3D에는 그중 <b>2개만 움직이고 나머지 17개는 고정한 단면</b>을 그립니다. 축으로 쓸 2개는 언제든 바꿀 수 있습니다.</p>
+<div class="rel3">
+ <div><canvas id="relCv" aria-label="선택한 두 직물 특성과 전기 특성 Y의 3D 곡면"></canvas><p class="small muted" style="margin:6px 0 0">값은 표준화 단위(평균 0, 표준편차 1)입니다. 끌어서 회전. 바닥의 등고선은 같은 Y 높이를 이은 선입니다.</p></div>
+ <div>
+  <label class="small"><b>가로축 변수</b></label><select id="relA"></select>
+  <label class="small"><b>깊이축 변수</b></label><select id="relB"></select>
+  <div class="ctrl" style="margin:0 0 8px"><button type="button" class="bt sm" id="relMean">나머지 모두 평균(0)에 고정</button> <button type="button" class="bt sm" id="relRand">나머지를 다른 원단처럼</button></div>
+  <div class="small" style="margin-bottom:4px"><b>이 단면의 식</b> — 2차 다항 모델을 고정값으로 줄인 결과</div>
+  <div class="eqbox" id="relEq"></div>
+  <details><summary>고정한 17개 변수 값 바꾸기</summary><div id="relFx"></div></details>
+ </div>
+</div>
+<div class="brief" style="margin-top:14px"><div class="bh">실제 계산 — 다항 행렬</div><dl>
+<dt>모델</dt><dd>2차 다항: ŷ = β₀ + Σ βᵢ xᵢ + Σ βᵢᵢ xᵢ² + Σ βᵢⱼ xᵢ xⱼ. 행렬로 쓰면 <b>ŷ = Φ(X) β</b>. Φ(X)는 원단 n개 × 항 210개(상수 1 + 1차 19 + 제곱 19 + 교호작용 171)의 다항 특징 행렬입니다.</dd>
+<dt>3D와의 관계</dt><dd>계산은 210개 항을 모두 씁니다. 3D 곡면은 그 결과를 두 변수 방향으로 자른 단면이라, 단면도 다시 2차 곡면(오른쪽 식)이 됩니다. 축 변수를 바꾸면 같은 모델을 다른 방향으로 자른 단면이 나옵니다.</dd>
+<dt>생성 모델과의 관계</dt><dd>1차년도 생성 모델에서는 "이 직물 특성일 때 Y의 기대값" E[Y | X]가 같은 자리에 들어갑니다. 비교 기준인 회귀 모델도 같은 방식으로 단면을 그릴 수 있어, 두 모델의 곡면을 나란히 비교할 수 있습니다.</dd>
+<dt class="ask">주의</dt><dd>항이 210개인데 원단이 27개면 계수를 정할 수 없습니다. 원단 수를 늘리거나(S2 50~100개), 릿지·라쏘 같은 규제를 쓰거나, 영향이 큰 변수 몇 개로 줄여야 합니다. 지금 곡면의 계수는 측정 전이라 가상 값이며, 거칠기·압축 일이 클수록 출력이 커진다는 문헌 방향만 반영했습니다.</dd></dl></div>
+<script>
+(function(){
+var cv=document.getElementById('relCv');if(!cv)return;
+var V=@@VARS@@,n=V.length;
+function rng(s){return function(){s=(s*69069+1)%4294967296;return s/4294967296}}var r=rng(23);
+var b0=0.3,b=V.map(function(){return (r()-.5)*0.06}),Bq=[];for(var i=0;i<n;i++){Bq.push(new Array(n).fill(0))}
+for(var i=0;i<n;i++)for(var j=i;j<n;j++){var v=(r()-.5)*0.012;Bq[i][j]=v;Bq[j][i]=v}
+function idx(k){for(var i=0;i<n;i++)if(V[i][0]===k)return i}
+/* 문헌 방향(가상 크기): 거칠기·압축 일·마찰 ↑ → 출력 ↑, 거칠기는 포화(제곱 음수), 거칠기×압축 일 교호작용 + */
+[['SRA_F',.12],['SRA_B',.05],['CW_F',.10],['CW_B',.04],['SFC_F',.06],['CRR_F',.04],['W',.03],['BW_FL',-.04],['BAR_F',-.03],['Qmax_F',.02]].forEach(function(p){b[idx(p[0])]=p[1]});
+Bq[idx('SRA_F')][idx('SRA_F')]=-0.035;Bq[idx('CW_F')][idx('CW_F')]=-0.02;var a=idx('SRA_F'),c=idx('CW_F');Bq[a][c]=Bq[c][a]=0.025;
+var fx=new Array(n).fill(0),A=idx('SRA_F'),Bv=idx('CW_F');
+function yv(z){var y=b0,i,j;for(i=0;i<n;i++)y+=b[i]*z[i];for(i=0;i<n;i++)for(j=0;j<n;j++)y+=Bq[i][j]*z[i]*z[j];return y}
+function sliceCoef(){var c0=b0,a1=b[A],a2=b[Bv],i,j;for(i=0;i<n;i++){if(i===A||i===Bv)continue;c0+=b[i]*fx[i];a1+=2*Bq[A][i]*fx[i];a2+=2*Bq[Bv][i]*fx[i];
+  for(j=0;j<n;j++){if(j===A||j===Bv)continue;c0+=Bq[i][j]*fx[i]*fx[j]}}return {c:c0,a1:a1,a2:a2,q1:Bq[A][A],q2:Bq[Bv][Bv],r:2*Bq[A][Bv]}}
+var sa=document.getElementById('relA'),sb=document.getElementById('relB');
+V.forEach(function(v,i){sa.add(new Option(v[1]+' ('+v[0]+')',i));sb.add(new Option(v[1]+' ('+v[0]+')',i))});sa.value=A;sb.value=Bv;
+function buildFx(){var h='';V.forEach(function(v,i){var off=(i===A||i===Bv);h+='<div class="fx'+(off?' off':'')+'"><span>'+v[1]+'</span><input type="range" min="-2" max="2" step="0.1" value="'+fx[i]+'" data-fx="'+i+'"'+(off?' disabled':'')+' aria-label="'+v[1]+' 고정값"><span>'+(off?'축':fx[i].toFixed(1))+'</span></div>'});
+ var el=document.getElementById('relFx');el.innerHTML=h;el.querySelectorAll('[data-fx]').forEach(function(s){s.addEventListener('input',function(){fx[+s.dataset.fx]=+s.value;s.nextElementSibling.textContent=(+s.value).toFixed(1);draw()})})}
+function sgn(v,t){return (v<0?' − ':' + ')+Math.abs(v).toFixed(3)+t}
+var yaw=0.7,pitch=0.5,ctx,W,H;
+function prj(x,y,z){var cy=Math.cos(yaw),sy=Math.sin(yaw),cp=Math.cos(pitch),sp=Math.sin(pitch),X=x*cy-z*sy,Z=x*sy+z*cy,Y=y*cp-Z*sp,D=y*sp+Z*cp,f=4.6/(4.6+D),s=Math.min(W*.8,H)*0.3;return [W/2+X*s*f,H*0.6-Y*s*f,D]}
+function col(t){t=Math.max(0,Math.min(1,t));var c=[[47,93,158],[19,115,58],[214,160,40],[201,48,44]],k=Math.min(2,Math.floor(t*3)),u=t*3-k,p=c[k],q=c[k+1];return 'rgb('+[0,1,2].map(function(i){return Math.round(p[i]+(q[i]-p[i])*u)}).join(',')+')'}
+function draw(){var d=window.devicePixelRatio||1;W=cv.clientWidth||640;H=cv.clientHeight||440;if(cv.width!==Math.round(W*d)){cv.width=Math.round(W*d);cv.height=Math.round(H*d)}
+ ctx=cv.getContext('2d');ctx.setTransform(d,0,0,d,0,0);ctx.clearRect(0,0,W,H);ctx.font='12px sans-serif';
+ var N=22,G=[],ymin=1e9,ymax=-1e9,z=fx.slice(),i,j;
+ for(i=0;i<=N;i++){G.push([]);for(j=0;j<=N;j++){z[A]=-2+4*i/N;z[Bv]=-2+4*j/N;var y=yv(z);G[i].push(y);ymin=Math.min(ymin,y);ymax=Math.max(ymax,y)}}
+ var lo=-0.4,hi=1.0,F=-0.95;function Y3(y){return F+(y-lo)/(hi-lo)*1.9}
+ function L(a,b,c,w){var p=prj(a[0],a[1],a[2]),q=prj(b[0],b[1],b[2]);ctx.strokeStyle=c;ctx.lineWidth=w||1;ctx.beginPath();ctx.moveTo(p[0],p[1]);ctx.lineTo(q[0],q[1]);ctx.stroke()}
+ function T(t,a,c,al){var p=prj(a[0],a[1],a[2]);ctx.fillStyle=c||'#16212b';ctx.textAlign=al||'left';ctx.fillText(t,p[0],p[1]);ctx.textAlign='left'}
+ for(i=0;i<=4;i++){var t=-1+i/2;L([t,F,-1],[t,F,1],'#eef1f4');L([-1,F,t],[1,F,t],'#eef1f4')}
+ L([-1,F,-1],[1.15,F,-1],'#16212b',1.5);L([-1,F,-1],[-1,F,1.15],'#16212b',1.5);L([-1,F,-1],[-1,0.98,-1],'#c9302c',1.5);
+ T(V[A][1]+' →',[1.18,F,-1.05]);T(V[Bv][1]+' →',[-1.0,F,1.3],'#16212b','center');T('전기 특성 Y ↑ (가상)',[-1,1.05,-1],'#c9302c');
+ /* 바닥 등고선 */
+ [0,.25,.5,.75,1].forEach(function(lv){var yl=ymin+(ymax-ymin)*lv;ctx.strokeStyle=col((yl-lo)/(hi-lo));ctx.globalAlpha=.45;
+  for(i=0;i<N;i++)for(j=0;j<N;j++){var P=[[i,j],[i+1,j],[i+1,j+1],[i,j+1]],pts=[];for(var e=0;e<4;e++){var p=P[e],q=P[(e+1)%4],u=G[p[0]][p[1]],w=G[q[0]][q[1]];
+    if((u-yl)*(w-yl)<0){var tt=(yl-u)/(w-u),ii=p[0]+(q[0]-p[0])*tt,jj=p[1]+(q[1]-p[1])*tt;pts.push(prj(-1+2*ii/N,F,-1+2*jj/N))}}
+   if(pts.length===2){ctx.beginPath();ctx.moveTo(pts[0][0],pts[0][1]);ctx.lineTo(pts[1][0],pts[1][1]);ctx.stroke()}}ctx.globalAlpha=1});
+ /* 곡면: 먼 면부터 */
+ var Q=[];for(i=0;i<N;i++)for(j=0;j<N;j++){var cs=[[i,j],[i+1,j],[i+1,j+1],[i,j+1]].map(function(p){return prj(-1+2*p[0]/N,Y3(G[p[0]][p[1]]),-1+2*p[1]/N)}),m=(G[i][j]+G[i+1][j+1])/2;
+  Q.push({d:(cs[0][2]+cs[2][2])/2,c:cs,m:m})}
+ Q.sort(function(a,b){return b.d-a.d});Q.forEach(function(q){ctx.beginPath();q.c.forEach(function(p,k){k?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1])});ctx.closePath();ctx.fillStyle=col((q.m-lo)/(hi-lo));ctx.globalAlpha=.88;ctx.fill();ctx.globalAlpha=1;ctx.strokeStyle='rgba(255,255,255,.35)';ctx.lineWidth=.5;ctx.stroke()});
+ var k=sliceCoef();document.getElementById('relEq').innerHTML='ŷ = '+k.c.toFixed(3)+sgn(k.a1,'·u')+sgn(k.a2,'·v')+sgn(k.q1,'·u²')+sgn(k.q2,'·v²')+sgn(k.r,'·uv')+'<br><span class="small">u = '+V[A][1]+', v = '+V[Bv][1]+'<br>Y 범위(이 단면): '+ymin.toFixed(2)+' ~ '+ymax.toFixed(2)+'</span>'}
+function setAxes(){var a=+sa.value,b2=+sb.value;if(a===b2){b2=(a+1)%n;sb.value=b2}A=a;Bv=b2;buildFx();draw()}
+sa.addEventListener('change',setAxes);sb.addEventListener('change',function(){if(+sb.value===A){sa.value=(A+1)%n}setAxes()});
+document.getElementById('relMean').addEventListener('click',function(){fx=new Array(n).fill(0);buildFx();draw()});
+document.getElementById('relRand').addEventListener('click',function(){var g=rng(Math.floor(Math.random()*1e6));fx=fx.map(function(){return Math.round(((g()+g()+g())/1.5-1)*1.5*10)/10});buildFx();draw()});
+var drag=null;cv.addEventListener('pointerdown',function(e){drag=[e.clientX,e.clientY,yaw,pitch];cv.setPointerCapture(e.pointerId)});
+cv.addEventListener('pointermove',function(e){if(!drag)return;yaw=drag[2]+(e.clientX-drag[0])*.01;pitch=Math.max(.05,Math.min(1.3,drag[3]+(e.clientY-drag[1])*.008));draw()});
+cv.addEventListener('pointerup',function(){drag=null});window.addEventListener('resize',draw);buildFx();draw();
+})();
+</script>
+""".replace('@@VARS@@', names)
+
+HTML = HTML_T.replace('@@DATA@@', _data()).replace('@@SAY2@@\n<p class="small muted">①②', '@@SAY2@@\n@@REL@@\n<p class="small muted">①②').replace('@@REL@@', rel_html())
+CSS = CSS + REL_CSS

@@ -277,6 +277,14 @@ footer table.tb{font-size:13.5px}
 .s3d .lg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px}
 @media (max-width:900px){.s3d{grid-template-columns:1fr}.s3d canvas{height:380px}}
 
+.rel3{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px;align-items:start;margin-top:14px}
+.rel3 canvas{display:block;width:100%;height:440px;border:1px solid var(--rule);border-radius:12px;background:#fff;cursor:grab;touch-action:none}
+.rel3 select{width:100%;padding:6px;border:1px solid var(--rule);border-radius:8px;font:inherit;margin:2px 0 8px}
+.rel3 .eqbox{font-family:"IBM Plex Mono",monospace;font-size:12.5px;line-height:1.7;background:#f7f9fb;border:1px solid var(--rule);border-radius:10px;padding:8px 10px;word-break:break-word}
+.rel3 details{margin-top:8px;font-size:13px}.rel3 details .fx{display:grid;grid-template-columns:1fr 90px 34px;gap:4px;align-items:center;margin:3px 0}
+.rel3 details .fx.off{opacity:.35}.rel3 details input{width:100%}
+@media (max-width:900px){.rel3{grid-template-columns:1fr}}
+
 .sm4{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;margin:14px 0}
 .sm4 .st4{position:relative;border:1px solid var(--rule);border-radius:12px;padding:10px;background:#fff}
 .sm4 .st4:not(:last-child)::after{content:"→";position:absolute;right:-19px;top:42%;font-size:20px;font-weight:800;color:#1e55c8}
