@@ -30,6 +30,7 @@ PM: 한양대학교 의류학과 스마트텍스타일연구실(담당 교수 �
 | 쪽 | 파일 | 내용 |
 |---|---|---|
 | INDEX | `index.html` | 1차년도 방향, SUMMARY(실측 데이터 3D 6단계 — 처음 화면은 ⑥ 가상 예측, 관계 보기: 변수 2개 × Y 단면, 역방향 보기: 목표 Y에서 직물 예상), 전체 연구 계획 정리, 스테이지 현황, 검토 결과·부직이 요청 모음, 지식 색인·내려받기 |
+| 모의 데이터 생성 가이드 | `mock_data_guide.html` | 섬유 → 실 → 직물 구조(평직·능직·호프색·편직·부직) → 물성 19항목 → 전기 특성 Y, 근거 이론 12편, 메커니즘 계산기 |
 | 1차년도 연구 방법 검토 | `method_review.html` | 방법 정의, 학습 방식과 출력, 문헌 검토, 위험과 대응, 모의실험, 제안 절차 6단계, 검토 문헌 15편 |
 | 연차별 연구계획 | `plan_years.html` | 5년 로드맵 (1차년도 방향 반영, 3~5차년도는 예정) |
 | 전체 스테이지 및 FLOW | `stages.html` | 흐름도, 일정, S0~S6 카드 |
@@ -49,16 +50,18 @@ PM: 한양대학교 의류학과 스마트텍스타일연구실(담당 교수 �
 ## 폴더
 
 ```
-*.html                 게시용 페이지 14개
+*.html                 게시용 페이지 15개
 src/                   빌드 소스 (build_pages.py가 진입점, chars.py가 캐릭터, pages_method.py가 방법 검토 쪽, summary3d.py가 3D SUMMARY)
 analysis/image_data/   이미지 데이터 분석 스크립트와 결과 (features.csv 등)
+analysis/mock_data/    모의 직물 데이터 생성기, 결과 CSV(500행), 변수 사전 JSON
 meta/                  표지·이미지 프롬프트(이전 기록), 지식 색인 등록부
 ```
 
 ## 다시 빌드하기
 
 ```bash
-python3 src/build_pages.py        # 저장소 루트에 html 14개를 다시 씀
+python3 src/build_pages.py        # 저장소 루트에 html 15개를 다시 씀
+python3 analysis/mock_data/generate_mock_fabric.py 20 20261118   # 모의 데이터 다시 만들기
 python3 src/chars.py out_dir      # 캐릭터 SVG만 따로 보고 싶을 때
 ```
 

@@ -1,0 +1,141 @@
+{
+ "version": "1.0 (2026-11-18)",
+ "materials": {
+  "cotton": {
+   "ko": "면",
+   "rho": 1.52,
+   "regain": 8.5,
+   "E": 8.0,
+   "tribo": 0.2,
+   "resil": 0.45,
+   "mu0": 0.3,
+   "kth": 1.0,
+   "dfib": 15
+  },
+  "polyester": {
+   "ko": "폴리에스터",
+   "rho": 1.38,
+   "regain": 0.4,
+   "E": 10.0,
+   "tribo": -0.5,
+   "resil": 0.65,
+   "mu0": 0.25,
+   "kth": 0.8,
+   "dfib": 13
+  },
+  "nylon": {
+   "ko": "나일론",
+   "rho": 1.14,
+   "regain": 4.5,
+   "E": 3.0,
+   "tribo": 0.8,
+   "resil": 0.8,
+   "mu0": 0.28,
+   "kth": 0.85,
+   "dfib": 14
+  },
+  "wool": {
+   "ko": "울",
+   "rho": 1.31,
+   "regain": 16.0,
+   "E": 3.0,
+   "tribo": 0.5,
+   "resil": 0.85,
+   "mu0": 0.35,
+   "kth": 0.75,
+   "dfib": 20
+  },
+  "pp": {
+   "ko": "폴리프로필렌",
+   "rho": 0.91,
+   "regain": 0.05,
+   "E": 4.0,
+   "tribo": -0.8,
+   "resil": 0.75,
+   "mu0": 0.22,
+   "kth": 0.7,
+   "dfib": 18
+  }
+ },
+ "structures": {
+  "plain": {
+   "ko": "평직",
+   "kind": "woven",
+   "float": 1,
+   "surf": 1.0,
+   "Kmin": 20,
+   "Kmax": 28,
+   "jam": 32,
+   "interl": 1.0
+  },
+  "twill22": {
+   "ko": "능직 2/2",
+   "kind": "woven",
+   "float": 2,
+   "surf": 1.25,
+   "Kmin": 22,
+   "Kmax": 32,
+   "jam": 36,
+   "interl": 0.5
+  },
+  "hopsack22": {
+   "ko": "호프색 2/2",
+   "kind": "woven",
+   "float": 2,
+   "surf": 1.3,
+   "Kmin": 22,
+   "Kmax": 32,
+   "jam": 36,
+   "interl": 0.5
+  },
+  "jersey": {
+   "ko": "싱글 저지(편직)",
+   "kind": "knit",
+   "float": 1,
+   "surf": 1.15
+  },
+  "needle": {
+   "ko": "니들펀치 부직포",
+   "kind": "nonwoven",
+   "float": 0,
+   "surf": 0.9
+  }
+ },
+ "counter": {
+  "name": "PTFE 필름",
+  "tribo": -1.0
+ },
+ "protocol": {
+  "gap_mm": 1.0,
+  "area_cm2": 25.0,
+  "freq_hz": 2.0,
+  "pressure_kpa": 5.0,
+  "rh_mean": 65.0,
+  "rh_sd": 2.0,
+  "repeats": 3
+ },
+ "sigma0_uCm2": 0.55,
+ "sra_opt_um": 45.0,
+ "items": [
+  "W",
+  "SFC_F",
+  "SFC_B",
+  "SRA_F",
+  "SRA_B",
+  "SRW_F",
+  "SRW_B",
+  "BAR_F",
+  "BAR_B",
+  "BW_FL",
+  "BW_FC",
+  "BW_BL",
+  "BW_BC",
+  "CW_F",
+  "CW_B",
+  "CRR_F",
+  "CRR_B",
+  "Qmax_F",
+  "Qmax_B"
+ ],
+ "note": "모든 계수는 문헌 방향을 따른 가정값. 실측으로 보정 전에는 결과 해석 금지. is_mock=True 열로 실측과 구분."
+}

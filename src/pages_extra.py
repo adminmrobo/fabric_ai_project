@@ -220,6 +220,7 @@ prompt_tpl = ('[고정부] close-up top-down macro photo of a flat fabric swatch
 guide_body = wrap(crumb(('index.html', 'INDEX'), (None, '가상 섬유 데이터 작성 가이드')) +
  '<h1 style="margin:4px 0 8px">가상 섬유 데이터 작성 가이드</h1>'
  '<p class="lead">앞으로 만들 가상 데이터 세 종류 — ① 시뮬레이션·합성 표 데이터, ② 시뮬레이션 실행 기록, ③ 생성 이미지 — 를 같은 규칙으로 쓰기 위한 안내입니다. 양식은 바로 내려받아 쓰실 수 있습니다.</p>'
+ '<div class="planbox"><h4>표 데이터를 실제로 만드는 방법 <span class="st draft">추가</span></h4><p class="small" style="margin:0">이 쪽은 작성 규칙입니다. 섬유·실·직물 제작 메커니즘으로 표 데이터(19항목 + 전기 특성 Y)를 만드는 방법과 근거 이론, 생성기 코드는 <a href="mock_data_guide.html">모의 데이터 생성 가이드</a>에 있습니다.</p></div>'
  '<div class="brief"><div class="bh">핵심 보고</div><dl><dt>결론</dt><dd>가상 데이터는 실측과 같은 열 이름으로, 출처·시드·바탕 원단을 꼭 남기고, 학습에만 씁니다.</dd>'
  '<dt>근거</dt><dd>받은 이미지 데이터에서 지름길 문제가 확인됐고(<a href="image_data.html">이미지 분석</a>), 엑셀 27개 원단은 장비·열 이름이 섞여 있었습니다(S0).</dd>'
  f'<dt>요청</dt><dd>열 사전의 필수 항목과 합격 기준(제안값)을 검토해 주십시오. 시뮬레이션 담당이 정해지면 {sl("s4","")} 일정에 맞춰 적용합니다.</dd></dl></div>'
@@ -275,6 +276,7 @@ REFG = [
   ('Lundberg, S. M., & Lee, S.-I. (2017). A unified approach to interpreting model predictions. <i>NeurIPS 2017</i>.', 'https://arxiv.org/abs/1705.07874', '변수 영향도(SHAP). 장치 개선 대상 변수 고르기.', ['s3', 's6']),
   ('Hair, J. F., Hult, G. T. M., Ringle, C. M., & Sarstedt, M. (2022). <i>A Primer on Partial Least Squares Structural Equation Modeling (PLS-SEM)</i> (3rd ed.). Sage.', None, '구조 → 물성 → 성능 경로 분석(S3-3).', ['s3']),
   ('Montgomery, D. C. <i>Design and Analysis of Experiments</i>. Wiley.', None, '실험계획법(요인·수준 배치).', ['s2'])]),
+ ('모의 데이터 생성 — 섬유·직물 구조 이론과 마찰전기 (2026-11-18 추가)', [(c + f' <a href="mock_data_guide.html#{k}">[{k}]</a>', u, w, ['s2', 's4']) for k, c, u, w in MREF2]),
  ('1차년도 방법 검토 — 전기 특성·데이터 생성·전향 검증 (2026-11-17 추가)', [(c + f' <a href="method_review.html#{k}">[{k}]</a>', u, w, ['s3', 's4', 's5']) for k, c, u, w in MREFS if k not in ('M1', 'M11')]),
  ('데이터 품질과 검증', [
   ('Kapoor, S., & Narayanan, A. (2023). Leakage and the reproducibility crisis in machine-learning-based science. <i>Patterns</i>, 4(9), 100804.', 'https://doi.org/10.1016/j.patter.2023.100804', '데이터 누수 유형과 점검법. 원단 단위 교차검증 원칙의 근거.', ['s3']),
