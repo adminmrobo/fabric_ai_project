@@ -431,6 +431,23 @@ _files = [('00_measurement_template.csv', '실측 기록 양식 52열 + 예시 3
           ('09_learning_curve_example.csv', 'Lab 8 — 원단 수별 R²')]
 S(P['9'], '실습 키트 — practice/ 폴더', '<div class="cols"><div><pre class="code">practice/\n├─ README.md          상세 지침\n├─ requirements.txt   numpy pandas scikit-learn scipy matplotlib\n├─ data/              CSV 15개\n├─ prompts/           데이터 생성 프롬프트 (부록 A)\n├─ labs/\n│   common.py         경로·열 목록·변환·조건부 계산\n│   lab0_make_splits.py   (강사용) 자료 나누기\n│   lab1_check_data.py    품질 검사\n│   lab2_explore_pca.py   PCA\n│   lab3_baseline_regression.py\n│   lab4_generative_model.py\n│   lab5_validate_generated.py\n│   lab6_select_and_verify.py\n│   lab7_inverse_design.py\n│   lab8_how_many_fabrics.py\n└─ outputs/           실행 결과</pre></div><div>'
   + _tbl(['파일 (클릭하면 내려받기)', '내용'], [[f'<a href="../practice/data/{a}">{a}</a>', b] for a, b in _files], 't s') + '</div></div>')
+_GH = 'https://github.com/adminmrobo/fabric_ai_project/blob/main/'
+def _kb(path):
+    try: return f'{max(1, round(os.path.getsize(os.path.join(B, "..", path)) / 1024))} KB'
+    except OSError: return ''
+_labs = ['common.py'] + sorted(f for f in os.listdir(os.path.join(_PR, 'labs')) if f.startswith('lab') and f.endswith('.py'))
+def _dl(path, label=None):
+    return f'<a href="../{path}" download>{label or os.path.basename(path)}</a> <span class="kb">{_kb(path)}</span>'
+S(P['9'], '자료 내려받기 — 슬라이드의 모든 첨부물', '<div class="dlall"><a class="bt big" href="downloads/fabric_practice_kit.zip" download>⬇ 실습 키트 전체 (zip)</a>'
+  '<span>CSV 15 · 실습 코드 10 · 지침 · 프롬프트 · 이미지 요청서 · 모의 데이터 생성기 — 압축을 풀고 <code>practice/README.md</code>부터</span></div><div class="cols c3">'
+  '<div><h3>데이터 (CSV)</h3><ul class="dl">' + ''.join(f'<li>{_dl("practice/data/" + a)}</li>' for a, b in _files) + '</ul></div>'
+  '<div><h3>실습 코드 (Python)</h3><ul class="dl">' + ''.join(f'<li>{_dl("practice/labs/" + f)}</li>' for f in _labs) + f'<li>{_dl("practice/requirements.txt")}</li></ul>'
+  '<h3>모의 데이터 생성기</h3><ul class="dl">' + f'<li>{_dl("analysis/mock_data/generate_mock_fabric.py")}</li><li>{_dl("analysis/mock_data/mock_fabric_dictionary.json")}</li></ul></div>'
+  '<div><h3>지침 · 부록</h3><ul class="dl">'
+  f'<li>{_dl("practice/README.md", "README.md — 실습 지침")} <a href="{_GH}practice/README.md" target="_blank">보기</a></li>'
+  f'<li>{_dl("practice/prompts/data_generation_prompts.md", "data_generation_prompts.md — 부록 A")} <a href="{_GH}practice/prompts/data_generation_prompts.md" target="_blank">보기</a></li>'
+  f'<li>{_dl("slides/img/gs/GENSPARK_REQUESTS.md", "GENSPARK_REQUESTS.md — 부록 B")} <a href="{_GH}slides/img/gs/GENSPARK_REQUESTS.md" target="_blank">보기</a></li></ul>'
+  '<p class="note">파일 이름을 누르면 바로 내려받고, "보기"는 GitHub에서 서식대로 엽니다. zip은 저장소와 같은 폴더 구조라 README의 명령이 그대로 동작합니다.</p></div></div>')
 S(P['9'], '준비와 공통 규칙', '<div class="cols"><div><pre class="code">cd practice\npython -m venv .venv\nsource .venv/bin/activate   # Windows: .venv\\Scripts\\activate\npip install -r requirements.txt\ncd labs\npython lab1_check_data.py</pre>'
   '<p class="note">Python 3.10 이상. 결과는 practice/outputs/ 에, 같은 결과의 예시는 practice/data/ 에 미리 있음.</p></div><div><h3>다섯 가지 규칙</h3><ol class="steps">'
   '<li>변환 기준(평균·표준편차)은 학습 자료로만</li><li>성적은 실측(시험) 자료로만 — 생성 데이터를 섞어도</li><li>생성 결과를 다시 학습 자료로 넣지 않음</li><li>적용 범위 밖 예측은 믿지 않음</li><li>측정 오차보다 작은 오차는 과적합 신호</li></ol></div></div>')
@@ -509,6 +526,8 @@ _slides_html = ('<!DOCTYPE html><html lang="ko"><head><meta charset="utf-8"><met
   '<div id="bar"></div><div id="deck">' + ''.join(_secs) + '</div>'
   '<div id="nav"><button id="pv" aria-label="이전">←</button><button id="ob">전체 보기 (O)</button><button id="nx" aria-label="다음">→</button></div><div id="ov"></div>'
   '<script>var D=' + _SDJ + ';var CP=' + _sj.dumps(_cp, ensure_ascii=False) + ';\n' + SLIDE_JS + '</script></body></html>')
+import re as _re
+_slides_html = _re.sub(r'href="(\.\./practice/[^"]+)"(?! download)', r'href="\1" download', _slides_html)
 open(os.path.join(B, '..', 'slides', 'index.html'), 'w', encoding='utf-8').write(_slides_html)
 
 # 부록 원문 파일
@@ -526,3 +545,16 @@ open(os.path.join(B, '..', 'slides', 'img', 'gs', 'GENSPARK_REQUESTS.md'), 'w', 
     '## 공통 스타일 블록 (모든 요청 앞에 붙임)\n\n```text\n' + SC.GS_STYLE + '\n```\n\n'
     + ''.join(f'## {g[0]} — {g[2]}\n\n쓰는 곳: {g[1]}\n\n```text\n{SC.GS_STYLE}\n\n{g[3]}\n```\n\n' for g in SC.GS_REQ))
 print('slides/index.html', _N, 'slides', len(_slides_html) // 1024, 'KB')
+
+# 실습 키트 zip (저장소와 같은 폴더 구조, 시각 고정 — 빌드마다 바뀌지 않게)
+import zipfile as _zf
+_root = os.path.normpath(os.path.join(B, '..'))
+_items = ['practice/README.md', 'practice/requirements.txt'] + [f'practice/data/{a}' for a, b in _files] + [f'practice/labs/{f}' for f in _labs] + [
+    'practice/prompts/data_generation_prompts.md', 'analysis/mock_data/generate_mock_fabric.py', 'analysis/mock_data/mock_fabric_dictionary.json', 'slides/img/gs/GENSPARK_REQUESTS.md']
+os.makedirs(os.path.join(_root, 'slides', 'downloads'), exist_ok=True)
+with _zf.ZipFile(os.path.join(_root, 'slides', 'downloads', 'fabric_practice_kit.zip'), 'w', _zf.ZIP_DEFLATED) as z:
+    for it in _items:
+        zi = _zf.ZipInfo('fabric_practice_kit/' + it, date_time=(2026, 11, 18, 0, 0, 0)); zi.compress_type = _zf.ZIP_DEFLATED; zi.external_attr = 0o644 << 16
+        z.writestr(zi, open(os.path.join(_root, it), 'rb').read())
+    zi = _zf.ZipInfo('fabric_practice_kit/practice/outputs/', date_time=(2026, 11, 18, 0, 0, 0)); z.writestr(zi, b'')
+print('zip', len(_items), 'files')
