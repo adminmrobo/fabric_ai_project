@@ -219,4 +219,4 @@ mk_body = MK_CSS + wrap(crumb(('index.html', 'INDEX'), ('data_guide.html', '가�
  + say('asst', 'report', '정답을 아는 시험이 됩니다. 우리가 넣은 관계, 예를 들어 능직이 평직보다 출력이 높다는 관계를 모델이 되찾지 못하면 실측에서도 찾기 어렵습니다. 그리고 원단 몇 개면 관계가 보이는지를 미리 재 볼 수 있어, S2에서 몇 개를 만들지 정하는 데 씁니다.')) + \
  wrap('<h2 id="gref">근거 문헌</h2><p class="small muted">M로 시작하는 번호는 <a href="method_review.html#mrefs">1차년도 연구 방법 검토</a>의 문헌입니다. 원문 전체가 아니라 초록·서지·검색 결과로 확인한 범위에서 인용했으며, "확인 필요" 표시는 서지 일부를 더 확인해야 하는 항목입니다.</p>' + refl2)
 
-sizes['mock_data_guide.html'] = page('mock_data_guide.html', '모의 데이터 생성 가이드', mk_body + tail((('data_guide.html', '가상 섬유 데이터 작성 가이드'), ('method_review.html', '1차년도 연구 방법 검토'))))
+sizes['mock_data_guide.html'] = page('mock_data_guide.html', '모의 데이터 생성 가이드', mk_body + tail((('data_guide.html', '가상 섬유 데이터 작성 가이드'), ('slides/index.html', '웹 슬라이드 — 데이터 생성·검증·실습'))))
