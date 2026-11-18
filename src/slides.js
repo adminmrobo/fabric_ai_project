@@ -185,9 +185,9 @@ function initNoise(){var c=$('nzC'),n=$('nzN'),lv=D.tr.map(function(r){return Ma
  c.oninput=dr;n.oninput=dr;dr()}
 
 // ---- 5. 학습 곡선 ----
-function initLC(){var r=ctx('lcCv'),x=r[1],o={L:70,T:30,W:610,H:330,x0:10,x1:500,y0:0.2,y1:1,xlog:1,xl:'학습 원단 수 (로그) →',yl:'시험 R²'},f=frame(x,o),it=[];
- Object.keys(D.lc).forEach(function(k,i){var a=D.lc[k],col=i?'#c4561a':'#22398f';x.fillStyle=i?'rgba(196,86,26,.15)':'rgba(34,57,143,.15)';x.beginPath();
-  a.forEach(function(p,j){var X=f[0](p[0]),Y=f[1](Math.min(1,p[1]+p[2]));j?x.lineTo(X,Y):x.moveTo(X,Y)});a.slice().reverse().forEach(function(p){x.lineTo(f[0](p[0]),f[1](Math.max(0.2,p[1]-p[2])))});x.fill();
+function initLC(){var r=ctx('lcCv'),x=r[1],o={L:70,T:30,W:610,H:330,x0:10,x1:500,y0:-0.2,y1:1,xlog:1,xl:'학습 원단 수 (로그) →',yl:'시험 R²'},f=frame(x,o),it=[];
+ Object.keys(D.lc).forEach(function(k,i){var a=D.lc[k],col=['#22398f','#c4561a','#7f9c62'][i%3];x.fillStyle=['rgba(34,57,143,.13)','rgba(196,86,26,.13)','rgba(127,156,98,.18)'][i%3];x.beginPath();
+  a.forEach(function(p,j){var X=f[0](p[0]),Y=f[1](Math.min(1,p[1]+p[2]));j?x.lineTo(X,Y):x.moveTo(X,Y)});a.slice().reverse().forEach(function(p){x.lineTo(f[0](p[0]),f[1](Math.max(-0.2,p[1]-p[2])))});x.fill();
   line(x,a.map(function(p){return [f[0](p[0]),f[1](p[1])]}),col,3);a.forEach(function(p){dot(x,f[0](p[0]),f[1](p[1]),4,col)});it.push([k,col])});
  x.fillStyle='rgba(127,156,98,.18)';x.fillRect(f[0](50),o.T,f[0](120)-f[0](50),o.H);x.fillStyle='#3f7a3a';x.font='bold 13px "Noto Sans KR",sans-serif';x.fillText('S2 목표 구간',f[0](52),o.T+o.H-10);legend(x,it,o.L,14)}
 

@@ -12,6 +12,7 @@ _tr, _gen, _ks, _tstr, _base, _ver, _qc, _tmpl, _lc = [_rd(n) for n in (
     '02_train.csv', '04_generated_candidates_example.csv', '05_ks_example.csv', '05_tstr_result_example.csv',
     '05_baseline_scores_example.csv', '07_verification_result_example.csv', '03_qc_report_example.csv',
     '00_measurement_template.csv', '09_learning_curve_example.csv')]
+_gt = _rd('05_generative_test_example.csv')
 _X19 = ["W", "SFC_F", "SFC_B", "SRA_F", "SRA_B", "SRW_F", "SRW_B", "BAR_F", "BAR_B", "BW_FL", "BW_FC", "BW_BL", "BW_BC", "CW_F", "CW_B", "CRR_F", "CRR_B", "Qmax_F", "Qmax_B"]
 _X8 = ["W", "SFC_F", "SRA_F", "SRW_F", "BAR_F", "CW_F", "CRR_F", "Qmax_F"]
 _DJ = _sj.load(open(os.path.join(B, 'data.json'), encoding='utf-8'))
@@ -163,12 +164,15 @@ GSMAP = {g[0]: g for g in SC.GS_REQ}
 def _gs(id_, h=300):
     g = GSMAP[id_]
     return (f'<figure class="gs"><div class="gsi" style="max-height:{h}px"><img src="img/gs/{id_}.webp" alt="{g[2]}" onerror="if(!this.dataset.f){{this.dataset.f=1;this.src=&quot;img/gs/{id_}.png&quot;}}else this.remove()"><div class="fb">{FB[id_]}</div></div>'
-            f'<figcaption>{g[2]} <span>{id_}</span></figcaption></figure>')
+            f'<figcaption>{g[2]} <span>AI 생성 삽화 · {id_}</span></figcaption></figure>')
 
 SL = []
 def S(part, title, body, init=''): SL.append((part, title, body, init))
+CORE = ['1차년도 방법 정의', '출발점 — 실측 27개, 전기 특성 0개', '측정 기록 양식', '측정 프로토콜 — Y를', '생성 사슬 — 섬유에서 전기 특성까지', '인과 지도 —', '접촉-분리형 마찰전기 — 기본 식',
+  '좌표축 ⑧ 분해', '정리 — 섬유 특성이 전기 특성이 되는 세 갈래', '데이터 생성 원칙 10조', '하지 말 것 다섯 가지', '원칙 06 —', '생성 절차 8단계', '검증의 세 질문', '누수와 지름길', 'TSTR —',
+  '지도 · 비지도', '결합분포와 조건부 생성', '생성 모델 vs 지도 회귀 기준선', '불확실도와 적용 범위', '자료 내려받기', '실측 이후 — 일정과 할 일', '교수님 결정이 필요한 것', '원칙 — LLM은']
 PARTS = [('0', '표지'), ('1', '왜 데이터를 만드나'), ('2', '데이터 기초'), ('3', '섬유 메커니즘'), ('4', '섬유 특성 → 전기 특성'), ('5', '데이터 생성 원칙'),
-         ('6', '생성 절차'), ('7', '데이터 검증'), ('8', '방법론'), ('9', '실습'), ('10', '향후 연구'), ('A', '부록 A · 프롬프트 가이드'), ('B', '부록 B · 이미지 요청서'), ('R', '참고문헌')]
+         ('6', '생성 절차'), ('7', '데이터 검증'), ('8', '방법론'), ('9', '실습'), ('10', '향후 연구'), ('A', '부록 A · 프롬프트 가이드'), ('B', '부록 B · 이미지 요청서'), ('C', '부록 C · 용어집'), ('R', '참고문헌')]
 P = {k: (k, v) for k, v in PARTS}
 
 # ================= 0 표지 =================
@@ -185,8 +189,8 @@ S(P['0'], '이 자료로 연구진이 바로 할 수 있는 것', '<p class="lea
 _tocd = ['실측 27개, 전기 특성 0개 — 모의 데이터가 필요한 이유와 한계', '원단 한 줄의 구성, Y는 연속값, 측정은 관측값', '소재·실·구조·물성 — Peirce·Munden·van Wyk·Howell',
   '좌표축으로 보기: 대전 서열, σx/ε₀, 거칠기, 압력, 습도, 제작 인자, 민감도', '10조 지침과 금지 5가지, 잡음·원단 수 기준', '라틴 하이퍼큐브, 필터, 잡음 세 층, 보정 순서',
   '품질 검사, 분포·상관, 누수, TSTR', 'PCA, 가우시안 혼합, 조건부 생성, VAE·GAN, 적용 범위, 모델 붕괴', 'Lab 1~8 명령·출력·CSV', '일정·역할·체크리스트',
-  '데이터 생성용 프롬프트 6종, 나쁜 예·좋은 예', 'Genspark 삽화 10장 요청서', '']
-S(P['0'], '목차', '<ol class="toc">' + ''.join(f'<li><em>{k}</em><b>{v}</b><span>{d}</span></li>' for (k, v), d in zip(PARTS[1:-1], _tocd)) + '</ol>')
+  '데이터 생성용 프롬프트 6종, 나쁜 예·좋은 예', 'Genspark 삽화 10장 요청서', 'GMM·BIC·마할라노비스·TSTR 등 18개 용어', '']
+S(P['0'], '목차', '@@CORE@@<ol class="toc">' + ''.join(f'<li><em>{k}</em><b>{v}</b><span>{d}</span></li>' for (k, v), d in zip(PARTS[1:-1], _tocd)) + '</ol>')
 
 # ================= 1 왜 =================
 S(P['1'], '출발점 — 실측 27개, 전기 특성 0개', '<div class="cols c64"><div><div class="small">원단 27개 × 측정 묶음 8개 + 전기 특성 Y — 칸 색 = 채운 비율 (실측 엑셀 집계, S0)</div>' + _cv('covCv', 720, 470) + '</div>'
@@ -217,9 +221,9 @@ S(P['2'], '측정값은 정답이 아니다 — 관측값 = 참값 × 오차', '
   + _side('같은 원단을 300번 잰다면', '<div class="fbox s">관측 = 참값 × (원단 간 변동) × (측정 오차)</div><p>참값 60 V인 원단을 n회 재서 평균을 낸 값의 흩어짐입니다. 반복 평균의 흔들림은 CV/√n로 줄어듭니다.</p>'
   '<div class="kpis v"><div class="kpi"><b id="repR">–</b><span>95%가 들어오는 범위</span></div></div><p>모델 오차가 이 범위보다 작아지면 <b>과적합 신호</b>입니다.</p>') + '</div>', 'initRep')
 _tc = list(_tmpl.columns)
-S(P['2'], '측정 기록 양식 — 52열', '<p>실험실은 이 양식(<a href="../practice/data/00_measurement_template.csv">00_measurement_template.csv</a>)으로 기록합니다. 열 뜻과 단위는 <a href="../practice/data/00_column_dictionary.csv">00_column_dictionary.csv</a>.</p>'
-  '<div class="chips">' + ''.join(f'<span class="chip{" y" if c.startswith(("Voc", "Qsc")) else (" p" if c in ("counter_material", "contact_mode", "gap_mm", "area_cm2", "pressure_kPa", "freq_Hz", "temp_C", "rh_pct", "x_instrument") else "")}">{c}</span>' for c in _tc) + '</div>'
-  '<div class="lg"><span class="chip">식별·설계·물성</span> <span class="chip p">측정 조건 (고정·기록)</span> <span class="chip y">전기 특성 (반복 3회)</span></div>'
+S(P['2'], f'측정 기록 양식 — {len(_tmpl.columns)}열', '<p>실험실은 이 양식(<a href="../practice/data/00_measurement_template.csv">00_measurement_template.csv</a>)으로 기록합니다. 열 뜻과 단위는 <a href="../practice/data/00_column_dictionary.csv">00_column_dictionary.csv</a>.</p>'
+  '<div class="chips">' + ''.join(f'<span class="chip{" y" if c.startswith(("Voc", "Qsc")) else (" p" if c in ("counter_material", "contact_mode", "gap_mm", "area_cm2", "pressure_kPa", "freq_Hz", "temp_C", "rh_pct", "x_instrument", "meter_type", "meter_input_ohm", "neutralize", "condition_h", "cycles_discarded") else "")}">{c}</span>' for c in _tc) + '</div>'
+  '<div class="lg"><span class="chip">식별·설계·물성</span> <span class="chip p">측정 조건·장비 (고정·기록)</span> <span class="chip y">전기 특성 (반복 3회)</span></div>'
   + _tbl(['fabric_id', 'material', 'structure', 'W', 'SRA_F', 'counter', 'rh_pct', 'Voc_rep1~3', 'Voc_V', 'Voc_cv'], [[r.fabric_id, r.material, r.structure, r.W, r.SRA_F, r.counter_material, r.rh_pct, f'{r.Voc_rep1} · {r.Voc_rep2} · {r.Voc_rep3}', r.Voc_V, r.Voc_cv] for r in _tmpl.itertuples()]))
 S(P['2'], '측정 프로토콜 — Y를 "직물의 성질"로 만드는 고정값', '<div class="cols c64"><div class="t2">' + prott.replace('class="tb"', 'class="t"') + '</div><div>' + _gs('GS02', 250)
   + '<p class="note">조건이 흔들리면 모델은 직물이 아니라 측정 조건을 배웁니다. 고정할 수 없는 온습도는 반드시 열로 남깁니다.</p></div></div>')
@@ -229,13 +233,20 @@ S(P['3'], '생성 사슬 — 섬유에서 전기 특성까지', '<div class="wid
   '<div class="g3"><div class="card"><b>앞 칸 → 뒤 칸은 식</b><p>각 칸은 앞 칸의 값으로 계산합니다. 흩뿌린 숫자가 아니라 제작 메커니즘을 따라간 숫자입니다.</p></div>'
   '<div class="card"><b>칸마다 잡음</b><p>식이 다 설명하지 못하는 몫(원단 간 변동)과 측정 오차를 칸마다 정한 크기로 더합니다.</p></div>'
   '<div class="card"><b>소재는 Y로 직접도</b><p>대전 서열과 수분율은 구조를 거치지 않고 전기 특성에 바로 영향을 줍니다.</p></div></div>')
-S(P['3'], '① 소재 — 섬유의 대표값', '<div class="t2">' + matt.replace('class="tb"', 'class="t"') + '</div>'
-  '<p class="note">교과서 수준의 대표값입니다. 대전 서열 점수는 직물 대전 서열(나일론 > 면 > 폴리에스터 > 폴리프로필렌 > PTFE)' + _ref('G8') + '을 순서 점수로 옮긴 가정값이며, 울은 문헌마다 위치가 달라 불확실성이 큽니다. 실험실 실의 시험 성적서 값으로 바꿔 넣습니다.</p>')
+_tag = lambda h, k: h.replace(f'<th>{k}</th>', f'<th>{k} <em class="tg {"a" if "가정" in k else ""}"></em></th>')
+_mt = matt.replace('class="tb"', 'class="t"')
+for _k in ['밀도 g/cm³', '표준 수분율 %', '섬유 탄성률 GPa', '섬유 지름 μm']: _mt = _mt.replace(f'<th>{_k}</th>', f'<th>{_k} <em class="tg">문헌</em></th>')
+for _k in ['회복 경향', '기준 마찰계수', '열 전달 계수', '대전 서열 점수']: _mt = _mt.replace(f'<th>{_k}</th>', f'<th>{_k} <em class="tg a">가정</em></th>')
+_st = strt.replace('class="tb"', 'class="t"')
+for _k in ['제작 메커니즘', '밀도를 정하는 인자 (생성 범위)']: _st = _st.replace(f'<th>{_k}</th>', f'<th>{_k} <em class="tg">문헌</em></th>')
+for _k in ['표면 요철 주기', '실-실 접촉 표면 계수']: _st = _st.replace(f'<th>{_k}</th>', f'<th>{_k} <em class="tg a">가정</em></th>')
+S(P['3'], '① 소재 — 섬유의 대표값', '<div class="t2">' + _mt + '</div>'
+  '<p class="note"><em class="tg">문헌</em> 교과서 수준의 대표값, <em class="tg a">가정</em> 문헌의 순서·방향만 따라 정한 값(실측으로 보정). 대전 서열 점수는 직물 대전 서열(나일론 > 면 > 폴리에스터 > 폴리프로필렌 > PTFE)' + _ref('G8') + '을 순서 점수로 옮긴 가정값이며, 울은 문헌마다 위치가 달라 불확실성이 큽니다. 실험실 실의 시험 성적서 값으로 바꿔 넣습니다.</p>')
 S(P['3'], '② 실 — 지름과 커버 팩터', '<div class="cols c64"><div>'
   '<div class="fbox">실 지름 d = √( 4 · tex·10⁻⁵ / (π · ρ<sub>f</sub> · 0.6) )  [cm]</div><ul class="b"><li>단면적 = 선밀도 ÷ (섬유 밀도 × 충전율 0.6)</li><li>같은 tex라도 가벼운 섬유(PP 0.91)는 굵고, 무거운 섬유(면 1.52)는 가늘다</li></ul>'
   '<div class="fbox">커버 팩터(SI) K = 올/cm × √tex / 10</div><ul class="b"><li>K가 클수록 실이 빽빽 — 경사 K₁ + 위사 K₂</li><li>평직은 K₁+K₂ ≈ 32에서 막힘(jam), 능직·호프색은 36까지</li><li>생성기는 막힘 한계의 98%를 넘으면 버림 — 짤 수 없는 직물</li></ul></div>'
   + _side('예: 나일론 25 tex, K = 26, 경사 비중 0.52', '<p class="mono">d = 0.216 mm<br>EPC = 13.5·10/√25 = 27.0 올/cm<br>PPC = 12.5·10/√25 = 25.0 올/cm<br>막힘 한계 대비 26/36 = 72%</p>') + '</div>')
-S(P['3'], '③ 구조 — 제작 방법 5종', _gs('GS03', 175) + '<div class="t2">' + strt.replace('class="tb"', 'class="t"') + '</div>'
+S(P['3'], '③ 구조 — 제작 방법 5종', _gs('GS03', 175) + '<div class="t2">' + _st + '</div>'
   '<p class="note">능직·호프색은 교차가 적어 실을 더 촘촘히 넣을 수 있어(조직 계수)' + _ref('G2') + ' 막힘 한계를 높게 둡니다. 실-실 접촉 표면 계수는 직물 TENG 비교 연구' + _ref('M3', 'M4') + '의 순서를 따른 가정입니다.</p>')
 S(P['3'], '③-1 제직 — Peirce의 직물 기하', '<p>Peirce(1937)는 제직물을 실 지름·간격·굴곡·커버·두께·평량이 서로 묶인 하나의 기하 체계로 다뤘습니다' + _ref('G1') + '. 생성기는 이를 단순화해 씁니다.</p>'
   '<div class="fbox">굴곡률 c ≈ 0.9 · 교차 비율 · (d / 맞은편 실 간격)²   (평직 1, 능직·호프색 0.5)</div>'
@@ -251,6 +262,14 @@ _ir = items_rows
 S(P['3'], '④ 물성 19항목 — 생성 규칙 (1/2)', _tbl(['항목', '메커니즘', '생성 식 (요약)', '근거'], [[f'<b>{a}</b>', b, f'<span class="s">{c}</span>', _ref(*d.split())] for a, b, c, d in _ir[:5]]))
 S(P['3'], '④ 물성 19항목 — 생성 규칙 (2/2)', _tbl(['항목', '메커니즘', '생성 식 (요약)', '근거'], [[f'<b>{a}</b>', b, f'<span class="s">{c}</span>', _ref(*d.split())] for a, b, c, d in _ir[5:]])
   + '<p class="note">섬유·직물 마찰은 Amontons 법칙(F/N = 일정)이 맞지 않고 F = a·Nⁿ을 따릅니다' + _ref('G6') + '. 압축은 van Wyk 섬유 집합체 이론' + _ref('G4', 'G5') + '의 방향을 따랐습니다. 단위는 FTT 출력 단위로 보정합니다.</p>')
+S(P['3'], '이 생성기가 다루지 않는 것', _tbl(['빠진 것', '왜 중요한가', '넣으려면'], [
+  ['마감 가공 (대전 방지·발수·유연제)', '표면 화학이 바뀌어 대전 서열 위치 자체가 이동', '가공 여부 열 + 소재별 서열 보정값, 가공 전·후 짝 실측'],
+  ['혼방 (면/폴리에스터 등)', '표면에 드러난 섬유 비율이 대전량을 좌우', '서열 점수를 표면 비율로 가중평균하는 가정 → 혼방 3~5개 실측으로 확인'],
+  ['새틴·이중직·이중 편직·경편', '뜬 길이·표면 요철이 5종 범위 밖', '부록 A 프롬프트 P3로 구조 값 제안 → 실험실 확인'],
+  ['미끄럼(sliding)·단일 전극·자유 막 방식', '전압 식과 마찰의 역할이 다름', '접촉-분리만 다룸. 방식이 바뀌면 생성기 ⑤단계를 새로'],
+  ['마모·세탁·반복 사용', '출력이 사용 횟수에 따라 감소', '세탁 횟수 열 + 감소 곡선 실측'],
+  ['두께 방향 유전 특성', '단락 전하 Q는 유전층 두께·유전율에 좌우', 'Q를 따로 재고, 두께·유전율 열 추가']], 't s')
+  + '<p class="note">이 범위 밖의 원단은 생성 모델의 <b>적용 범위 밖</b>입니다. 실측에 섞이면 소재·구조 열에 표시하고 따로 평가합니다.</p>')
 S(P['3'], '메커니즘 계산기 — 한 원단을 직접 만들어 보기', '<p class="small">소재·구조·인자를 바꾸면 구조 → 물성 → 전기 특성이 같은 식으로 계산됩니다(잡음 없는 참값). 생성기 파이썬 코드와 값이 일치합니다.</p><div class="calcwrap">' + calc + '</div>')
 
 # ================= 4 섬유 특성 → 전기 특성 =================
@@ -266,7 +285,7 @@ _dag = _svg(1100, 400, _ARW
 S(P['4'], '인과 지도 — 무엇이 무엇을 거쳐 전기 출력이 되나', _dag + '<div class="g3"><div class="card"><b>얼마나 주고받나</b><p>소재의 대전 서열 차이 — 상대 전극(PTFE)과 멀수록 전하가 많이 옮겨감</p></div>'
   '<div class="card"><b>얼마나 닿나</b><p>구조·표면 요철·압축성이 실제 접촉 면적을 정함 — 실접촉 지수</p></div><div class="card"><b>얼마나 남나</b><p>습도가 높으면 표면 전하가 새어 나감 — 흡습성 섬유가 더 민감</p></div></div>')
 S(P['4'], '접촉-분리형 마찰전기 — 기본 식', '<div class="cols c55"><div>' + _gs('GS04', 210) + '<p class="small" style="text-align:center;margin:0">왼쪽 접촉 · 오른쪽 분리 — 위 직물(+), 아래 PTFE 필름(−), 바깥 노란 판 = 전극</p>'
-  + '<div class="fbox">Voc = σ · x / ε₀      Q = σ · S      평균 전류 = 2 · Q · f</div><ul class="b"><li>σ: 표면 전하 밀도 — <b>직물이 정하는 부분</b></li><li>x 간격, S 면적, f 주파수 — 프로토콜로 고정' + _ref('M2') + '</li></ul></div>'
+  + '<div class="fbox">Voc = σ · x / ε₀      Q = σ · S      평균 전류 = 2 · Q · f</div><ul class="b"><li>σ: 표면 전하 밀도 — <b>직물이 정하는 부분</b>; x 간격, S 면적, f 주파수 — 프로토콜로 고정' + _ref('M2') + '</li></ul>''<div class="warn"><b>이상식의 한계</b> — 넓은 평판·완전 접촉·전하 누설 없음·무한 입력 임피던스를 가정합니다. 편직 TENG 실측 예: σ 6.12 μC/m², 변위 1 mm에서 Voc 51 V' + _ref('G13') + ' — 이상식으로는 약 690 V(한 자릿수 차이). 그래서 모의 데이터의 σ는 <b>유효 전하 밀도</b>(규모 맞춤 상수 σ₀에 흡수)이고, 실측에서는 Q로 σ = Q/S를 따로 구해 Voc와 각각 보정합니다.</div></div>'
   '<div><div class="ctl">σ <input type="range" id="tgS" min="0.05" max="1.2" step="0.01" value="0.4"> <b id="tgSV">0.40</b> μC/m²</div>' + _cv('tgCv', 560, 330)
   + '<div class="kpis"><div class="kpi"><b id="tgV">–</b><span>Voc (x = 1 mm)</span></div><div class="kpi"><b id="tgQ">–</b><span>Q (25 cm²)</span></div><div class="kpi"><b id="tgI">–</b><span>평균 전류 (2 Hz)</span></div></div></div></div>', 'initTeng')
 S(P['4'], '좌표축 ① 대전 서열 — 누가 전자를 내주나', '<div class="cols c64"><div><div class="ctl">상대 전극 <select id="trRef"></select></div>' + _cv('trCv', 720, 400) + '</div>'
@@ -304,8 +323,9 @@ S(P['5'], '원칙 04 — 잡음 크기가 예측의 천장을 정한다', '<div 
   + _side('R² 천장', '<div class="kpis v"><div class="kpi"><b id="nzR">–</b><span>완벽한 모델도 넘을 수 없는 R²</span></div></div><div class="fbox s">천장 = Var(참값) / (Var(참값) + (CV/√n)²)  (로그 척도)</div>'
   '<p>잡음을 너무 작게 넣으면 모델이 비현실적으로 좋아 보이고, 실측이 오면 실망합니다. 잡음 크기는 <b>실측 반복 CV</b>에서 가져옵니다. 반복을 늘리면 천장이 올라갑니다.</p>') + '</div>', 'initNoise')
 S(P['5'], '원칙 06 — 원단이 몇 개면 관계가 보이나 (Lab 8)', '<div class="cols c64"><div>' + _cv('lcCv', 720, 420) + '</div>'
-  + _side('학습 곡선', '<p>모의 학습 자료에서 원단 수를 15개부터 384개까지 늘리며 시험 R²를 쟀습니다(무작위 5회 평균 ± 표준편차).</p>'
-  '<ul class="b"><li>~60개: 들쭉날쭉 — 뽑힌 원단에 따라 결과가 크게 다름</li><li>100개 안팎: R² 0.8대로 안정</li><li>그 이상: 천천히 오름</li></ul><p><b>S2 실측 목표 50개 이상</b>은 하한입니다. 실측은 잡음이 더 클 수 있어 여유를 둡니다.</p>') + '</div>', 'initLC')
+  + _side('학습 곡선', '<p>원단 수를 15개부터 384개까지 늘리며 시험 R²를 쟀습니다(무작위 5회 평균 ± 표준편차).</p>'
+  '<ul class="b"><li>지도 회귀: 50개 0.7 안팎, 100개 0.8대</li><li><b>생성 모델: 원단을 더 먹음</b> — 60~100개 0.6, 160개 0.84</li><li>결합분포(19+1차원)를 배우는 만큼 자료가 더 필요</li></ul>'
+  '<p><b>실측 목표: 최소 50개</b>(기준선 회귀·생성기 보정) / <b>권장 100~150개</b>(생성 모델). 50~100개 구간에서는 무리 수 1~2와 핵심 8항목으로 시작합니다.</p>') + '</div>', 'initLC')
 _rng19 = _df[_X19].quantile([0.01, 0.5, 0.99]).T
 _units = {'W': 'g/m²', 'SFC': 'Gf/Gf', 'SRA': 'μm', 'SRW': 'mm', 'BAR': 'Gf·mm/rad', 'BW': 'Gf·mm·rad', 'CW': 'Gf·mm', 'CRR': '% (보정 필요)', 'Qmax': 'W/cm²'}
 _rr = [[c, _units[c.split('_')[0]], f'{r[0.01]:.3g}', f'{r[0.5]:.3g}', f'{r[0.99]:.3g}'] for c, r in _rng19.iterrows()]
@@ -412,10 +432,13 @@ _dl = _svg(1100, 220, _ARW + _t(270, 28, 'VAE — 압축했다 복원', 16, NV, 
 S(P['8'], '딥러닝 생성 모델 — 언제 쓰나', _dl + _tbl(['방법', '배우는 법', '원단 수', '이 과제에서'], [
   ['가우시안 혼합', '무리별 평균·공분산', '수십 개부터', '<b>1차 시작점</b> — 조건부 식이 정확, 해석 쉬움'], ['가우시안 코퓰라', '열별 분포 + 상관 구조', '수십 개부터', '분포가 치우친 항목이 많을 때'],
   ['VAE (TVAE)', '인코더로 잠재 공간 → 디코더로 복원', '수백 개 이상', '원단이 늘고 관계가 비선형일 때'], ['CTGAN', '생성기 vs 판별기, 범주 조건', '수백 개 이상', '소재·구조를 조건으로 줄 때' + _ref('M10')]], 't s'))
-S(P['8'], '비교 기준 — 지도 회귀 (Lab 3)', '<div class="cols"><div class="bars">'
+_gte, _gnc = _gt[_gt.set == '시험'].iloc[0], _gt[_gt.set == '새 조합'].iloc[0]
+S(P['8'], '생성 모델 vs 지도 회귀 기준선 (Lab 3 · 4b)', '<div class="cols"><div class="bars">'
   + ''.join(f'<div class="bar"><span>{r.model}</span><i style="width:{max(r.test_R2, 0) * 100:.0f}%"></i><b>시험 R² {r.test_R2:.3f} · 새 조합 RMSE {r.newcombo_RMSE:.1f} V</b></div>' for r in _base.itertuples())
-  + '</div><div><ul class="b"><li>평균 → 릿지 → 랜덤포레스트 → 가우시안 과정 순으로 복잡도를 올림</li><li>5겹 교차검증 + 시험 자료 + 새 조합(울 × 호프색)</li><li>릿지(선형)가 크게 뒤짐 — Voc는 곱셈 구조라 비선형</li>'
-  '<li>새 조합 오차가 시험 오차보다 큼 — 본 적 없는 조합은 어렵다</li><li>생성 모델의 p(y|x)는 이 기준선을 넘어야 의미</li></ul></div></div>')
+  + f'<div class="bar gm"><span><b>생성 모델 p(y|x)</b><br><small>가우시안 혼합 {int(_gte.components)}무리</small></span><i style="width:{max(_gte.R2, 0) * 100:.0f}%"></i><b>시험 R² {_gte.R2:.3f} · 새 조합 RMSE {_gnc.RMSE:.1f} V · ±2σ 적중 {_gte.cover95:.0%}</b></div>'
+  + '</div><div><ul class="b"><li>생성 모델의 예측(조건부 평균)은 릿지보다 낫고 랜덤포레스트·가우시안 과정보다 약간 낮음 — <b>예측만이 목적이면 기준선이 이김</b></li>'
+  f'<li>생성 모델의 몫은 예측 + 새 직물 생성 + 역방향 + 범위. 다만 ±2σ 범위가 실제 값을 {_gte.cover95:.0%}만 담음 — 95%보다 좁은 <b>과신</b>, 범위를 넓히거나 보정 필요</li>'
+  '<li>새 조합 RMSE는 셋이 비슷(10~11 V) — 본 적 없는 조합은 모두 어렵다</li><li>보고는 항상 이 표처럼 <b>기준선과 나란히</b></li></ul></div></div>')
 S(P['8'], '불확실도와 적용 범위 — 외삽을 믿지 않기', '<div class="cols c64"><div><div class="ctl"><button class="bt on" data-dm="0">적용 범위 안/밖</button><button class="bt" data-dm="1">예측 Voc</button> <span class="small">점 = Lab 4 생성 직물 400개, 회색 = 학습 원단</span></div>' + _cv('dmCv', 720, 420) + '</div>'
   + _side('적용 범위 세 조건', '<ol class="steps s"><li>각 항목이 학습 자료 1~99% 안</li><li>마할라노비스 거리가 학습 자료 99% 이내</li><li>예측 Y가 학습 Y 범위(4.6~126.8 V) 안</li></ol><p>Lab 6 함정: 범위 검사 없이 기대값 최고를 고르면 예측 240 V → 측정 50~77 V. X가 각각 범위 안이어도 <b>조합</b>이 새로우면 Y가 외삽됩니다.</p>') + '</div>', 'initDom')
 S(P['8'], '모델 붕괴 — 생성 결과를 다시 학습하면', '<div class="cols c64"><div><div class="ctl">세대 <input type="range" id="clG" min="0" max="200" value="60"> <b id="clGV">60</b> · 세대당 표본 <input type="range" id="clN" min="10" max="200" step="10" value="30"> <b id="clNV">30</b></div>' + _cv('clCv', 720, 420) + '</div>'
@@ -426,11 +449,11 @@ S(P['8'], '모델 붕괴 — 생성 결과를 다시 학습하면', '<div class=
 _files = [('00_measurement_template.csv', '실측 기록 양식 52열 + 예시 3행'), ('00_column_dictionary.csv', '열 뜻·단위·필수 여부'), ('01_mock_full.csv', '모의 원단 500개'),
           ('02_train.csv', '학습 384개'), ('02_test.csv', '시험 96개'), ('02_test_new_combo.csv', '새 조합 시험 20개 (울 × 호프색)'),
           ('03_qc_report_example.csv', 'Lab 1 결과'), ('04_generated_candidates_example.csv', 'Lab 4 — 새 직물 1000개, 예측·범위·적용 범위'),
-          ('05_baseline_scores_example.csv', 'Lab 3 — 비교 기준 성적'), ('05_ks_example.csv', 'Lab 5 — 분포 비교'), ('05_tstr_result_example.csv', 'Lab 5 — TSTR'),
+          ('05_baseline_scores_example.csv', 'Lab 3 — 비교 기준 성적'), ('05_generative_test_example.csv', 'Lab 4b — 생성 모델 시험 성적'), ('05_ks_example.csv', 'Lab 5 — 분포 비교'), ('05_tstr_result_example.csv', 'Lab 5 — TSTR'),
           ('06_verification_plan_example.csv', 'Lab 6 — 만들 후보와 측정 칸'), ('07_verification_result_example.csv', 'Lab 6 — 측정 후 판정'), ('08_inverse_candidates_example.csv', 'Lab 7 — 역방향 후보'),
           ('09_learning_curve_example.csv', 'Lab 8 — 원단 수별 R²')]
-S(P['9'], '실습 키트 — practice/ 폴더', '<div class="cols"><div><pre class="code">practice/\n├─ README.md          상세 지침\n├─ requirements.txt   numpy pandas scikit-learn scipy matplotlib\n├─ data/              CSV 15개\n├─ prompts/           데이터 생성 프롬프트 (부록 A)\n├─ labs/\n│   common.py         경로·열 목록·변환·조건부 계산\n│   lab0_make_splits.py   (강사용) 자료 나누기\n│   lab1_check_data.py    품질 검사\n│   lab2_explore_pca.py   PCA\n│   lab3_baseline_regression.py\n│   lab4_generative_model.py\n│   lab5_validate_generated.py\n│   lab6_select_and_verify.py\n│   lab7_inverse_design.py\n│   lab8_how_many_fabrics.py\n└─ outputs/           실행 결과</pre></div><div>'
-  + _tbl(['파일 (클릭하면 내려받기)', '내용'], [[f'<a href="../practice/data/{a}">{a}</a>', b] for a, b in _files], 't s') + '</div></div>')
+S(P['9'], '실습 키트 — practice/ 폴더', '<div class="cols"><div><pre class="code">practice/\n├─ README.md          상세 지침\n├─ requirements.txt   numpy pandas scikit-learn scipy matplotlib\n├─ data/              CSV 16개\n├─ prompts/           데이터 생성 프롬프트 (부록 A)\n├─ labs/\n│   common.py         경로·열 목록·변환·조건부 계산\n│   lab0_make_splits.py   (강사용) 자료 나누기\n│   lab1_check_data.py    품질 검사\n│   lab2_explore_pca.py   PCA\n│   lab3_baseline_regression.py\n│   lab4_generative_model.py\n│   lab4b_test_generative.py  생성 모델 시험 성적\n│   lab5_validate_generated.py\n│   lab6_select_and_verify.py\n│   lab7_inverse_design.py\n│   lab8_how_many_fabrics.py\n└─ outputs/           실행 결과</pre></div><div>'
+  + _tbl(['파일 (클릭하면 내려받기)', '내용'], [[f'<a href="../practice/data/{a}">{a}</a>', b] for a, b in _files], 't xs') + '</div></div>')
 _GH = 'https://github.com/adminmrobo/fabric_ai_project/blob/main/'
 def _kb(path):
     try: return f'{max(1, round(os.path.getsize(os.path.join(B, "..", path)) / 1024))} KB'
@@ -439,7 +462,7 @@ _labs = ['common.py'] + sorted(f for f in os.listdir(os.path.join(_PR, 'labs')) 
 def _dl(path, label=None):
     return f'<a href="../{path}" download>{label or os.path.basename(path)}</a> <span class="kb">{_kb(path)}</span>'
 S(P['9'], '자료 내려받기 — 슬라이드의 모든 첨부물', '<div class="dlall"><a class="bt big" href="downloads/fabric_practice_kit.zip" download>⬇ 실습 키트 전체 (zip)</a>'
-  '<span>CSV 15 · 실습 코드 10 · 지침 · 프롬프트 · 이미지 요청서 · 모의 데이터 생성기 — 압축을 풀고 <code>practice/README.md</code>부터</span></div><div class="cols c3">'
+  '<span>CSV 16 · 실습 코드 11 · 지침 · 프롬프트 · 이미지 요청서 · 모의 데이터 생성기 — 압축을 풀고 <code>practice/README.md</code>부터</span></div><div class="cols c3">'
   '<div><h3>데이터 (CSV)</h3><ul class="dl">' + ''.join(f'<li>{_dl("practice/data/" + a)}</li>' for a, b in _files) + '</ul></div>'
   '<div><h3>실습 코드 (Python)</h3><ul class="dl">' + ''.join(f'<li>{_dl("practice/labs/" + f)}</li>' for f in _labs) + f'<li>{_dl("practice/requirements.txt")}</li></ul>'
   '<h3>모의 데이터 생성기</h3><ul class="dl">' + f'<li>{_dl("analysis/mock_data/generate_mock_fabric.py")}</li><li>{_dl("analysis/mock_data/mock_fabric_dictionary.json")}</li></ul></div>'
@@ -458,11 +481,12 @@ S(P['9'], 'Lab 1 · 2 — 자료 점검과 탐색', '<div class="cols"><div><h3>
 S(P['9'], 'Lab 3 · 4 — 비교 기준과 생성 모델', '<div class="cols"><div><h3>Lab 3 비교 기준 (지도 회귀)</h3><pre class="code">$ python lab3_baseline_regression.py\n평균(기준선)  CV R² -0.151 시험 R² -0.028 새 조합 41.8 V\n릿지          CV R²  0.757 시험 R²  0.829 새 조합 18.8 V\n랜덤포레스트  CV R²  0.820 시험 R²  0.920 새 조합 10.1 V\n가우시안 과정 CV R²  0.916 시험 R²  0.944 새 조합 10.3 V\n측정 오차 수준: Voc 반복 CV 중앙값 0.1</pre>'
   '<ul class="b"><li>새 조합(울 × 호프색) 오차가 시험 오차보다 큼</li><li>릿지(선형)가 크게 뒤짐 — 관계가 비선형</li></ul></div>'
   '<div><h3>Lab 4 생성 모델 (비지도)</h3><pre class="code">$ python lab4_generative_model.py\nBIC로 고른 무리 수: 4\n적용 범위 안 생성 직물: 837 / 1000\n  (Y 학습 범위 4.6~126.8 V)\n  저장: lab4_bic.csv, lab4_generated_candidates.csv\n        Voc_sampled  Voc_pred\nmedian       46.7      45.9\nmax         257.7     240.0   ← 외삽</pre><ul class="b">'
-  '<li>Voc_sampled: 결합분포에서 X와 함께 뽑은 값 · Voc_pred·lo95·hi95: 조건부 평균과 범위</li><li>max 240 V는 학습 범위 밖 → in_domain = False</li><li>원단이 50개 미만이면 무리 수 1~3, 8항목으로</li></ul></div></div>')
+  '<li>Voc_sampled: 결합분포에서 함께 뽑은 값 · Voc_pred·lo95·hi95: 조건부 평균과 범위 · max 240 V는 in_domain = False</li></ul>'
+  f'<pre class="code">$ python lab4b_test_generative.py\n가우시안 혼합 (무리 4개) p(y | x)\n 시험    R² {_gte.R2:.3f}  RMSE {_gte.RMSE:.1f}  ±2σ 적중 {_gte.cover95:.3f}\n 새 조합 RMSE {_gnc.RMSE:.1f}  ±2σ 적중 {_gnc.cover95:.3f}</pre></div></div>')
 S(P['9'], 'Lab 5 · 6 · 7 · 8 — 검증, 전향 검증, 역방향, 원단 수', '<div class="g2"><div class="card"><b>Lab 5 생성 검증</b><pre class="code">$ python lab5_validate_generated.py\nKS 9항목 모두 &lt; 0.1\n상관 차이 최대 0.058\nTRTR      R² 0.913\nTSTR      R² 0.818\n실측+생성 R² 0.897</pre><p>분포·상관은 닮았지만 생성은 새 정보를 주지 않음</p></div>'
   '<div class="card"><b>Lab 6 전향 검증</b><pre class="code">$ python lab6_select_and_verify.py\n기대값 최고 3   ✓✓✓\n범위 최대 3     ✓✗✗\n(함정) 3        ✗✗✗\n적용 범위 안 0.67</pre><p>measured_Voc 칸을 실험실 값으로 채우고 다시 실행</p></div>'
   '<div class="card"><b>Lab 7 역방향</b><pre class="code">$ python lab7_inverse_design.py 90\n목표 Voc* = 90 V\n무리 가중치 [0.81 0.10 0 0.09]\n→ 나일론 호프색·저지\n→ 울 저지·능직</pre><p>p(x | y*)에서 뽑은 직물을 만들 수 있는지 검토</p></div>'
-  '<div class="card"><b>Lab 8 원단 수</b><pre class="code">$ python lab8_how_many_fabrics.py\n GP  n=40  R² 0.64 ± 0.21\n GP  n=100 R² 0.82 ± 0.11\n GP  n=250 R² 0.93 ± 0.01</pre><p>곡선이 평평해지는 원단 수 = S2 목표의 근거</p></div></div>'
+  '<div class="card"><b>Lab 8 원단 수</b><pre class="code">$ python lab8_how_many_fabrics.py\n GP   n=100 R² 0.82 · n=250 0.93\n GMM  n=100 R² 0.60 · n=160 0.84\n RF   n=100 R² 0.82 · n=250 0.88</pre><p>생성 모델은 원단을 더 먹음 → 권장 100~150개</p></div></div>'
   '<p class="note">각 Lab 결과 CSV는 practice/outputs/ 에 쓰이고, 같은 내용의 예시가 practice/data/ 에 있어 실행 전에도 열어 볼 수 있습니다. 자세한 지침은 practice/README.md.</p>')
 S(P['9'], '결과판 — 전향 검증과 역방향', '<div class="cols"><div><h3>전향 검증 (Lab 6, 측정값은 예시)</h3>'
   + _tbl(['후보', '고른 이유', '예측', '95% 범위', '측정', '판정'], [[r.gen_id, r.reason.replace(' (적용 범위 안)', '').replace(' (모델이 가장 모름)', ''), _f(r.Voc_pred, 0), f'{r.Voc_lo95:.0f}~{r.Voc_hi95:.0f}', _f(r.measured_Voc, 0), '<b class="ok">✓</b>' if r.inside_95 else '<b class="ng">✗</b>'] for r in _ver.itertuples()], 't s')
@@ -471,10 +495,17 @@ S(P['9'], '결과판 — 전향 검증과 역방향', '<div class="cols"><div><h
 
 # ================= 10 향후 =================
 S(P['10'], '실측 이후 — 일정과 할 일', _tbl(['단계', '기간 (안)', '할 일', '산출물'], [
-  ['S2 실측', '2026-12 ~ 2027-05', '양식대로 X·Y 측정, 장비 통일, 반복 3회, 재측정', '실측 CSV (50개 이상), Lab 1 보고'], ['생성기 보정', '실측 10개 시점', '분위수 맞춤 → σ₀ → SRA_opt → 습도', '보정된 생성기 v1.1'],
+  ['S2 실측', '2026-12 ~ 2027-05', '양식대로 X·Y 측정, 장비 통일, 반복 3회, 재측정', '실측 CSV (최소 50 · 권장 100 이상), Lab 1 보고'], ['생성기 보정', '실측 10개 시점', '분위수 맞춤 → σ₀ → SRA_opt → 습도', '보정된 생성기 v1.1'],
   ['S3 패턴 학습', '2027-02 ~ 06', 'Lab 2~5를 실측으로, 비교 기준과 비교', '생성 모델, TSTR 보고'], ['S4 생성·예측', '2027-04 ~ 09', '새 직물 생성, 적용 범위, 역방향 후보', '후보 목록'],
   ['S5 전향 검증', '2027-07 ~ 12', '후보 10개 이상 제작·측정, 판정, 다시 학습', '검증 보고, 2차년도 출발점']])
   + '<p class="note">2차년도에 섬유 이미지를 더할 때도 같은 원칙(실측 시험, 적용 범위, 생성 결과 재학습 금지)을 씁니다.</p>')
+S(P['10'], '교수님 결정이 필요한 것', _tbl(['결정', '선택지', '권장안', '근거'], [
+  ['실측 원단 수', '50 / 100 / 150', '<b>1차 50개 → 2차 50~100개 추가</b>', '학습 곡선(Lab 8): 기준선은 50개, 생성 모델은 100~150개에서 안정'],
+  ['상대 전극', 'PTFE 필름 / 나일론 직물 / 기타', '<b>PTFE 필름</b> 하나로 고정', '대전 서열 끝단이라 모든 소재의 Δ가 같은 부호 (좌표축 ①)'],
+  ['물성 장비', 'FTT / KES (혼용 불가)', '<b>FTT로 통일</b>', '27개 실측 중 두 장비 값은 압축 일만 일치 (S0 분석)'],
+  ['전압 측정기', '전위계 / 오실로스코프', '<b>전위계</b> (입력 임피던스 10¹² Ω 이상)', '10 MΩ 프로브는 Voc를 낮게 읽음'],
+  ['소재·구조 범위', '5 × 5 / 혼방·새틴 포함', '<b>5 × 5로 시작</b>, 혼방은 2차', '범위 밖 원단은 적용 범위 밖 (3부 끝)'],
+  ['1차 모델', '생성 모델 단독 / 기준선 병행', '<b>병행 보고</b>', '예측 성적은 기준선이 약간 높음 (8부 비교표)']], 't s'))
 S(P['10'], '역할과 체크리스트', '<div class="cols"><div>' + _tbl(['역할', '맡는 일'], [['실험실', '설계 범위 확정, 원단 제작, FTT·전기 측정, 양식 기록, 재측정'], ['데이터·AI', '품질 검사, 생성기 보정, 생성 모델·비교 기준, 후보 선정, 보고'], ['함께', '측정 프로토콜 고정, 후보 검토(만들 수 있나), 판정 기준'], ['교수님', '방향·우선순위, 검토 항목 승인']])
   + '</div><div><h3>매번 확인</h3><ul class="check"><li>is_mock 표시가 있는가</li><li>측정 조건 열이 모두 채워졌는가</li><li>반복 CV 0.15 초과 원단을 재측정했는가</li><li>변환 기준을 학습 자료로만 정했는가</li><li>성적을 실측 시험 자료로만 쟀는가</li><li>생성 결과를 학습에 넣지 않았는가</li><li>후보가 적용 범위 안인가</li><li>예상값을 측정 전에 기록했는가</li></ul></div></div>')
 
@@ -501,6 +532,17 @@ S(P['B'], 'Genspark 이미지 요청서 — 공통 스타일', '<div class="cols
 for _i in range(0, len(SC.GS_REQ), 5):
     S(P['B'], f'이미지 요청 {SC.GS_REQ[_i][0]}~{SC.GS_REQ[min(_i + 4, len(SC.GS_REQ) - 1)][0]}', _tbl(['번호', '제목', '장면 (공통 스타일 블록 뒤에 붙임)', ''], [[f'<b>{g[0]}</b>', g[2], f'<span class="s">{g[3]}</span>', f'<button class="bt cp" data-cp="{g[0]}">복사</button>'] for g in SC.GS_REQ[_i:_i + 5]], 't s'))
 
+_GL = [('결합분포 p(x, y)', '직물 특성 x와 전기 특성 y가 함께 나타나는 확률 — 생성 모델이 배우는 것'), ('조건부 분포 p(y | x)', 'x가 정해졌을 때 y의 분포 — 평균은 예측값, 퍼짐은 범위'),
+  ('가우시안 혼합 (GMM)', '타원형 정규분포 몇 개를 섞어 자료 모양을 나타내는 생성 모델'), ('EM 알고리즘', '무리 소속 확률 계산(E)과 무리 모양 갱신(M)을 번갈아 GMM을 맞추는 방법'),
+  ('BIC', '맞춤 정도와 모델 크기를 함께 따지는 점수, 작을수록 좋음 — 무리 수 고르기'), ('마할라노비스 거리', '변수 사이 상관을 반영한 “자료 중심에서 떨어진 정도”'),
+  ('적용 범위 · 외삽', '학습 자료가 덮는 영역 / 그 밖을 예측하는 것 — 외삽은 믿지 않음'), ('KS 거리', '두 누적분포 곡선의 최대 차이 (0이면 같음)'),
+  ('TSTR · TRTR', '생성으로 학습·실측으로 시험 / 실측으로 학습·실측으로 시험'), ('누수', '시험 정보가 학습에 섞여 성적이 부풀려지는 것'),
+  ('교차검증 (k겹)', '학습 자료를 k조각으로 나눠 돌아가며 시험'), ('R² · RMSE', '설명된 변동 비율(1이 최고) / 평균 오차 크기(V)'),
+  ('변동계수 CV', '표준편차 ÷ 평균 — 반복 측정의 흔들림'), ('라틴 하이퍼큐브', '인자마다 범위를 n칸으로 나눠 칸마다 하나씩 뽑는 표본 추출'),
+  ('PCA · 가중치(적재값)', '여러 변수를 섞은 종합 점수와 그 섞는 비율'), ('모델 붕괴', '생성 결과를 다시 학습하면 분포 꼬리가 사라지는 현상'),
+  ('능동 학습', '모델이 가장 모르는 곳을 골라 실제로 재는 실험 전략'), ('±2σ 적중률', '예측 범위가 실제 값을 담은 비율 — 95% 근처면 범위가 정직함')]
+S(P['C'], '용어집 — 슬라이드에 나오는 방법론 용어', '<div class="cols">' + ''.join('<div>' + _tbl(['용어', '뜻'], [[f'<b>{a}</b>', b] for a, b in part], 't s') + '</div>' for part in (_GL[:9], _GL[9:])) + '</div>')
+
 # ================= 참고문헌·끝 =================
 _rs = [(k, c, u) for k, c, u, w in MREF2] + [(k, c, u) for k, c, u, w in MREFS if k in ('M1', 'M2', 'M3', 'M4', 'M5', 'M10', 'M11', 'M12', 'M14')]
 _half = (len(_rs) + 1) // 2
@@ -511,9 +553,12 @@ S(P['R'], '', '<div class="cover end"><div><div class="eyeb">정리</div><h1>네
 
 # ---------------- 조립 ----------------
 _N = len(SL); _secs = []; _cnt = {}
+_core = [i + 1 for i, (pp, t, b, n) in enumerate(SL) if t and any(t.startswith(c) for c in CORE)]
+_corehtml = '<div class="core"><b>30분 경로 (필수 ' + str(len(_core)) + '쪽)</b> ' + ' '.join(f'<a href="#{n}" onclick="goSlide({n - 1});return false">{n}</a>' for n in _core) + ' <span>— 나머지는 심화. 쪽 위 <em class="tg">필수</em> 표시</span></div>'
 for i, ((pk, pn), title, body, init) in enumerate(SL):
     _cnt[pk] = _cnt.get(pk, 0) + 1
-    head = (f'<div class="eyeb">{pk}.{_cnt[pk]} · {pn}</div><h2>{title}</h2><div class="rule"></div>') if title else ''
+    body = body.replace('@@CORE@@', _corehtml)
+    head = (f'<div class="eyeb">{pk}.{_cnt[pk]} · {pn}' + (' <em class="tg">필수</em>' if i + 1 in _core else '') + f'</div><h2>{title}</h2><div class="rule"></div>') if title else ''
     foot = f'<footer><span>{pn}</span><span>섬유직물 데이터 생성 가이드</span><span>{i + 1} / {_N}</span></footer>' if i else ''
     _secs.append(f'<section class="slide" data-init="{init}" data-part="{_html.escape(pk + " " + pn)}">{head}<div class="body">{body}</div>{foot}</section>')
 

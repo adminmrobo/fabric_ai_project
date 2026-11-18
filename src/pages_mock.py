@@ -28,6 +28,7 @@ MREF2 = [
  ('G10', 'Kumar, C., Perris, J., Bairagi, S., Min, G., Xu, Y., et al. (2023). Multiscale in-situ quantification of the role of surface roughness and contact area using a novel Mica-PVS triboelectric nanogenerator. <i>Nano Energy</i>, 107, 108122.', 'https://doi.org/10.1016/j.nanoen.2022.108122', '평평한 탄성 표면에서는 거칠기가 커질수록 실접촉 면적과 출력이 감소'),
  ('G11', 'Min, G., et al. (2021). Origin of the contact force-dependent response of triboelectric nanogenerators.', 'https://eld.bl.uk/catalog/100175994510_0x000001', '출력(Voc, Isc)은 실접촉 면적을 따라 증가하고 같은 압력에서 포화'),
  ('G12', 'McKay, M. D., Beckman, R. J., & Conover, W. J. (1979). A comparison of three methods for selecting values of input variables in the analysis of output from a computer code. <i>Technometrics</i>, 21(2), 239–245.', None, '라틴 하이퍼큐브 표본 추출'),
+ ('G13', 'Gunawardhana, K. R. S. D. (2021). <i>Development of a triboelectric nanogenerator using nylon-hybrid yarn</i> (MSc by Research thesis). University of Moratuwa.', 'https://dl.lib.uom.lk/bitstreams/f6082adf-482f-42f5-841a-9a7c47373737/download', '편직 TENG 실측: 전하 밀도 6.12 μC/m², 변위 1 mm에서 Voc 51.08 V (전위계) — 이상식 σx/ε₀(약 690 V)보다 한 자릿수 작음')
 ]
 MKR = {k: (c, u, w) for k, c, u, w in MREF2}
 def gc(*ks): return '<sup>' + ','.join(f'<a href="#{k}">{k}</a>' if k in MKR else f'<a href="method_review.html#{k}">{k}</a>' for k in ks) + '</sup>'
@@ -75,8 +76,11 @@ prott = ('<div class="tw"><table class="tb"><tr><th>측정 조건 (고정)</th><
  f'<tr><td>접촉 방식 · 상대 전극</td><td>접촉-분리 · {MG.COUNTER["name"]}</td><td>대전량은 상대 물질에 따라 부호와 크기가 바뀜{gc("M1","G8")}</td></tr>'
  f'<tr><td>간격 x · 전극 면적 S</td><td>{P["gap_mm"]} mm · {P["area_cm2"]} cm²</td><td>Voc ∝ x, Q ∝ S{gc("M2")}</td></tr>'
  f'<tr><td>누르는 압력 · 주파수</td><td>{P["pressure_kpa"]} kPa · {P["freq_hz"]} Hz</td><td>출력은 실접촉 면적을 따라 압력에 따라 늘다 포화{gc("G11")}</td></tr>'
- f'<tr><td>상대습도</td><td>{P["rh_mean"]:.0f} ± {P["rh_sd"]:.0f} % (ISO 139 표준 상태)</td><td>습도가 높으면 대전량 감소{gc("G9","M5")}</td></tr>'
- f'<tr><td>반복 측정</td><td>{P["repeats"]}회 평균 + 변동계수</td><td>Y는 엄격한 정답이 아닌 관측값 — 오차 범위를 함께 기록</td></tr></table></div>')
+ f'<tr><td>상대습도</td><td>{P["rh_mean"]:.0f} ± {P["rh_sd"]:.0f} % (ISO 139 표준 대기 65 ± 4 %보다 좁게)</td><td>습도가 높으면 대전량 감소{gc("G9","M5")}</td></tr>'
+ f'<tr><td>반복 측정</td><td>{P["repeats"]}회 평균 + 변동계수</td><td>Y는 엄격한 정답이 아닌 관측값 — 오차 범위를 함께 기록</td></tr>'
+ '<tr><td>전압 측정기</td><td>전위계 (입력 임피던스 10¹² Ω 이상)</td><td>직물 TENG는 내부 임피던스가 커서 10 MΩ 오실로스코프 프로브는 Voc를 낮게 읽음</td></tr>'
+ '<tr><td>잔류 전하 제거</td><td>반복 사이 이오나이저·접지, 초기 접촉 20회 버림</td><td>남은 전하가 다음 측정에 더해져 반복값이 한쪽으로 흐름</td></tr>'
+ '<tr><td>컨디셔닝</td><td>표준 대기에서 24 h 이상 (ISO 139)</td><td>섬유 수분율이 평형에 이르러야 습도 효과가 일정</td></tr></table></div>')
 
 piv = _df.pivot_table(index='material', columns='structure', values='Voc_V', aggfunc='median')
 cols = ['plain', 'twill22', 'hopsack22', 'jersey', 'needle']

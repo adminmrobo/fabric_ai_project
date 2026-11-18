@@ -21,7 +21,7 @@ Python 3.10 이상. 각 Lab은 `practice/outputs/`에 결과 CSV를 씁니다. `
 
 | 파일 | 내용 | 쓰는 Lab |
 |---|---|---|
-| `00_measurement_template.csv` | 실측 기록 양식(52열) + 예시 3행 — 실험실이 이 양식으로 기록 | 실측 |
+| `00_measurement_template.csv` | 실측 기록 양식(57열: 측정기·전하 제거·컨디셔닝 포함) + 예시 3행 — 실험실이 이 양식으로 기록 | 실측 |
 | `00_column_dictionary.csv` | 열 이름·뜻·단위·필수 여부 | 실측 |
 | `01_mock_full.csv` | 모의 원단 500개 (소재 5 × 구조 5 × 20, 막힘 한계 넘는 조합 제외) | 6, 7 |
 | `02_train.csv` | 학습용 384개 (원단 단위 무작위 80%) | 1~5, 7 |
@@ -29,7 +29,7 @@ Python 3.10 이상. 각 Lab은 `practice/outputs/`에 결과 CSV를 씁니다. `
 | `02_test_new_combo.csv` | 새 조합 시험 20개 — 울 × 호프색 칸 전체를 학습에서 뺌 | 3 |
 | `03_qc_report_example.csv` | Lab 1 결과 예시 | — |
 | `04_generated_candidates_example.csv` | Lab 4 결과 예시 — 새 직물 1000개, 예측 Voc와 95% 범위, 적용 범위 표시 | — |
-| `05_*_example.csv` | Lab 3·5 결과 예시 — 기준선 성적, 분포 비교(KS), TSTR | — |
+| `05_*_example.csv` | Lab 3·4b·5 결과 예시 — 기준선 성적, 생성 모델 시험 성적, 분포 비교(KS), TSTR | — |
 | `06_verification_plan_example.csv` | Lab 6 — 실제로 만들 후보와 측정 칸 | — |
 | `07_verification_result_example.csv` | Lab 6 — 측정 후 예상 범위 안/밖 판정 | — |
 | `08_inverse_candidates_example.csv` | Lab 7 — 목표 Voc에서 거꾸로 예상한 직물 후보 | — |
@@ -45,10 +45,11 @@ Python 3.10 이상. 각 Lab은 `practice/outputs/`에 결과 CSV를 씁니다. `
 | 2 탐색 PCA | `python lab2_explore_pca.py` | 로그·표준화 → PC = Z·W, 가중치(적재값)와 점수 | PC1·PC2 설명 비율, W 열 길이 1·내적 0 |
 | 3 비교 기준 | `python lab3_baseline_regression.py` | 지도 회귀(평균·릿지·랜덤포레스트·가우시안 과정), 5겹 교차검증, 새 조합 시험 | 가우시안 과정 시험 R² ≈ 0.94, 새 조합 RMSE ≈ 10 V |
 | 4 생성 모델 | `python lab4_generative_model.py` | 가우시안 혼합으로 p(X, Y) 학습, BIC로 무리 수, 새 직물 1000개, 조건부 평균·범위, 적용 범위 | 무리 4개, 적용 범위 안 837/1000 |
+| 4b 생성 모델 성적 | `python lab4b_test_generative.py` | 생성 모델 p(y\|x)를 시험 자료로 채점 — R²·RMSE·±2σ 적중률, 기준선과 비교 | 시험 R² 0.89 · RMSE 10.7 V · 적중 0.875(95%보다 좁은 과신), 새 조합 RMSE 10.9 V |
 | 5 생성 검증 | `python lab5_validate_generated.py` | 열별 KS, 상관 차이, TSTR vs TRTR | KS 모두 < 0.1, TSTR R² 0.82 < TRTR 0.91 |
 | 6 전향 검증 | `python lab6_select_and_verify.py` | 후보 고르기(기대값 최고 + 범위 최대), 측정 후 판정, 외삽 함정 | 적용 범위 안 후보 6개 중 4개 ✓ (0.67), 함정 3개 모두 ✗ |
 | 7 역방향 | `python lab7_inverse_design.py 90` | 목표 Voc*에서 p(X | Y=Voc*)로 직물 후보, 닮은 원단 | 90 V → 나일론·울의 호프색·능직·저지 쪽 |
-| 8 원단 수 | `python lab8_how_many_fabrics.py` | 학습 원단 수를 늘리며 시험 R² (학습 곡선) — 실측 원단 수 결정 | GP: 40개 0.64±0.21, 100개 0.82±0.11, 250개 0.93 |
+| 8 원단 수 | `python lab8_how_many_fabrics.py` | 학습 원단 수를 늘리며 시험 R² (학습 곡선) — 실측 원단 수 결정 | GP 100개 0.82 · 250개 0.93 / 생성 모델 100개 0.60 · 160개 0.84 → 실측 최소 50, 권장 100~150 |
 
 ## 3. Lab마다 꼭 지킬 규칙
 
@@ -58,14 +59,25 @@ Python 3.10 이상. 각 Lab은 `practice/outputs/`에 결과 CSV를 씁니다. `
 4. **적용 범위 밖 예측은 믿지 않는다.** Lab 6의 함정 후보는 예측 240 V였지만 측정은 50~77 V였습니다. X가 범위 안이어도 조합이 새로우면 Y가 외삽될 수 있어, 예측값이 학습 자료 Y 범위 안인지도 검사합니다.
 5. **측정 오차보다 작은 오차는 과적합 신호.** Voc 반복 변동계수 중앙값(≈ 10%)을 기준으로 봅니다.
 
-## 4. 데이터 생성 프롬프트
+## 4. 막히면
+
+| 증상 | 원인 | 해결 |
+|---|---|---|
+| `ModuleNotFoundError: sklearn` | 가상환경 밖에서 실행 | `source .venv/bin/activate` 후 `pip install -r requirements.txt` |
+| `FileNotFoundError: .../data/02_train.csv` | `labs` 폴더 밖에서 실행 | `cd practice/labs` 후 실행 (경로는 `common.py`가 이 위치 기준으로 잡음) |
+| 그림의 한글이 네모 | 한글 글꼴 없음 | Windows 맑은 고딕, macOS AppleGothic 자동 사용. 없으면 Noto Sans KR 설치 |
+| CSV를 엑셀로 열면 한글 깨짐 | 인코딩 | 파일은 UTF-8(BOM). 엑셀 "데이터 → 텍스트/CSV"로 UTF-8 지정 |
+| 숫자가 README와 조금 다름 | scikit-learn 버전 차이 | 소수 둘째 자리 차이는 정상. 결론(순서·비교)이 같으면 됨 |
+| `lab1` 경고가 많음 (실측) | 단위·장비 혼용 | 양식의 `x_instrument`·`meter_type` 확인, 한 장비 값만 남김 |
+
+## 5. 데이터 생성 프롬프트
 
 LLM으로 생성기 코드·문헌값 표·검증 리뷰를 받을 때는 `prompts/data_generation_prompts.md`의 P1~P6을 씁니다. 원칙: LLM은 숫자가 아니라 코드와 근거를 만들고, 숫자는 시드를 고정한 코드가 만듭니다.
 
-## 5. 실측이 들어오면
+## 6. 실측이 들어오면
 
-1. 실험실은 `00_measurement_template.csv` 양식으로 기록 (장비·상대 전극·간격·압력·주파수·온습도 고정, 반복 3회).
+1. 실험실은 `00_measurement_template.csv` 양식으로 기록 (장비·상대 전극·간격·압력·주파수·온습도 고정, 반복 3회, 전위계 사용, 반복 사이 전하 제거, 24 h 컨디셔닝).
 2. `lab1_check_data.py 실측파일.csv`로 점검 → 변동계수 0.15 초과 원단 재측정.
-3. 원단이 50개 미만이면 Lab 4의 무리 수를 1~3으로 제한하고, 8항목(`X8`)으로 시작.
+3. 원단이 100개 미만이면 Lab 4의 무리 수를 1~2로 제한하고 8항목(`X8`)으로 시작. Lab 4b로 기준선(Lab 3)과 나란히 보고.
 4. 생성기(`analysis/mock_data/generate_mock_fabric.py`)를 실측으로 보정: 19항목 분위수 맞춤 → σ₀ → SRA_opt → 습도 기울기.
 5. Lab 6의 측정 칸(`measured_Voc`)을 실제 측정값으로 채우고 판정.

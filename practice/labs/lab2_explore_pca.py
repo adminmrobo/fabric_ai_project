@@ -4,7 +4,14 @@ PC = Z · W   (원단 n × 19) · (19 × k)
 import numpy as np, pandas as pd, matplotlib
 matplotlib.use("Agg"); import matplotlib.pyplot as plt
 from common import load, save, X19, LogStd, OUT
-plt.rcParams["font.family"] = "Noto Sans CJK JP"
+from matplotlib import font_manager as _fm
+_have = {f.name for f in _fm.fontManager.ttflist}
+for _f in ["Malgun Gothic", "AppleGothic", "Apple SD Gothic Neo", "NanumGothic", "Noto Sans KR", "Noto Sans CJK KR", "Noto Sans CJK JP"]:
+    if _f in _have:
+        plt.rcParams["font.family"] = _f; break
+else:
+    print("주의: 한글 글꼴을 찾지 못해 그림의 한글이 네모로 보일 수 있습니다 (Windows: 맑은 고딕, macOS: AppleGothic)")
+plt.rcParams["axes.unicode_minus"] = False
 df = load("02_train.csv")
 t = LogStd().fit(df, X19); Z = t.transform(df)
 U, s, Vt = np.linalg.svd(Z, full_matrices=False)

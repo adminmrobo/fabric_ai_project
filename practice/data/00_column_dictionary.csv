@@ -31,4 +31,8 @@ temp_C / rh_pct,측정 온도·상대습도,°C / %,"필수 (ISO 139: 20±2, 65�
 Voc_rep1~3,개방 전압 반복 3회,V,필수
 Voc_V / Voc_cv,반복 평균 / 변동계수,V / -,계산
 "Qsc_rep1~3, Qsc_nC",전달 전하 반복·평균,nC,권장
+meter_type / meter_input_ohm,"전압 측정기 종류 / 입력 임피던스 — 전위계(10¹² Ω 이상) 권장, 오실로스코프 프로브(10 MΩ)는 Voc를 낮게 잼",- / Ω,필수
+neutralize,반복 사이 잔류 전하 제거 방법 (이오나이저·접지·대기 시간),-,필수
+condition_h,측정 전 표준 대기 컨디셔닝 시간 (ISO 139),h,필수 (24 h 이상 권장)
+cycles_discarded,안정되기 전 버린 초기 접촉 횟수,회,필수
 operator / date / note,측정자 / 날짜 / 비고,-,필수

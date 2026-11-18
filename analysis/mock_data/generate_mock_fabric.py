@@ -14,7 +14,7 @@ import json, math, os, sys
 import numpy as np
 import pandas as pd
 
-VERSION = "1.0 (2026-11-18)"
+VERSION = "1.1 (2026-11-18) — Q·I 독립 측정 잡음"
 
 # ---------------- 0. 소재(섬유) 대표값 ----------------
 # rho 밀도 g/cm3, regain 표준 수분율 %, E 섬유 탄성률 GPa, tribo 대전 서열 상대 점수(+ 양전하 경향),
@@ -182,8 +182,17 @@ def feasible(d, st):
     return 0.03 <= st["phi"] <= 0.30
 
 
+def _qi(y_true, k, rng_qi):
+    # 전하 Q와 전류 I는 Voc와 다른 계측(전하계·전류계)으로 따로 잰다 — 같은 원단 상태(k의 일부)를 공유하고 고유 잡음을 더한다
+    share = k ** 0.5                                   # 원단 표면 상태 몫은 Voc와 일부 공유
+    q = y_true["Qsc_nC"] * share * float(np.mean([math.exp(rng_qi.normal(0, 0.10)) for _ in range(PROTOCOL["repeats"])]))
+    i = 2 * q * PROTOCOL["freq_hz"] * float(np.mean([math.exp(rng_qi.normal(0, 0.08)) for _ in range(PROTOCOL["repeats"])]))
+    return dict(Qsc_nC=q, Iavg_nA=i, sigma_uCm2=q * 1e-9 / (PROTOCOL["area_cm2"] * 1e-4) * 1e6)
+
+
 def generate(n_per_cell=20, seed=20261118):
     rng = np.random.default_rng(seed)
+    rng_qi = np.random.default_rng(seed + 7)   # Q·I 측정 잡음은 따로 (Voc 등 기존 값은 그대로 유지)
     P = PROTOCOL
     rows = []
     for i, d in enumerate(sample_designs(n_per_cell, rng)):
@@ -209,7 +218,7 @@ def generate(n_per_cell=20, seed=20261118):
                    rh=rh)
         row.update({k2: v_meas[k2] for k2 in ITEMS})
         row.update(Voc_V=float(np.mean(reps)), Voc_cv=float(np.std(reps, ddof=1) / np.mean(reps)),
-                   Qsc_nC=y_true["Qsc_nC"] * k, Iavg_nA=y_true["Iavg_nA"] * k, sigma_uCm2=y_true["sigma_uCm2"] * k,
+                   **_qi(y_true, k, rng_qi),
                    contact_index=y_true["contact_index"], hum_factor=y_true["hum_factor"], is_mock=True)
         rows.append(row)
     return pd.DataFrame(rows)
