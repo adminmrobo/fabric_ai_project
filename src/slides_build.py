@@ -162,7 +162,7 @@ FB['GS10'] = _svg(680, 260, _ARW + '<rect x="40" y="50" width="240" height="150"
 GSMAP = {g[0]: g for g in SC.GS_REQ}
 def _gs(id_, h=300):
     g = GSMAP[id_]
-    return (f'<figure class="gs"><div class="gsi" style="max-height:{h}px"><img src="img/gs/{id_}.png" alt="{g[2]}" onerror="this.remove()"><div class="fb">{FB[id_]}</div></div>'
+    return (f'<figure class="gs"><div class="gsi" style="max-height:{h}px"><img src="img/gs/{id_}.webp" alt="{g[2]}" onerror="if(!this.dataset.f){{this.dataset.f=1;this.src=&quot;img/gs/{id_}.png&quot;}}else this.remove()"><div class="fb">{FB[id_]}</div></div>'
             f'<figcaption>{g[2]} <span>{id_}</span></figcaption></figure>')
 
 SL = []
@@ -265,7 +265,7 @@ _dag = _svg(1100, 400, _ARW
   + '<line x1="650" y1="350" x2="930" y2="290" stroke="#c4561a" stroke-width="2" stroke-dasharray="4 6"/>' + _t(800, 352, '간접 상관 (원인 아님)', 13, OR, wt=700))
 S(P['4'], '인과 지도 — 무엇이 무엇을 거쳐 전기 출력이 되나', _dag + '<div class="g3"><div class="card"><b>얼마나 주고받나</b><p>소재의 대전 서열 차이 — 상대 전극(PTFE)과 멀수록 전하가 많이 옮겨감</p></div>'
   '<div class="card"><b>얼마나 닿나</b><p>구조·표면 요철·압축성이 실제 접촉 면적을 정함 — 실접촉 지수</p></div><div class="card"><b>얼마나 남나</b><p>습도가 높으면 표면 전하가 새어 나감 — 흡습성 섬유가 더 민감</p></div></div>')
-S(P['4'], '접촉-분리형 마찰전기 — 기본 식', '<div class="cols c55"><div>' + _gs('GS04', 230)
+S(P['4'], '접촉-분리형 마찰전기 — 기본 식', '<div class="cols c55"><div>' + _gs('GS04', 210) + '<p class="small" style="text-align:center;margin:0">왼쪽 접촉 · 오른쪽 분리 — 위 직물(+), 아래 PTFE 필름(−), 바깥 노란 판 = 전극</p>'
   + '<div class="fbox">Voc = σ · x / ε₀      Q = σ · S      평균 전류 = 2 · Q · f</div><ul class="b"><li>σ: 표면 전하 밀도 — <b>직물이 정하는 부분</b></li><li>x 간격, S 면적, f 주파수 — 프로토콜로 고정' + _ref('M2') + '</li></ul></div>'
   '<div><div class="ctl">σ <input type="range" id="tgS" min="0.05" max="1.2" step="0.01" value="0.4"> <b id="tgSV">0.40</b> μC/m²</div>' + _cv('tgCv', 560, 330)
   + '<div class="kpis"><div class="kpi"><b id="tgV">–</b><span>Voc (x = 1 mm)</span></div><div class="kpi"><b id="tgQ">–</b><span>Q (25 cm²)</span></div><div class="kpi"><b id="tgI">–</b><span>평균 전류 (2 Hz)</span></div></div></div></div>', 'initTeng')
@@ -273,12 +273,12 @@ S(P['4'], '좌표축 ① 대전 서열 — 누가 전자를 내주나', '<div cl
   + _side('읽는 법', '<p>오른쪽(+)일수록 접촉 때 전자를 내주고 양전하를 띱니다. 상대 전극과의 <b>거리 Δ</b>가 클수록 σ가 큽니다' + _ref('G8', 'M1') + '.</p><p>상대 전극을 나일론으로 바꾸면 Δ의 부호가 뒤집히는 소재가 생깁니다 — 그래서 상대 전극은 프로토콜로 <b>고정</b>합니다.</p><p class="small">점수는 문헌 순서를 옮긴 가정값. 울은 문헌마다 위치가 다름.</p>') + '</div>', 'initTribo')
 S(P['4'], '좌표축 ② 거칠기 — 역U자로 둔 이유', '<div class="cols c55"><div><ul class="b">'
   '<li>직물 TENG: 능직 2/2·호프색 2/2가 접촉 표면적과 거칠기가 커서 평직보다 출력이 높음' + _ref('M3') + '</li><li>평평한 탄성 표면: 거칠기가 커질수록 실접촉 면적과 출력이 감소' + _ref('G10') + '</li><li>둘을 함께 담으려면 "적당한 요철에서 최대"</li></ul>'
-  '<div class="fbox">g(SRA) = exp( −(ln(SRA / SRA<sub>opt</sub>))² / (2·0.8²) )</div><div class="ctl">SRA<sub>opt</sub> <input type="range" id="ruOpt" min="15" max="90" step="1" value="45"> <b id="ruV">45</b> μm</div>' + _gs('GS05', 150) + '</div>'
+  '<div class="fbox">g(SRA) = exp( −(ln(SRA / SRA<sub>opt</sub>))² / (2·0.8²) )</div><div class="ctl">SRA<sub>opt</sub> <input type="range" id="ruOpt" min="15" max="90" step="1" value="45"> <b id="ruV">45</b> μm</div>' + _gs('GS05', 185) + '</div>'
   '<div>' + _cv('ruCv', 560, 400) + '<p class="small">점은 구조별 거칠기 중앙값(모의). 실측 원단으로 꼭짓점을 정합니다.</p></div></div>', 'initRough')
 S(P['4'], '좌표축 ③ 누르는 힘 — 접촉은 포화한다', '<div class="cols c64"><div><div class="ctl">소재 <select id="prM"></select></div>' + _cv('prCv', 720, 400) + '</div>'
   + _side('실접촉 지수 ci(P)', '<div class="fbox s">ci = surf · g(SRA) · (1 − e<sup>−P/P<sub>s</sub></sup>)<br>P<sub>s</sub> = 6 / (1 + 4·CW)</div><p>부드러운(압축 일 CW가 큰) 직물은 작은 힘에도 빨리 붙습니다. 힘을 키워도 접촉이 무한히 늘지 않아 출력이 포화합니다' + _ref('G11') + '.</p><p>점선 = 프로토콜 5 kPa. 포화 구간에서 재야 힘의 작은 흔들림이 Y를 흔들지 않습니다.</p>') + '</div>', 'initPress')
 S(P['4'], '좌표축 ④ 습도 — 흡습성 섬유가 더 민감', '<div class="cols c64"><div><div class="ctl">구조 <select id="huS"></select></div>' + _cv('huCv', 720, 400) + '</div>'
-  + _side('습도 계수', '<div class="fbox s">hum = 1 − β·(RH − 40)/100<br>β = 0.25 · (1 + 수분율/10)</div><p>습할수록 표면 물 분자로 전하가 새어 나갑니다' + _ref('G9', 'M5') + '. 수분율이 큰 울·면의 기울기가 가파릅니다. 띠 = 프로토콜 RH 65 ± 2%.</p>' + _gs('GS06', 130)) + '</div>', 'initHum')
+  + _side('습도 계수', '<div class="fbox s">hum = 1 − β·(RH − 40)/100<br>β = 0.25 · (1 + 수분율/10)</div><p>습할수록 표면 물 분자로 전하가 새어 나갑니다' + _ref('G9', 'M5') + '. 수분율이 큰 울·면의 기울기가 가파릅니다. 띠 = 프로토콜 RH 65 ± 2%.</p>' + _gs('GS06', 200)) + '</div>', 'initHum')
 S(P['4'], '좌표축 ⑤ 제작 인자 — 커버 팩터를 올리면', '<div class="cols c64"><div><div class="ctl">소재 <select id="cfM"></select> <span class="small">실 25 tex · 경사 비중 0.52 · RH 65%</span></div>' + _cv('cfCv', 720, 440) + '</div>'
   + _side('같은 x축, 두 단계', '<p><b>위</b>: 커버 팩터가 오르면 실이 빽빽해져 표면 요철(SRA)이 줄어듭니다.</p><p><b>아래</b>: SRA가 역U자 꼭짓점에서 멀어지는 쪽이면 Voc도 줄어듭니다.</p><p>능직·호프색은 뜬 길이가 길어 요철이 크고 막힘 한계도 높습니다(선 끝 = 막힘 98%). 제작 인자 → 물성 → 전기 특성이 한 축에서 이어집니다.</p>') + '</div>', 'initCover')
 S(P['4'], '좌표축 ⑥ 두 인자 지도 — 거칠기 × 대전 서열 차', '<div class="cols c64"><div>' + _cv('mpCv', 720, 460) + '</div>'
@@ -496,7 +496,7 @@ S(P['A'], '나쁜 프롬프트 → 좋은 프롬프트', _tbl(['나쁜 예', '�
 
 # ================= 부록 B 이미지 요청서 =================
 S(P['B'], 'Genspark 이미지 요청서 — 공통 스타일', '<div class="cols c55"><div><div class="ph"><b>공통 스타일 블록</b> <span>— 모든 요청 앞에 붙임</span><button class="bt cp" data-cp="STYLE">복사</button></div><pre class="code pr">' + _html.escape(SC.GS_STYLE) + '</pre>'
-  '<ul class="b"><li>참고: 시멘트 공정 교안(2장)의 삽화 — 크림 배경, 파스텔 인디고·피치·세이지, 둥근 아이콘, 점선 연결</li><li>만든 그림을 <code>slides/img/gs/GS01.png</code>처럼 번호 이름으로 넣으면 슬라이드가 바로 바꿔 보여 줌</li><li>그림이 없으면 같은 자리에 도식(지금 보이는 그림)이 대신 나옴</li></ul></div>'
+  '<ul class="b"><li>참고: 시멘트 공정 교안(2장)의 삽화 — 크림 배경, 파스텔 인디고·피치·세이지, 둥근 아이콘, 점선 연결</li><li>만든 그림은 <code>slides/img/gs/GS01.webp</code>(또는 .png)처럼 번호 이름으로 넣으면 슬라이드가 바로 바꿔 보여 줌 — 현재 10장 모두 반영</li><li>그림 파일이 없으면 같은 자리에 같은 팔레트의 도식이 대신 나옴</li></ul></div>'
   '<div>' + _tbl(['번호', '쓰는 곳', '제목'], [[g[0], g[1], g[2]] for g in SC.GS_REQ], 't s') + '</div></div>')
 for _i in range(0, len(SC.GS_REQ), 5):
     S(P['B'], f'이미지 요청 {SC.GS_REQ[_i][0]}~{SC.GS_REQ[min(_i + 4, len(SC.GS_REQ) - 1)][0]}', _tbl(['번호', '제목', '장면 (공통 스타일 블록 뒤에 붙임)', ''], [[f'<b>{g[0]}</b>', g[2], f'<span class="s">{g[3]}</span>', f'<button class="bt cp" data-cp="{g[0]}">복사</button>'] for g in SC.GS_REQ[_i:_i + 5]], 't s'))
@@ -541,7 +541,7 @@ open(os.path.join(_PR, 'prompts', 'data_generation_prompts.md'), 'w', encoding='
     + '\n## 하지 말 것\n\n' + ''.join(f'- **{a}** — {b}\n' for a, b in SC.DONTS))
 os.makedirs(os.path.join(B, '..', 'slides', 'img', 'gs'), exist_ok=True)
 open(os.path.join(B, '..', 'slides', 'img', 'gs', 'GENSPARK_REQUESTS.md'), 'w', encoding='utf-8').write(
-    '# Genspark 이미지 요청서 (부록 B)\n\n만든 그림은 이 폴더에 `GS01.png` … `GS10.png` 이름으로 넣는다. 그림이 없으면 슬라이드는 같은 자리에 도식을 보여 준다.\n\n'
+    '# Genspark 이미지 요청서 (부록 B)\n\n만든 그림은 이 폴더에 `GS01.png` … `GS10.png`(또는 .webp) 이름으로 넣는다. 슬라이드는 .webp를 먼저, 없으면 .png를 쓴다. 그림이 없으면 슬라이드는 같은 자리에 도식을 보여 준다.\n\n'
     '## 공통 스타일 블록 (모든 요청 앞에 붙임)\n\n```text\n' + SC.GS_STYLE + '\n```\n\n'
     + ''.join(f'## {g[0]} — {g[2]}\n\n쓰는 곳: {g[1]}\n\n```text\n{SC.GS_STYLE}\n\n{g[3]}\n```\n\n' for g in SC.GS_REQ))
 print('slides/index.html', _N, 'slides', len(_slides_html) // 1024, 'KB')
