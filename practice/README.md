@@ -33,6 +33,7 @@ Python 3.10 이상. 각 Lab은 `practice/outputs/`에 결과 CSV를 씁니다. `
 | `06_verification_plan_example.csv` | Lab 6 — 실제로 만들 후보와 측정 칸 | — |
 | `07_verification_result_example.csv` | Lab 6 — 측정 후 예상 범위 안/밖 판정 | — |
 | `08_inverse_candidates_example.csv` | Lab 7 — 목표 Voc에서 거꾸로 예상한 직물 후보 | — |
+| `09_learning_curve_example.csv` | Lab 8 — 원단 수별 시험 R² | — |
 
 모의 데이터를 다시 만들려면: `python ../../analysis/mock_data/generate_mock_fabric.py 20 20261118 ../data` 뒤 `python lab0_make_splits.py`.
 
@@ -47,6 +48,7 @@ Python 3.10 이상. 각 Lab은 `practice/outputs/`에 결과 CSV를 씁니다. `
 | 5 생성 검증 | `python lab5_validate_generated.py` | 열별 KS, 상관 차이, TSTR vs TRTR | KS 모두 < 0.1, TSTR R² 0.82 < TRTR 0.91 |
 | 6 전향 검증 | `python lab6_select_and_verify.py` | 후보 고르기(기대값 최고 + 범위 최대), 측정 후 판정, 외삽 함정 | 적용 범위 안 후보 6개 중 4개 ✓ (0.67), 함정 3개 모두 ✗ |
 | 7 역방향 | `python lab7_inverse_design.py 90` | 목표 Voc*에서 p(X | Y=Voc*)로 직물 후보, 닮은 원단 | 90 V → 나일론·울의 호프색·능직·저지 쪽 |
+| 8 원단 수 | `python lab8_how_many_fabrics.py` | 학습 원단 수를 늘리며 시험 R² (학습 곡선) — 실측 원단 수 결정 | GP: 40개 0.64±0.21, 100개 0.82±0.11, 250개 0.93 |
 
 ## 3. Lab마다 꼭 지킬 규칙
 
@@ -56,7 +58,11 @@ Python 3.10 이상. 각 Lab은 `practice/outputs/`에 결과 CSV를 씁니다. `
 4. **적용 범위 밖 예측은 믿지 않는다.** Lab 6의 함정 후보는 예측 240 V였지만 측정은 50~77 V였습니다. X가 범위 안이어도 조합이 새로우면 Y가 외삽될 수 있어, 예측값이 학습 자료 Y 범위 안인지도 검사합니다.
 5. **측정 오차보다 작은 오차는 과적합 신호.** Voc 반복 변동계수 중앙값(≈ 10%)을 기준으로 봅니다.
 
-## 4. 실측이 들어오면
+## 4. 데이터 생성 프롬프트
+
+LLM으로 생성기 코드·문헌값 표·검증 리뷰를 받을 때는 `prompts/data_generation_prompts.md`의 P1~P6을 씁니다. 원칙: LLM은 숫자가 아니라 코드와 근거를 만들고, 숫자는 시드를 고정한 코드가 만듭니다.
+
+## 5. 실측이 들어오면
 
 1. 실험실은 `00_measurement_template.csv` 양식으로 기록 (장비·상대 전극·간격·압력·주파수·온습도 고정, 반복 3회).
 2. `lab1_check_data.py 실측파일.csv`로 점검 → 변동계수 0.15 초과 원단 재측정.

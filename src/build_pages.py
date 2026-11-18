@@ -370,7 +370,7 @@ hero = hero.replace('2026-11-14 기준', '2026-11-17 기준').replace('한양대
 hero = hero.replace('보고마다 검토 사항을 정리해 두었습니다. 표시해 주시면 마지막에 모아 드리겠습니다.', '스테이지마다 검토 사항이 있습니다. 표시해 주시면 이 쪽 아래에 모아 드리겠습니다.')
 intro = re.sub(r'<h3 style="margin-top:22px">오늘 보고 순서</h3>\s*<ol class="agenda">.*?</ol>', '', INTRO, flags=re.S)
 docmap = (DIRBOX + '<h2 id="map" style="margin-top:30px">문서 지도 — 어디부터 보시면 되나</h2><div class="mapc">'
-    '<a class="card" href="slides/index.html"><span>★</span><b>웹 슬라이드 — 데이터 생성·검증·실습 (57쪽)</b><span class="d">섬유 메커니즘, 비지도 생성 모델, 검증, Lab 1~7 실습 지침과 CSV 예시 14개. 계산기·분포·PCA·생성 모델 대시보드 포함.</span></a>'
+    '<a class="card" href="slides/index.html"><span>★</span><b>웹 슬라이드 — 데이터 생성·검증·실습 (82쪽)</b><span class="d">섬유 특성 → 전기 특성 좌표축 시각화, 데이터 생성 원칙 10조, 검증, 방법론, Lab 1~8 실습과 CSV 예시 15개, 부록: 데이터 생성 프롬프트·Genspark 이미지 요청서. 동적 대시보드 30여 개.</span></a>'
     '<a class="card" href="mock_data_guide.html"><span>★</span><b>모의 데이터 생성 가이드 (섬유 메커니즘)</b><span class="d">소재·실·직물 구조(평직·능직·호프색·편직·부직) → 물성 19항목 → 전기 특성 Y. 근거 이론, 생성기 코드, 계산기.</span></a>'
     '<a class="card" href="method_review.html"><span>★</span><b>1차년도 연구 방법 검토 (문헌)</b><span class="d">실측 패턴을 배운 생성 모델로 새 직물 생성, 전기 특성을 연속값으로 예측. 정의, 문헌, 위험, 검증, 모의실험.</span></a>'
     '<a class="card" href="#ai-summary"><span>0</span><b>SUMMARY — 실측 데이터로 보는 1차년도 방법 (3D)</b><span class="d">처음 오신 분은 여기부터. 원단 27 × 측정 묶음 채움 → 공통 19항목 → 직물 특성 공간 → 전기 특성 Y(연속변수) → 측정 후 계획.</span></a>'
@@ -447,5 +447,5 @@ sizes['index.html'] = page('index.html', 'INDEX — 전체 연구 계획 정리'
 exec(open(f'{B}/pages_method.py', encoding='utf-8').read())
 exec(open(f'{B}/pages_mock.py', encoding='utf-8').read())
 exec(open(f'{B}/pages_extra.py', encoding='utf-8').read())
-exec(open(f'{B}/pages_slides.py', encoding='utf-8').read())
+exec(open(f'{B}/slides_build.py', encoding='utf-8').read())
 for k, v in sizes.items(): print(k, round(v / 1024), 'KB')
